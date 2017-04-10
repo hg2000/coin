@@ -52,20 +52,29 @@ class ApiController extends BaseController
                 $item->put('currency', $currencyKey);
                 $item->put('volume', $volume);
                 if ($currencyKey == 'BTC') {
-                    $rateEur = $rateBtcFiat;
+                    $rateFiat = $rateBtcFiat;
                     $rateBtc = 1;
                 } else {
                     $rateBtc = $this->trading->getCurrentRate('BTC', $currencyKey);
-                    $rateEur = $rateBtcFiat * $rateBtc;
+                    $rateFiat = $rateBtcFiat * $rateBtc;
                 }
                 $item->put('currentRateBtc', $rateBtc);
-                $item->put('currentRateFiat', $rateEur);
-                $item->put('currentValueFiat', $rateEur * $volume);
+                $item->put('currentRateFiat', $rateFiat);
+                $item->put('currentValueFiat', $rateFiat * $volume);
                 $item->put('currentValueBtc', $rateBtc * $volume);
-                $item->put('averageBuyRateBtcCoin', $this->trading->getAverageBuyRate('BTC', $currencyKey));
-                $item->put('averageSellRateBtcCoin', $this->trading->getAverageSellRate($currencyKey, 'BTC'));
-                $item->put('averagePurchaseRateBtcFiat', $this->trading->getAvgPurchaseRate($currencyKey));
+                if ($currencyKey == 'BTC') {
+                    $item->put('averageBuyRateBtcCoin', 1);
+                } else {
+                    $item->put('averageBuyRateBtcCoin', $this->trading->getAverageBuyRate('BTC', $currencyKey));
+                }
+                if ($currencyKey == 'BTC') {
+                    $item->put('averagePurchaseRateBtcFiat', $this->trading->getAvgPurchaseRate(config('api.fiat')));
+                } else {
+                    $item->put('averagePurchaseRateBtcFiat', $this->trading->getAvgPurchaseRate($currencyKey));
+                }
                 $item->put('averagePurchaseRateCoinFiat', $item['averagePurchaseRateBtcFiat'] * $item['averageBuyRateBtcCoin']);
+            
+
                 $item->put('purchaseValueBtc', $volume * $item['averageBuyRateBtcCoin']);
                 $item->put('purchaseValueFiat', $volume * $item['averageBuyRateBtcCoin'] * $item['averagePurchaseRateBtcFiat']);
 
