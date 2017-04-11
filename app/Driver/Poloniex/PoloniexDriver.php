@@ -14,7 +14,7 @@ class PoloniexDriver implements \App\Driver\DriverInterface
     protected $volumes;
 
     /**
-     * Connector to Bitcon.de
+     * Connector to Poloniex
      * @var Connector
      */
     protected $connector;
