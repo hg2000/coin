@@ -73,7 +73,7 @@ class ApiController extends BaseController
                     $item->put('averagePurchaseRateBtcFiat', $this->trading->getAvgPurchaseRate($currencyKey));
                 }
                 $item->put('averagePurchaseRateCoinFiat', $item['averagePurchaseRateBtcFiat'] * $item['averageBuyRateBtcCoin']);
-            
+
 
                 $item->put('purchaseValueBtc', $volume * $item['averageBuyRateBtcCoin']);
                 $item->put('purchaseValueFiat', $volume * $item['averageBuyRateBtcCoin'] * $item['averagePurchaseRateBtcFiat']);
@@ -96,8 +96,8 @@ class ApiController extends BaseController
                 'sellVolumeBtc' => $sumBtcFiatTrades['sellVolumeBtc'],
                 'sellVolumeFiat' => $sumBtcFiatTrades['sellVolumeFiat'],
                 'buyVolumeFiat' => $sumBtcFiatTrades['buyVolumeFiat'],
-                'tradingRevenueBtc' => $sumBtcFiatTrades['buyVolumeBtc'] - $sumBtcFiatTrades['sellVolumeBtc'],
-                'tradingRevenueFiat' => $sumBtcFiatTrades['buyVolumeFiat'] - $sumBtcFiatTrades['sellVolumeFiat'],
+                'tradingRevenueBtc' => $sumBtcFiatTrades['sellVolumeBtc'] - $sumBtcFiatTrades['buyVolumeBtc'],
+                'tradingRevenueFiat' => $sumBtcFiatTrades['sellVolumeFiat'] - $sumBtcFiatTrades['buyVolumeFiat'],
                 'currenValueBtc' => $balances->pluck('currentValueBtc')->sum(),
                 'currenValueFiat' => $balances->pluck('currentValueFiat')->sum(),
 
