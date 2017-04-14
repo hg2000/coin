@@ -23,6 +23,13 @@ class ApiController extends BaseController
     {
         $this->trading = App::make(TradingService::class);
     }
+
+    /**
+     * Fetches trades from external apis or from cache.
+     * Refreshs cache if cachetime is over
+     * Returns an json encoded array of all trades.
+     * @return string (json)
+     */
     public function getTradeHistory()
     {
 
@@ -39,11 +46,16 @@ class ApiController extends BaseController
 
     }
 
+    /**
+     * Fetches current volume information from external apis
+     * and provides all data for the volume view.
+     * @return string (json)
+     */
     public function getVolumes()
     {
         try {
             $balances = collect();
-            $volumes = $this->trading->getVolumes();
+            $volumes = $this->trading->getCurrentVolumes();
             $rateBtcFiat = $this->trading->getCurrentRate('BTC', config('api.fiat'));
 
             foreach ($volumes as $currencyKey => $volume) {
@@ -63,20 +75,18 @@ class ApiController extends BaseController
                 $item->put('currentValueFiat', $rateFiat * $volume);
                 $item->put('currentValueBtc', $rateBtc * $volume);
                 if ($currencyKey == 'BTC') {
-                    $item->put('averageBuyRateBtcCoin', 1);
+                    $item->put('averagePurchaseRateBtcCoin', 1);
                 } else {
-                    $item->put('averageBuyRateBtcCoin', $this->trading->getAverageBuyRate('BTC', $currencyKey));
+                    $item->put('averagePurchaseRateBtcCoin', $this->trading->getAveragePurchaseRate('BTC', $currencyKey));
                 }
                 if ($currencyKey == 'BTC') {
-                    $item->put('averagePurchaseRateBtcFiat', $this->trading->getAvgPurchaseRate(config('api.fiat')));
+                    $item->put('averagePurchaseRateFiatBtc', $this->trading->getAveragePurchaseRateFiatBtc(config('api.fiat'), 'BTC'));
                 } else {
-                    $item->put('averagePurchaseRateBtcFiat', $this->trading->getAvgPurchaseRate($currencyKey));
+                    $item->put('averagePurchaseRateFiatBtc', $this->trading->getAveragePurchaseRateFiatBtc($currencyKey));
                 }
-                $item->put('averagePurchaseRateCoinFiat', $item['averagePurchaseRateBtcFiat'] * $item['averageBuyRateBtcCoin']);
-
-
-                $item->put('purchaseValueBtc', $volume * $item['averageBuyRateBtcCoin']);
-                $item->put('purchaseValueFiat', $volume * $item['averageBuyRateBtcCoin'] * $item['averagePurchaseRateBtcFiat']);
+                $item->put('averagePurchaseRateCoinFiat', $item['averagePurchaseRateFiatBtc'] * $item['averagePurchaseRateBtcCoin']);
+                $item->put('purchaseValueBtc', $volume * $item['averagePurchaseRateBtcCoin']);
+                $item->put('purchaseValueFiat', $volume * $item['averagePurchaseRateBtcCoin'] * $item['averagePurchaseRateFiatBtc']);
 
                 if ($currencyKey == 'BTC') {
                     $item->put('sellVolume', $this->trading->getSellVolume('BTC', config('api.fiat')));

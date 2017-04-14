@@ -29,7 +29,7 @@ class Trade extends Model implements TradeInterface
         $this->setAttribute('volume', $volume);
         $this->setAttribute('fee_fiat', $feeFiat);
         $this->setAttribute('fee_coin', $feeCoin);
-        $this->setAttribute('purchase_rate_btc_fiat', $purchaseRateBtcFiat);
+        $this->setAttribute('purchase_rate_fiat_btc', $purchaseRateBtcFiat);
     }
 
     public function getVolumeValueBTCAttribute()
@@ -49,25 +49,25 @@ class Trade extends Model implements TradeInterface
         }
 
         if ($this->target_currency == 'BTC' && $this->type == 'sell') {
-            return $this->rate * $this->volume * $this->purchase_rate_btc_fiat;
+            return $this->rate * $this->volume * $this->purchase_rate_fiat_btc;
         }
 
         if ($this->source_currency == config('api.fiat') && $this->target_currency == 'BTC' && $this->type == 'buy') {
             return $this->rate * $this->volume;
         }
-        return $this->rate * $this->volume * $this->purchase_rate_btc_fiat;
+        return $this->rate * $this->volume * $this->purchase_rate_fiat_btc;
     }
 
     public function addAll()
     {
-        $this->setAttribute('valueBTC', $this->getVolumeValueBTCAttribute());
-        $this->setAttribute('valueFiat', $this->getVolumeValueFiatAttribute());
+        $this->setAttribute('value_btc', $this->getVolumeValueBTCAttribute());
+        $this->setAttribute('value_fiat', $this->getVolumeValueFiatAttribute());
         return $this;
     }
 
     public function setPurchaseRateBtcFiatAttribute($value) {
-        
-        $this->purchase_rate_btc_fiat = $value;
+
+        $this->purchase_rate_fiat_btc = $value;
         return $this;
     }
 

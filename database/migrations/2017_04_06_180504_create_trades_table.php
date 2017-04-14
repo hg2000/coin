@@ -26,7 +26,9 @@ class CreateTradesTable extends Migration
             $table->float('volume', 16, 8);
             $table->float('fee_fiat', 16, 8);
             $table->float('fee_coin', 16, 8);
-            $table->float('purchase_rate_btc_fiat', 16, 8 )->nullable();
+            $table->float('purchase_rate_fiat_btc', 16, 8 )->nullable();
+            $table->float('revenue_btc', 16, 8 )->nullable();
+            $table->float('revenue_fiat', 16, 8 )->nullable();
         });
     }
 

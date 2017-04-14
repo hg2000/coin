@@ -40,7 +40,7 @@
                   <td class="border-right">{{ formatFiat(item.currentRateFiat) }}</td>
 
                   <td>{{ formatFiat(item.averagePurchaseRateCoinFiat) }}</td>
-                  <td class="border-right">{{ formatCoin(item.averageBuyRateBtcCoin) }}</td>
+                  <td class="border-right">{{ formatCoin(item.averagePurchaseRateBtcCoin) }}</td>
 
                   <td>{{ formatCoin(item.purchaseValueBtc) }}</td>
                   <td>{{ formatCoin(item.currentValueBtc) }}</td>

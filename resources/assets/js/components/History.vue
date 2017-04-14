@@ -18,7 +18,7 @@
                   <th>Volume Coin</th>
                   <th>Value (BTC)</th>
                   <th>Value ({{ fiat }})</th>
-                  <th>Purchase Rate</th>
+                  <th>Purchase Rate ({{ fiat }}/BTC)</th>
                 </tr>
               </thead>
               <tbody>
@@ -29,9 +29,9 @@
                   <td>{{ trade.source_currency}}{{ trade.target_currency}}</td>
                   <td>{{ formatCoin(trade.rate) }}</td>
                   <td>{{ formatCoin(trade.volume) }}</td>
-                  <td>{{ formatCoin(trade.valueBTC) }}</td>
-                  <td>{{ formatFiat(trade.valueFiat) }}</td>
-                  <td>{{ formatFiat(trade.purchase_rate_btc_fiat) }}</td>
+                  <td>{{ formatCoin(trade.value_btc) }}</td>
+                  <td>{{ formatFiat(trade.value_fiat) }}</td>
+                  <td>{{ formatFiat(trade.purchase_rate_fiat_btc) }}</td>
                 </tr>
               </tbody>
             </table>
