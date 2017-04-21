@@ -37,4 +37,10 @@ interface DriverInterface
      * @return Collection of arrays with [CurrencyKey => Volume] pairs
      */
     public function getCoinVolumes() : Collection;
+
+    /**
+     * Adds a list of coins which sould always taken into account in the result sets
+     * @param array $watchList      List of currency keys
+     */
+    public function addWatchList(array $watchList);
 }

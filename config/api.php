@@ -4,6 +4,7 @@ return  [
     'cacheDuration' => env('API.CACHE.DURATION'),
     'fiat' => env('API.FIAT_CURRENCY', 'EUR'),
     'fiatSymbol' => env('API.FIAT_CURRENCY_SYMBOL', '€'),
+    'watchList' => env('API.WATCHLIST', []),
     'drivers' => [
         'poloniex' => [
             'key' => env('API.POLONIEX.KEY'),

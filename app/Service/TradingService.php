@@ -233,7 +233,9 @@ class TradingService
         $drivers = [];
         foreach ($apis as $apiKey) {
             $conf = config('api.drivers.' . $apiKey);
-            $drivers[] = App::make($conf['driverClass'], [$conf['key'], $conf['secret']]);
+            $driver = App::make($conf['driverClass'], [$conf['key'], $conf['secret']]);
+            $driver->addWatchList(explode(',', config('api.watchList')));
+            $drivers[] = $driver;
         }
         return $drivers;
     }

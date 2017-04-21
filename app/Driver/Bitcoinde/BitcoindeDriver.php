@@ -183,6 +183,14 @@ class BitcoindeDriver implements \App\Driver\DriverInterface
         } catch (\Exception $e) {
             throw new \Exception('Bitcoin.de API error: ' . $e->getMessage());
         }
+    }
 
+    /**
+     * Bitcoin.de handles BTC only. So a watchlist is useless here
+     * @var array
+     */
+    public function addWatchList(array $watchList)
+    {
+        return null;
     }
 }

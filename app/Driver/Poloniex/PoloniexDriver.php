@@ -13,6 +13,8 @@ class PoloniexDriver implements \App\Driver\DriverInterface
 
     protected $volumes;
 
+    protected $watchList;
+
     /**
      * Connector to Poloniex
      * @var Connector
@@ -35,14 +37,12 @@ class PoloniexDriver implements \App\Driver\DriverInterface
         $volumes = $this->getCoinVolumes();
         $history = collect();
         foreach ($volumes as $currency => $volume) {
-
             if ($currency != 'BTC') {
                 $items = $this->connector->get_my_trade_history('BTC_' . $currency, 0, time());
                 if (isset($items['error'])) {
                     throw new \Exception('Poloniex API error: ' . $items['error']);
                 }
                 if ($items) {
-
                     foreach ($items as $item) {
                         if (!($item['type'] == 'buy' || $item['type'] == 'sell')) {
                             throw new \Exception('poloniex API error: Invalid Trade type: ' . $item['type']);
@@ -134,12 +134,21 @@ class PoloniexDriver implements \App\Driver\DriverInterface
 
             $volumes = collect();
             foreach ($balances as $key => $volume) {
-                if ($volume > 0) {
+                if ($volume > 0 || in_array($key, $this->watchList)) {
                     $volumes->put($key, $volume);
                 }
 
             }
         }
         return $volumes;
+    }
+
+    /**
+     * Adds a list of coins which sould always taken into account in the result sets
+     * @param array $watchList      List of currency keys
+     */
+    public function addWatchList(array $watchList)
+    {
+        $this->watchList = $watchList;
     }
 }

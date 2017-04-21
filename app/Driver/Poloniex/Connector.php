@@ -68,12 +68,7 @@ class Connector
         }
 
         $dec = json_decode($res, true);
-        if (!$dec) {
-            //throw new Exception('Invalid data: '.$res);
-            return false;
-        } else {
-            return $dec;
-        }
+        return $dec;
     }
 
     protected function retrieveJSON($URL)
