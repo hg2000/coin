@@ -5,6 +5,7 @@ use \App;
 use \App\Trade;
 use \App\Service\Helper;
 use \Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class TradingService
 {
@@ -18,24 +19,21 @@ class TradingService
      */
     public function getTradeHistory($from = null, $to = null)
     {
-
         if (!$from) {
             $from = Carbon::create(1970);
         }
         if (!$to) {
             $to = Carbon::now();
         }
-         $lastUpdate = Trade::orderBy('updated_at', 'asc')
-                                ->take(1)
-                                ->get()
-                                ->first();
-        if (!$lastUpdate) {
-            $this->updateTradeHistory();
+        $lastUpdate = Trade::orderBy('updated_at', 'asc')->take(1)->get()->first();
+
+        if (empty($lastUpdate)) {
+            $this->updateTradeHistory(true);
         } else {
             $lastUpdate = $lastUpdate->updated_at;
             $diff = $lastUpdate->diffInMinutes(Carbon::now());
             if ($diff >= config('api.cacheDuration')) {
-                $this->updateTradeHistory();
+                $this->updateTradeHistory(false);
             }
         }
 
@@ -51,21 +49,54 @@ class TradingService
 
     /**
      * Stores the trade history in the database
+     * param boolean  foreces the refresh of the whole trade history
      */
-    public function updateTradeHistory()
+    public function updateTradeHistory($forceRefresh = false)
     {
-        Trade::truncate();
+        $startTime = Carbon::now();
+
+        if ($forceRefresh) {
+            $from = carbon::create(1970);
+        } else {
+            $lastTrade = Trade::orderBy('date', 'desc')->take(1)->get()->first();
+            if ($lastTrade) {
+                $from = Carbon::parse($lastTrade->date);
+            } else {
+                $from = Carbon::create(1970);
+            }
+        }
+
         $drivers = $this->getActiveDrivers();
+
         foreach ($drivers as $driver) {
-            $trades = $driver->getTradeHistory(Carbon::create(0), Carbon::now());
+
+            $trades = $driver->getTradeHistory($from, Carbon::now());
+
             foreach ($trades as $trade) {
+
                 $trade->created_at = Carbon::now();
                 $trade->updated_at = Carbon::now();
+
                 $trade->volume = $trade->volume - $trade->fee_coin;
-                Trade::insert($trade->toArray());
+
+
+                if ($check = Trade::where('trade_id', '=', $trade->trade_id)
+                            ->where('platform_id', '=', $trade->platform_id)
+                            ->take(1)
+                            ->get()
+                            ->isEmpty()
+                        ) {
+                    Trade::insert($trade->toArray());
+                }
             }
         }
         $this->updatePurchaseRatesFiatBtc();
+
+        $executionTime = $startTime->diffInSeconds(Carbon::now());
+
+        Log::info('Updating trade history took ' . $executionTime . ' seconds.');
+
+
     }
 
     /**

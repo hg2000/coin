@@ -28,6 +28,7 @@ class BitcoindeDriver implements \App\Driver\DriverInterface
      */
     public function getTradeHistory(\DateTime $from, \DateTime $to) : Collection
     {
+        
         $tradesResponse = $this->request(Connector::METHOD_SHOW_MY_TRADES, [
             'state' => 1,
             'page' => 1
@@ -45,24 +46,24 @@ class BitcoindeDriver implements \App\Driver\DriverInterface
 
             sleep(0.10);
             $result = $this->request(Connector::METHOD_SHOW_MY_TRADES, [
-
-            'state' => 1,
-            'page' => $pageCount
+                'date_start' => $from->toRfc3339String(),
+                'date_end' => $to->toRfc3339String(),
+                'state' => 1,
+                'page' => $pageCount
             ]);
+
 
             if (!isset($result['trades'])) {
                 throw new \Exception($result['errors']);
             }
             $rawTrades = array_merge($rawTrades, $result['trades']);
-
-
             $pageCount++;
         }
         $tradeCollection = collect([]);
         foreach ($rawTrades as $rawTrade) {
 
             /*
-            / Bitcoin.de does not deliver the date fro certain old trades
+            / Bitcoin.de does not deliver the date for certain old trades
             / so we set a very early date but keep the delivered order
              */
 

@@ -34,11 +34,13 @@ class PoloniexDriver implements \App\Driver\DriverInterface
      */
     public function getTradeHistory(\DateTime $from, \DateTime $to) : Collection
     {
+
         $volumes = $this->getCoinVolumes();
         $history = collect();
         foreach ($volumes as $currency => $volume) {
             if ($currency != 'BTC') {
-                $items = $this->connector->get_my_trade_history('BTC_' . $currency, 0, time());
+
+                $items = $this->connector->get_my_trade_history('BTC_' . $currency, $from->getTimestamp(), $to->getTimestamp());
                 if (isset($items['error'])) {
                     throw new \Exception('Poloniex API error: ' . $items['error']);
                 }
@@ -75,6 +77,7 @@ class PoloniexDriver implements \App\Driver\DriverInterface
                 sleep(0.25);
             }
         }
+        
         return $history;
     }
 
