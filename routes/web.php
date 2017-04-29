@@ -14,9 +14,6 @@
 
 Route::get('/', 'Controller@getHome')->name('home.get');
 
-Route::get('/rates/store', 'RateController@storeCurrentRates')->name('rates.store');
-
-
 Route::group(['prefix' => 'api'], function () {
     Route::get('trade_history', 'ApiController@getTradeHistory')->name('api.trade_history.get');
     Route::get('volumes', 'ApiController@getVolumes')->name('api.volumes.get');
