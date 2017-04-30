@@ -66,10 +66,22 @@ class ApiController extends BaseController
                 if ($currencyKey == 'BTC') {
                     $rateFiat = $rateBtcFiat;
                     $rateBtc = 1;
+                    $yesterdaysRateBtc = 1;
+                    $yesterdaysRate = $this->trading->getYesterdaysRate(config('api.fiat'), $currencyKey);
+
                 } else {
                     $rateBtc = $this->trading->getCurrentRate('BTC', $currencyKey);
                     $rateFiat = $rateBtcFiat * $rateBtc;
+                    $yesterdaysRate = $this->trading->getYesterdaysRate(config('api.fiat'), $currencyKey);
                 }
+                $yesterdaysRateFiat = $yesterdaysRate->get('fiat');
+                $yesterdaysRateBtc = $yesterdaysRate->get('btc');
+                $rateDiffDayFiat = (100 / $yesterdaysRateFiat * $rateFiat) - 100;
+                $rateDiffDayBtc = (100 / $yesterdaysRateBtc * $rateBtc) - 100;
+                $item->put('rateDiffDayFiat', $rateDiffDayFiat);
+                $item->put('rateDiffDayBtc', $rateDiffDayBtc);
+                $item->put('yesterdaysRateFiat', $yesterdaysRateFiat);
+                $item->put('yesterdaysRateBtc', $yesterdaysRateBtc);
                 $item->put('currentRateBtc', $rateBtc);
                 $item->put('currentRateFiat', $rateFiat);
                 $item->put('currentValueFiat', $rateFiat * $volume);

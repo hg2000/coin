@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Http\Controllers\RateController;
+use App\Service\TradingService;
 
 class StoreRates extends Command
 {
@@ -38,8 +38,8 @@ class StoreRates extends Command
      */
     public function handle()
     {
-        $rateController = \App::make(RateController::class);
-        $rateController->storeCurrentRates();
+        $trading = \App::make(TradingService::class);
+        $trading->storeCurrentRates();
 
     }
 }

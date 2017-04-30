@@ -14,21 +14,20 @@
                   <th class="border-right">Currency</th>
                   <th>Volume</th>
                   <th>Current Rate (Coin/BTC)</th>
-                  <th class="border-right">Current Rate (Coin/{{ fiat }})</th>
 
+                  <th>Current Rate (Coin/{{ fiat }})</th>
+                  <th class="border-right">Rate Diff 1 One Day (Coin/{{ fiat }})</th>
 
                   <th>Avg purchase rate(Coin/{{ fiat }})</th>
                   <th>Avg purchase rate(BTC/COIN)</th>
 
                   <th>Purchase Value (BTC)</td>
-                    <th>Current Value (BTC)</th>
-                    <th class="border-right">Revenue (BTC)</th>
+                  <th>Current Value (BTC)</th>
+                  <th class="border-right">Revenue (BTC)</th>
 
-
-                    <th>Purchase value ({{ fiat}})</th>
-                    <th>Current Value ({{ fiat }})</th>
-                    <th>Revenue ({{ fiat }})</th>
-
+                  <th>Purchase value ({{ fiat}})</th>
+                  <th>Current Value ({{ fiat }})</th>
+                  <th>Revenue ({{ fiat }})</th>
                 </tr>
               </thead>
 
@@ -37,7 +36,9 @@
                   <td class="border-right">{{ item.currency }}</td>
                   <td>{{ formatCoin(item.volume) }}</td>
                   <td>{{ formatCoin(item.currentRateBtc) }}</td>
-                  <td class="border-right">{{ formatFiat(item.currentRateFiat) }}</td>
+
+                  <td>{{ formatFiat(item.currentRateFiat) }}</td>
+                  <td class="border-right">{{ formatPercent(item.rateDiffDayFiat)}}</td>
 
                   <td>{{ formatFiat(item.averagePurchaseRateCoinFiat) }}</td>
                   <td class="border-right">{{ formatCoin(item.averagePurchaseRateBtcCoin) }}</td>
@@ -59,6 +60,8 @@
                   <td></td>
                   <td></td>
                   <td></td>
+                  <td></td>
+
                   <td></td>
                   <td></td>
                   <td></td>
@@ -161,6 +164,9 @@ export default {
     },
     formatCoin: function(n) {
       return numeral(n).format('0,0.0000');
+    },
+    formatPercent: function(n) {
+      return numeral(n).format('0.00') + " %";
     },
 
   },

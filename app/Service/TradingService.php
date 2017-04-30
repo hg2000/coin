@@ -3,6 +3,7 @@ namespace App\Service;
 
 use \App;
 use \App\Trade;
+use \App\Rate;
 use \App\Service\Helper;
 use \Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
@@ -254,6 +255,35 @@ class TradingService
         }
     }
 
+ /**
+  * Returns yesterdays's average rate for the given currency pair
+  * @param  string $currencyKeySource
+  * @param  string $currencyKeyTarget
+  * @return Collection
+  */
+    public function getYesterdaysRate($currencyKeySource, $currencyKeyTarget)
+    {
+        $ratesRaw = Rate::where('date', '>', Carbon::yesterday())
+                      ->where('date', '<', Carbon::now())
+                      ->get();
+
+        $ratesFiat = collect();
+        $ratesBtc = collect();
+        foreach ($ratesRaw as $rateRaw) {
+                $rates = unserialize($rateRaw->rates);
+            if (isset($rates[$currencyKeyTarget])) {
+
+                $ratesFiat->push($rates[$currencyKeyTarget][1]);
+                $ratesBtc->push($rates[$currencyKeyTarget][0]);
+            }
+        }
+        $result = collect();
+        $result->put('fiat', $ratesFiat->sum() / $ratesFiat->count());
+        $result->put('btc', $ratesBtc->sum() / $ratesBtc->count());
+        return $result;
+
+    }
+
     /**
      * Returns instances of all active driver classes
      * @return array
@@ -323,5 +353,39 @@ class TradingService
             'buyVolumeFiat' => $buyVolumeFiat,
             'sellVolumeFiat' => $sellVolumeFiat,
         ]);
+    }
+
+    /**
+     * Requests all current rates from the api drivers
+     * and stores them in the db
+     * @return \App\Rate
+     */
+    public function storeCurrentRates() : Rate
+    {
+        $balances = collect();
+        $volumes = $this->getCurrentVolumes();
+        $rateBtcFiat = $this->getCurrentRate('BTC', config('api.fiat'));
+        $rates = collect();
+
+        foreach ($volumes as $currencyKey => $volume) {
+            if ($currencyKey == 'BTC') {
+                $rateBtc = 1;
+                $rateFiat = $rateBtcFiat;
+
+            } else {
+                $rateBtc = $this->getCurrentRate('BTC', $currencyKey);
+                $rateFiat = $rateBtc * $rateBtcFiat;
+            }
+            $rates[$currencyKey] = [$rateBtc, $rateFiat];
+        }
+
+        $rate = App::make(Rate::class);
+        $rate->updated_at = Carbon::now();
+        $rate->created_at = Carbon::now();
+        $rate->date = Carbon::now();
+        $rate->rates = serialize($rates->toArray());
+        $rate->save();
+
+        return $rate;
     }
 }

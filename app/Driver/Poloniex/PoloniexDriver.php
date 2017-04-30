@@ -13,7 +13,7 @@ class PoloniexDriver implements \App\Driver\DriverInterface
 
     protected $volumes;
 
-    protected $watchList;
+    protected $watchList = [];
 
     /**
      * Connector to Poloniex
@@ -24,6 +24,7 @@ class PoloniexDriver implements \App\Driver\DriverInterface
     public function __construct($key, $secret)
     {
         $this->connector = new Connector($key, $secret);
+
     }
 
     /**
@@ -77,7 +78,7 @@ class PoloniexDriver implements \App\Driver\DriverInterface
                 sleep(0.25);
             }
         }
-        
+
         return $history;
     }
 
@@ -118,9 +119,10 @@ class PoloniexDriver implements \App\Driver\DriverInterface
     {
         $volumes = $this->getCoinVolumes();
         if (!$volumes->has($currencyKey)) {
-            throw new \Exception('Poloniex API Error: For the requested currency Key "'. $currencyKey .'" does no volume exist.');
+            return (float)$volumes->get($currencyKey);
+        } else {
+            return 0;
         }
-        return $volumes->get($currencyKey);
     }
 
     /**

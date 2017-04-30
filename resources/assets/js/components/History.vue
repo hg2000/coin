@@ -26,7 +26,7 @@
                   <td>{{ trade.date }}</td>
                   <td>{{ trade.platform_id }}</td>
                   <td>{{ trade.type}}</td>
-                  <td>{{ trade.source_currency}}{{ trade.target_currency}}</td>
+                  <td>{{ trade.source_currency}}{{ trade.target_currencya}}</td>
                   <td>{{ formatCoin(trade.rate) }}</td>
                   <td>{{ formatCoin(trade.volume) }}</td>
                   <td>{{ formatCoin(trade.value_btc) }}</td>
