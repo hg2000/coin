@@ -66,20 +66,45 @@ class ApiController extends BaseController
                 if ($currencyKey == 'BTC') {
                     $rateFiat = $rateBtcFiat;
                     $rateBtc = 1;
-                    $yesterdaysRateBtc = 1;
+
                     $yesterdaysRate = $this->trading->getYesterdaysRate(config('api.fiat'), $currencyKey);
+                    $sevenDaysAgoRate = $this->trading->getPastRate(7, 7, config('api.fiat'), $currencyKey);
 
                 } else {
                     $rateBtc = $this->trading->getCurrentRate('BTC', $currencyKey);
                     $rateFiat = $rateBtcFiat * $rateBtc;
                     $yesterdaysRate = $this->trading->getYesterdaysRate(config('api.fiat'), $currencyKey);
+                    $sevenDaysAgoRate = $this->trading->getPastRate(7, 7, config('api.fiat'), $currencyKey);
                 }
                 $yesterdaysRateFiat = $yesterdaysRate->get('fiat');
                 $yesterdaysRateBtc = $yesterdaysRate->get('btc');
-                $rateDiffDayFiat = (100 / $yesterdaysRateFiat * $rateFiat) - 100;
-                $rateDiffDayBtc = (100 / $yesterdaysRateBtc * $rateBtc) - 100;
+                $sevenDaysAgoRateFiat = $sevenDaysAgoRate->get('fiat');
+                $sevenDaysAgoRateBtc = $sevenDaysAgoRate->get('btc');
+
+                if ($yesterdaysRateFiat) {
+                    $rateDiffDayFiat = (100 / $yesterdaysRateFiat * $rateFiat) - 100;
+                } else {
+                    $rateDiffDayFiat = 0;
+                }
+                if ($yesterdaysRateBtc) {
+                    $rateDiffDayBtc = (100 / $yesterdaysRateBtc * $rateBtc) - 100;
+                } else {
+                    $rateDiffDayBtc = 0;
+                }
+                if ($sevenDaysAgoRateFiat) {
+                    $rateDiffSevenDaysAgoFiat = (100 / $sevenDaysAgoRateFiat * $rateFiat) - 100;
+                } else {
+                    $rateDiffSevenDaysAgoFiat = 0;
+                }
+                if ($sevenDaysAgoRateBtc) {
+                    $rateDiffSevenDaysAgoBtc = (100 / $sevenDaysAgoRateBtc * $rateBtc) - 100;
+                } else {
+                    $rateDiffSevenDaysAgoBtc = 0;
+                }
                 $item->put('rateDiffDayFiat', $rateDiffDayFiat);
                 $item->put('rateDiffDayBtc', $rateDiffDayBtc);
+                $item->put('rateDiffSevenDaysAgoFiat', $rateDiffSevenDaysAgoFiat);
+                $item->put('rateDiffSevenDaysAgoBtc', $rateDiffSevenDaysAgoBtc);
                 $item->put('yesterdaysRateFiat', $yesterdaysRateFiat);
                 $item->put('yesterdaysRateBtc', $yesterdaysRateBtc);
                 $item->put('currentRateBtc', $rateBtc);

@@ -16,7 +16,8 @@
                   <th>Current Rate (Coin/BTC)</th>
 
                   <th>Current Rate (Coin/{{ fiat }})</th>
-                  <th class="border-right">Rate Diff 1 One Day (Coin/{{ fiat }})</th>
+                  <th>Rate Diff 1 Day (Coin/{{ fiat }})</th>
+                  <th class="border-right">Rate Diff 7 Days ago (Coin/{{ fiat }})</th>
 
                   <th>Avg purchase rate(Coin/{{ fiat }})</th>
                   <th>Avg purchase rate(BTC/COIN)</th>
@@ -38,7 +39,8 @@
                   <td>{{ formatCoin(item.currentRateBtc) }}</td>
 
                   <td>{{ formatFiat(item.currentRateFiat) }}</td>
-                  <td class="border-right">{{ formatPercent(item.rateDiffDayFiat)}}</td>
+                  <td>{{ formatPercent(item.rateDiffDayFiat)}}</td>
+                  <td class="border-right">{{ formatPercent(item.rateDiffSevenDaysAgoFiat)}}</td>
 
                   <td>{{ formatFiat(item.averagePurchaseRateCoinFiat) }}</td>
                   <td class="border-right">{{ formatCoin(item.averagePurchaseRateBtcCoin) }}</td>

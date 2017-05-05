@@ -263,8 +263,20 @@ class TradingService
   */
     public function getYesterdaysRate($currencyKeySource, $currencyKeyTarget)
     {
-        $ratesRaw = Rate::where('date', '>', Carbon::yesterday())
-                      ->where('date', '<', Carbon::now())
+        return $this->getPastRate(1, 1, $currencyKeySource, $currencyKeyTarget);
+    }
+
+    /**
+     * Returns a past day's average rate for a given currency pair
+     * @param  integer $days
+     * @param  string $currencyKeySource
+     * @param  string $currencyKeyTarget
+     * @return Collection
+     */
+    public function getPastRate($daysFrom, $daysTo, $currencyKeySource, $currencyKeyTarget) {
+
+        $ratesRaw = Rate::where('date', '>', Carbon::today()->subDays($daysFrom))
+                      ->where('date', '<', Carbon::tomorrow()->subdays($daysTo))
                       ->get();
 
         $ratesFiat = collect();
@@ -278,9 +290,12 @@ class TradingService
             }
         }
         $result = collect();
-        $result->put('fiat', $ratesFiat->sum() / $ratesFiat->count());
-        $result->put('btc', $ratesBtc->sum() / $ratesBtc->count());
+        if ($ratesFiatCount = $ratesFiat->count()) {
+            $result->put('fiat', $ratesFiat->sum() / $ratesFiatCount);
+            $result->put('btc', $ratesBtc->sum() / $ratesBtc->count());
+        }
         return $result;
+
 
     }
 
