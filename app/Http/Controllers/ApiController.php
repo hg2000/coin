@@ -167,4 +167,13 @@ class ApiController extends BaseController
 
         }
     }
+
+    public function getCoinDetail($key)
+    {
+
+        $this->trading->getSellPool($key);
+
+
+
+    }
 }

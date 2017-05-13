@@ -18,7 +18,7 @@ class TradingService
      * @param  DateTime $to
      * @return Collection
      */
-    public function getTradeHistory($from = null, $to = null)
+    public function getTradeHistory($from = null, $to = null, $currencyKey = null)
     {
         if (!$from) {
             $from = Carbon::create(1970);
@@ -38,12 +38,21 @@ class TradingService
             }
         }
 
-        $trades = Trade::orderBy('date', 'desc')
-                ->get();
+        if ($currencyKey) {
+            $trades = Trade::where('source_currency', 'LIKE', $currencyKey)
+                            ->orWhere('target_currency', 'LIKE', $currencyKey)
+                            ->orderBy('date', 'desc')
+                            ->get();
+        } else {
+            $trades = Trade::orderBy('date', 'desc')
+            ->get();
+        }
 
         $trades = $trades->map(function ($item) {
             return $item->addAll();
         });
+
+
 
         return $trades;
     }
@@ -273,7 +282,8 @@ class TradingService
      * @param  string $currencyKeyTarget
      * @return Collection
      */
-    public function getPastRate($daysFrom, $daysTo, $currencyKeySource, $currencyKeyTarget) {
+    public function getPastRate($daysFrom, $daysTo, $currencyKeySource, $currencyKeyTarget)
+    {
 
         $ratesRaw = Rate::where('date', '>', Carbon::today()->subDays($daysFrom))
                       ->where('date', '<', Carbon::tomorrow()->subdays($daysTo))
@@ -402,5 +412,54 @@ class TradingService
         $rate->save();
 
         return $rate;
+    }
+
+    public function getSellPool($key)
+    {
+
+        $trades = $this->getTradeHistory(null, null, $key);
+
+        $sellPool = $trades->filter(function ($item) {
+            return ($item->type == 'sell');
+        })->sortByDesc('date');
+        $buyPool = $trades->diff($sellPool)->sortByDesc('date');
+
+        $sellResultPool = collect();
+        $i=0;
+        while (!$sellPool->isEmpty()) {
+            $i++;
+            $sellTrade = $sellPool->pop();
+            $buyTrade = $buyPool->pop();
+            if (!$buyTrade || $buyTrade->date > $sellTrade->date) {
+                if ($buyTrade && $buyTrade->date > $sellTrade->date) {
+                    $buyPool->push($buyTrade);
+                }
+                // We're selling more Coins than we bought, so we assume that we bought the diff for 0
+                $buyTrade = App::make(Trade::class);
+                $buyTrade->init(
+                    $date = Carbon::now(),
+                    $platformId = 'unkown',
+                    $tradeId = substr(md5(rand()), 0, 7),
+                    $type = 'buy',
+                    $sourceCurrency = $sellTrade->target_currency_key,
+                    $targetCurrency = $sellTrade->source_currency_key,
+                    $rate = 0,
+                    $volume = $sellTrade->volume,
+                    $feeFiat = 0,
+                    $feeCoin = 0
+                );
+            }
+            $buyTradeAdded = $sellTrade->addBuyTrade($buyTrade);
+            if ($sellTrade->volume > 0) {
+                $sellPool->push($sellTrade);
+            } else {
+                $sellTrade->addSellResults();
+                $sellResultPool->push($sellTrade);
+            }
+            if ($buyTradeAdded->volume > 0) {
+                $buyPool->push($buyTradeAdded);
+            }
+        }
+        return $sellResultPool;
     }
 }
