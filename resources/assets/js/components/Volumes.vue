@@ -29,6 +29,7 @@
                   <th>Purchase value ({{ fiat}})</th>
                   <th>Current Value ({{ fiat }})</th>
                   <th>Revenue ({{ fiat }})</th>
+                  <th>Revenue (%)</th>
                 </tr>
               </thead>
 
@@ -52,6 +53,7 @@
                   <td>{{ formatFiat(item.purchaseValueFiat) }}</td>
                   <td>{{ formatFiat(item.currentValueFiat) }}</td>
                   <td>{{ formatFiat(item.revenueFiat) }}</td>
+                  <td>{{ formatPercent(item.revenueRate) }}</td>
 
                 </tr>
               </tbody>
@@ -69,8 +71,10 @@
                   <td></td>
                   <td></td>
                   <td></td>
+                  <td></td>
+                  <td>{{ formatFiat(sum.purchaseValueFiat)}}</td>
                   <td>{{ formatFiat(sum.currenValueFiat) }}</td>
-                  <td>{{ formatFiat(sum.currentRevenueFiat) }}</td>
+                  <td>{{ formatPercent(sum.totalRevenueRate) }}</td>
                 </tr>
               </tbody>
 

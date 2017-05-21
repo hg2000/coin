@@ -58,85 +58,9 @@ class ApiController extends BaseController
             $volumes = $this->trading->getCurrentVolumes();
             $rateBtcFiat = $this->trading->getCurrentRate('BTC', config('api.fiat'));
 
-            foreach ($volumes as $currencyKey => $volume) {
+            $balances = $this->trading->getcurrentBalanceInfo();
 
-                $item = collect();
-                $item->put('currency', $currencyKey);
-                $item->put('volume', $volume);
-                if ($currencyKey == 'BTC') {
-                    $rateFiat = $rateBtcFiat;
-                    $rateBtc = 1;
-
-                    $yesterdaysRate = $this->trading->getYesterdaysRate(config('api.fiat'), $currencyKey);
-                    $sevenDaysAgoRate = $this->trading->getPastRate(7, 7, config('api.fiat'), $currencyKey);
-
-                } else {
-                    $rateBtc = $this->trading->getCurrentRate('BTC', $currencyKey);
-                    $rateFiat = $rateBtcFiat * $rateBtc;
-                    $yesterdaysRate = $this->trading->getYesterdaysRate(config('api.fiat'), $currencyKey);
-                    $sevenDaysAgoRate = $this->trading->getPastRate(7, 7, config('api.fiat'), $currencyKey);
-                }
-                $yesterdaysRateFiat = $yesterdaysRate->get('fiat');
-                $yesterdaysRateBtc = $yesterdaysRate->get('btc');
-                $sevenDaysAgoRateFiat = $sevenDaysAgoRate->get('fiat');
-                $sevenDaysAgoRateBtc = $sevenDaysAgoRate->get('btc');
-
-                if ($yesterdaysRateFiat) {
-                    $rateDiffDayFiat = (100 / $yesterdaysRateFiat * $rateFiat) - 100;
-                } else {
-                    $rateDiffDayFiat = 0;
-                }
-                if ($yesterdaysRateBtc) {
-                    $rateDiffDayBtc = (100 / $yesterdaysRateBtc * $rateBtc) - 100;
-                } else {
-                    $rateDiffDayBtc = 0;
-                }
-                if ($sevenDaysAgoRateFiat) {
-                    $rateDiffSevenDaysAgoFiat = (100 / $sevenDaysAgoRateFiat * $rateFiat) - 100;
-                } else {
-                    $rateDiffSevenDaysAgoFiat = 0;
-                }
-                if ($sevenDaysAgoRateBtc) {
-                    $rateDiffSevenDaysAgoBtc = (100 / $sevenDaysAgoRateBtc * $rateBtc) - 100;
-                } else {
-                    $rateDiffSevenDaysAgoBtc = 0;
-                }
-                $item->put('rateDiffDayFiat', $rateDiffDayFiat);
-                $item->put('rateDiffDayBtc', $rateDiffDayBtc);
-                $item->put('rateDiffSevenDaysAgoFiat', $rateDiffSevenDaysAgoFiat);
-                $item->put('rateDiffSevenDaysAgoBtc', $rateDiffSevenDaysAgoBtc);
-                $item->put('yesterdaysRateFiat', $yesterdaysRateFiat);
-                $item->put('yesterdaysRateBtc', $yesterdaysRateBtc);
-                $item->put('currentRateBtc', $rateBtc);
-                $item->put('currentRateFiat', $rateFiat);
-                $item->put('currentValueFiat', $rateFiat * $volume);
-                $item->put('currentValueBtc', $rateBtc * $volume);
-                if ($currencyKey == 'BTC') {
-                    $item->put('averagePurchaseRateBtcCoin', 1);
-                } else {
-                    $item->put('averagePurchaseRateBtcCoin', $this->trading->getAveragePurchaseRate('BTC', $currencyKey));
-                }
-                if ($currencyKey == 'BTC') {
-                    $item->put('averagePurchaseRateFiatBtc', $this->trading->getAveragePurchaseRateFiatBtc(config('api.fiat'), 'BTC'));
-                } else {
-                    $item->put('averagePurchaseRateFiatBtc', $this->trading->getAveragePurchaseRateFiatBtc($currencyKey));
-                }
-                $item->put('averagePurchaseRateCoinFiat', $item['averagePurchaseRateFiatBtc'] * $item['averagePurchaseRateBtcCoin']);
-                $item->put('purchaseValueBtc', $volume * $item['averagePurchaseRateBtcCoin']);
-                $item->put('purchaseValueFiat', $volume * $item['averagePurchaseRateBtcCoin'] * $item['averagePurchaseRateFiatBtc']);
-
-                if ($currencyKey == 'BTC') {
-                    $item->put('sellVolume', $this->trading->getSellVolume('BTC', config('api.fiat')));
-                } else {
-                    $item->put('sellVolume', $this->trading->getSellVolume($currencyKey, 'BTC'));
-                }
-                $item->put('revenueFiat', $item['currentValueFiat'] - $item['purchaseValueFiat']);
-                $item->put('revenueBTC', $item['currentValueBtc'] - $item['purchaseValueBtc']);
-
-                $balances->push($item);
-            }
             $sumBtcFiatTrades = $this->trading->getSumBtcFiatTrades();
-
 
             $sum = [
                 'buyVolumeBtc' => $sumBtcFiatTrades['buyVolumeBtc'],
@@ -154,6 +78,15 @@ class ApiController extends BaseController
             $sum['purchaseValueFiat'] = $balances->pluck('purchaseValueFiat')->sum();
             $sum['currentRevenueFiat'] = $sum['currenValueFiat'] - $sum['purchaseValueFiat'];
 
+            if ($sum['purchaseValueFiat'] > 0) {
+
+                $totalRevenueRate = 100 / $sum['purchaseValueFiat']  * $sum['totalRevenueFiat'];
+            } else {
+                $totalRevenueRate = 0;
+            }
+
+            $sum['totalRevenueRate'] = $totalRevenueRate;
+
             return response()
             ->json([
                 'balances' => $balances,
@@ -164,16 +97,11 @@ class ApiController extends BaseController
                  $e->getMessage(),
                  $e->getTraceAsString()
                  ], 500);
-
         }
     }
 
     public function getCoinDetail($key)
     {
-
         $this->trading->getSellPool($key);
-
-
-
     }
 }

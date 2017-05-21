@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Log;
 
 class TradingService
 {
+
+    protected $resultCache;
+
     /**
      * Returns the history of all trades
      * TODO Implement time filter!
@@ -51,18 +54,67 @@ class TradingService
         $trades = $trades->map(function ($item) {
             return $item->addAll();
         });
-
-
-
         return $trades;
+    }
+
+
+    protected function getTradeCorrections()
+    {
+
+        $corrections = config('api.dateCorrections');
+        if (!$corrections) {
+            return null;
+        }
+
+        $rows = explode(';', $corrections);
+        $rows = array_map(function ($item) {
+            $row = explode(',', $item);
+
+            $result['platform_id'] = $row[0];
+            $result['trade_id'] = $row[1];
+            $result['date'] = $row[2];
+
+            return $result;
+
+        }, $rows);
+
+        return collect($rows);
+    }
+
+    /**
+     * Trades are recieved with a wrong date they can be corrected via .env
+     * Its important that trades have the correct order (by date) orherwise the calculation
+     * of avergae_purchase_values will become adventurous.
+     *
+     * @param  Trade  $trade [description]
+     * @return [type]        [description]
+     */
+    protected function applyTradeCorrections(Trade $trade)
+    {
+        $corrections = $this->getTradeCorrections();
+
+        if (!$corrections) {
+            return $trade;
+        }
+
+        $filtered = $corrections
+                        ->where('platform_id', $trade->platform_id)
+                        ->where('trade_id', $trade->trade_id)
+                        ->first();
+
+        if ($filtered) {
+            $trade->date = $filtered['date'];
+        }
+        return $trade;
     }
 
     /**
      * Stores the trade history in the database
      * param boolean  foreces the refresh of the whole trade history
      */
-    public function updateTradeHistory($forceRefresh = false)
+    public function updateTradeHistory($forceRefresh = true)
     {
+
         $startTime = Carbon::now();
 
         if ($forceRefresh) {
@@ -81,14 +133,10 @@ class TradingService
         foreach ($drivers as $driver) {
 
             $trades = $driver->getTradeHistory($from, Carbon::now());
-
             foreach ($trades as $trade) {
-
                 $trade->created_at = Carbon::now();
                 $trade->updated_at = Carbon::now();
-
                 $trade->volume = $trade->volume - $trade->fee_coin;
-
 
                 if ($check = Trade::where('trade_id', '=', $trade->trade_id)
                             ->where('platform_id', '=', $trade->platform_id)
@@ -96,80 +144,116 @@ class TradingService
                             ->get()
                             ->isEmpty()
                         ) {
-                    Trade::insert($trade->toArray());
+
+
+                    $trade = $this->applyTradeCorrections($trade);
+
+                    $tradeAttributes = $trade->toArray();
+                    unset($tradeAttributes['original_volume']);
+                    Trade::insert($tradeAttributes);
                 }
             }
         }
         $this->updatePurchaseRatesFiatBtc();
-
         $executionTime = $startTime->diffInSeconds(Carbon::now());
-
         Log::info('Updating trade history took ' . $executionTime . ' seconds.');
-
-
     }
 
     /**
      * Calculates the Fiat/BTC rate on date of trade for all trades
      */
-    protected function updatePurchaseRatesFiatBtc()
+    public function updatePurchaseRatesFiatBtc()
     {
         $trades = Trade::orderBy('date', 'asc')
                        ->get();
 
+        $btcVolume = 0;
+        $avgRate = 0;
+
         foreach ($trades as $trade) {
-            $trade->addAll();
             if ($trade->source_currency == config('api.fiat') && $trade->target_currency == 'BTC' && $trade->type == 'buy') {
-                $rate = $trade->rate;
-            } else {
-                $rate = $this->getAverageRate(config('api.fiat'), 'BTC', 'purchase_rate_fiat_btc', $trade->date);
+
+                $avgRate = ($btcVolume * $avgRate + $trade->volume * $trade->rate) / ($btcVolume + $trade->volume);
+                $btcVolume += $trade->volume;
+
+
+            } elseif ($trade->source_currency == 'BTC' && $trade->target_currency == config('api.fiat') && $trade->type == 'sell') {
+                $btcVolume -= $trade->volume;
+                if ($btcVolume < 0) {
+                    $btcVolume = 0 ;
+                }
             }
-            Trade::where('id', '=', $trade->id)
-            ->update(['purchase_rate_fiat_btc' => $rate]);
+
+
+            $trade->purchase_rate_fiat_btc = $avgRate;
+            Trade::where('id', $trade->id)
+                    ->update(['purchase_rate_fiat_btc' => $avgRate]);
         }
         return $this;
     }
 
-    /**
-     * Returns the average purchase rate
-     * for all purchases up to the given date.
-     * @param  string $currencyKeyA
-     * @param  string $currencyKeyB
-     * @param  DateTime $date
-     * @return float
-     */
-    public function getAveragePurchaseRate($currencyKeyA, $currencyKeyB, $date = null)
+    protected function calculateAverageRate($currencyKeyA, $currencyKeyB, $field = 'rate', $date = null)
     {
-        return $this->getAverageRate($currencyKeyA, $currencyKeyB, 'rate', $date);
+
+        if (!$date) {
+            $date = Carbon::now();
+        }
+
+        $trades = Trade::orderBy('date', 'asc')
+                        ->where('date', '<=', $date)
+                        ->get();
+
+        $btcVolume = 0;
+        $avgRate = 0;
+
+        foreach ($trades as $trade) {
+
+            if ($trade->source_currency == $currencyKeyA && $trade->target_currency == $currencyKeyB && $trade->type == 'buy') {
+
+                $avgRate = ($btcVolume * $avgRate + $trade->volume * $trade->$field) / ($btcVolume + $trade->volume);
+                $btcVolume += $trade->volume;
+
+            } elseif ($trade->source_currency == $currencyKeyB && $trade->target_currency == $currencyKeyA && $trade->type == 'sell') {
+                $btcVolume -= $trade->volume;
+                if ($btcVolume < 0) {
+                    $btcVolume = 0 ;
+                }
+            }
+        }
+        return $avgRate;
+
+    }
+
+    public function getAveragePurchaseRateBtcCoin($currencyKeyA, $currencyKeyB, $date = null)
+    {
+
+        return $this->calculateAverageRate($currencyKeyA, $currencyKeyB, 'rate', $date);
+    }
+
+
+    public function getAveragePurchaseRateFiatBtc($currencyKeyA, $currencyKeyB, $date = null)
+    {
+        $avgPurchaseRateFiatBtc = $this->calculateAverageRate($currencyKeyA, $currencyKeyB, 'purchase_rate_fiat_btc', $date);
+        return  $avgPurchaseRateFiatBtc;
     }
 
 
 
     /**
-     * Returns the average purchase rate for all fiat/btc trades
-     * up to the given date. This is usefull for calculating the
-     * actual value in fiat for a coin/btc trade
-     * @param  string $currencyKey
-     * @param  DateTime $date
-     * @return float
-     */
-    public function getAveragePurchaseRateFiatBtc($currencyKey, $date = null)
-    {
-
-        return $this->getAverageRate($currencyKey, 'BTC', 'purchase_rate_fiat_btc', $date);
-
-    }
-
-
-    /**
-     * Returns the weighted average rate of the given rate field
+     * Returns the resulting revenue from all trades of the given currency pair
      * @param  string $currencyKeyA
      * @param  string $currencyKeyB
      * @param  string $rateField        a column in the db which contains a rate
      * @param  DateTime $date
      * @return float
      */
-    public function getAverageRate($currencyKeyA, $currencyKeyB, $rateField, $date = null)
+    public function getResultRevenue($currencyKeyA, $currencyKeyB, $rateField = 'rate', $date = null)
+    {
+
+        return  $this->getAverageTradeResults($currencyKeyA, $currencyKeyB, $rateField, $date)['resultValue'];
+    }
+
+    protected function getAverageTradeResults($currencyKeyA, $currencyKeyB, $rateField = 'rate', $date = null)
     {
         if (!$date) {
             $date = Carbon::now();
@@ -181,34 +265,56 @@ class TradingService
                     ->where(function ($query) use ($currencyKeyA, $currencyKeyB, $date) {
                         $query->where('source_currency', '=', $currencyKeyA)
                                ->where('target_currency', '=', $currencyKeyB)
-                               ->where('date', '<', $date);
+                               ->where('date', '<=', $date);
                     })
                     ->orWhere(function ($query) use ($currencyKeyA, $currencyKeyB, $date) {
                         $query->where('source_currency', '=', $currencyKeyB)
                                ->where('target_currency', '=', $currencyKeyA)
-                               ->where('date', '<', $date);
+                               ->where('date', '<=', $date);
                     })
                     ->get();
 
 
+        $buyVolume = 0;
+        $sellVolume = 0;
+        $buyRate = 0;
+        $sellRate = 0;
         foreach ($trades as $trade) {
             $trade->addAll();
             if ($trade->type == 'buy') {
-
-
-                if ($amount == 0) {
-                    $amount = $trade->volume;
-                    $rate = $trade->$rateField;
+                if ($buyVolume == 0) {
+                    $buyVolume = $trade->volume;
+                    $buyRate = $trade->$rateField;
 
                 } else {
-                    $rate = Helper::getWeightedAverage($amount, $rate, $trade->volume, $trade->$rateField);
-                    $amount += $trade->volume;
+                    $buyRate = Helper::getWeightedAverage($buyVolume, $buyRate, $trade->volume, $trade->$rateField);
+                    $buyVolume += $trade->volume;
                 }
             } elseif ($trade->type== 'sell') {
-                    $amount -= $trade->volume;
+
+                if ($sellVolume == 0) {
+                    $sellVolume = $trade->volume;
+                    $sellRate = $trade->$rateField;
+                } else {
+                    $sellRate = Helper::getWeightedAverage($sellVolume, $sellRate, $trade->volume, $trade->$rateField);
+                    $sellVolume += $trade->volume;
+                }
             }
         }
-        return $rate;
+
+
+        $resultSellValue = $sellVolume * $sellRate;
+        $resultBuyValue = $buyVolume * $buyRate;
+
+        return [
+            'resultBuyRate' => $buyRate,
+            'resultSellRate' => $sellRate,
+            'resultBuyVolume' => $buyVolume,
+            'resultSellVolume' => $sellVolume,
+            'resultBuyValue' => $resultBuyValue,
+            'resultSellValue' => $resultSellValue,
+            'resultValue' => $resultSellValue - $resultBuyValue,
+        ];
     }
 
     /**
@@ -461,5 +567,108 @@ class TradingService
             }
         }
         return $sellResultPool;
+    }
+
+
+    public function getcurrentBalanceInfo()
+    {
+
+        $balances = collect();
+        $volumes = $this->getCurrentVolumes();
+        $rateBtcFiat = $this->getCurrentRate('BTC', config('api.fiat'));
+
+        foreach ($volumes as $currencyKey => $volume) {
+
+            $item = collect();
+            $item->put('currency', $currencyKey);
+            $item->put('volume', $volume);
+
+            // Current and past rates
+            if ($currencyKey == 'BTC') {
+                $rateFiat = $rateBtcFiat;
+                $rateBtc = 1;
+
+                $yesterdaysRate = $this->getYesterdaysRate(config('api.fiat'), $currencyKey);
+                $sevenDaysAgoRate = $this->getPastRate(7, 7, config('api.fiat'), $currencyKey);
+
+            } else {
+                $rateBtc = $this->getCurrentRate('BTC', $currencyKey);
+                $rateFiat = $rateBtcFiat * $rateBtc;
+                $yesterdaysRate = $this->getYesterdaysRate(config('api.fiat'), $currencyKey);
+                $sevenDaysAgoRate = $this->getPastRate(7, 7, config('api.fiat'), $currencyKey);
+            }
+
+            $yesterdaysRateFiat = $yesterdaysRate->get('fiat');
+            $yesterdaysRateBtc = $yesterdaysRate->get('btc');
+            $sevenDaysAgoRateFiat = $sevenDaysAgoRate->get('fiat');
+            $sevenDaysAgoRateBtc = $sevenDaysAgoRate->get('btc');
+
+            if ($yesterdaysRateFiat) {
+                $rateDiffDayFiat = (100 / $yesterdaysRateFiat * $rateFiat) - 100;
+            } else {
+                $rateDiffDayFiat = 0;
+            }
+            if ($yesterdaysRateBtc) {
+                $rateDiffDayBtc = (100 / $yesterdaysRateBtc * $rateBtc) - 100;
+            } else {
+                $rateDiffDayBtc = 0;
+            }
+            if ($sevenDaysAgoRateFiat) {
+                $rateDiffSevenDaysAgoFiat = (100 / $sevenDaysAgoRateFiat * $rateFiat) - 100;
+            } else {
+                $rateDiffSevenDaysAgoFiat = 0;
+            }
+            if ($sevenDaysAgoRateBtc) {
+                $rateDiffSevenDaysAgoBtc = (100 / $sevenDaysAgoRateBtc * $rateBtc) - 100;
+            } else {
+                $rateDiffSevenDaysAgoBtc = 0;
+            }
+
+            $item->put('rateDiffDayFiat', $rateDiffDayFiat);
+            $item->put('rateDiffDayBtc', $rateDiffDayBtc);
+            $item->put('rateDiffSevenDaysAgoFiat', $rateDiffSevenDaysAgoFiat);
+            $item->put('rateDiffSevenDaysAgoBtc', $rateDiffSevenDaysAgoBtc);
+            $item->put('yesterdaysRateFiat', $yesterdaysRateFiat);
+            $item->put('yesterdaysRateBtc', $yesterdaysRateBtc);
+            $item->put('currentRateBtc', $rateBtc);
+            $item->put('currentRateFiat', $rateFiat);
+            $item->put('currentValueFiat', $rateFiat * $volume);
+            $item->put('currentValueBtc', $rateBtc * $volume);
+
+            // Average purchase rates
+            if ($currencyKey == 'BTC') {
+                $item->put('averagePurchaseRateBtcCoin', 1);
+            } else {
+                $item->put('averagePurchaseRateBtcCoin', $this->getAveragePurchaseRateBtcCoin('BTC', $currencyKey));
+            }
+            if ($currencyKey == 'BTC') {
+                $item->put('averagePurchaseRateFiatBtc', $this->getAveragePurchaseRateFiatBtc(config('api.fiat'), 'BTC'));
+            } else {
+                $item->put('averagePurchaseRateFiatBtc', $this->getAveragePurchaseRateFiatBtc('BTC', $currencyKey));
+            }
+
+            $item->put('averagePurchaseRateCoinFiat', $item['averagePurchaseRateFiatBtc'] * $item['averagePurchaseRateBtcCoin']);
+            $item->put('purchaseValueBtc', $volume * $item['averagePurchaseRateBtcCoin']);
+            $item->put('purchaseValueFiat', $volume * $item['averagePurchaseRateBtcCoin'] * $item['averagePurchaseRateFiatBtc']);
+
+            if ($currencyKey == 'BTC') {
+                $item->put('sellVolume', $this->getSellVolume('BTC', config('api.fiat')));
+            } else {
+                $item->put('sellVolume', $this->getSellVolume($currencyKey, 'BTC'));
+            }
+            $item->put('revenueFiat', $item['currentValueFiat'] - $item['purchaseValueFiat']);
+            $item->put('revenueBTC', $item['currentValueBtc'] - $item['purchaseValueBtc']);
+
+            if ($item['purchaseValueFiat'] > 0) {
+                $revenueRate = (100 / $item['purchaseValueFiat'] * $item['revenueFiat']);
+            } else {
+                $revenueRate = 0;
+            }
+            $item->put('revenueRate', $revenueRate);
+            $balances->push($item);
+
+        }
+
+        return $balances;
     }
 }

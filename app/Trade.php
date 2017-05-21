@@ -31,7 +31,7 @@ class Trade extends Model implements TradeInterface
         $this->setAttribute('original_volume', $volume);
         $this->setAttribute('fee_fiat', $feeFiat);
         $this->setAttribute('fee_coin', $feeCoin);
-        $this->setAttribute('purchase_rate_fiat_btc', $purchaseRateBtcFiat);
+
     }
 
     public function getVolumeValueBTCAttribute()
@@ -67,12 +67,6 @@ class Trade extends Model implements TradeInterface
         return $this;
     }
 
-    public function setPurchaseRateBtcFiatAttribute($value)
-    {
-
-        $this->purchase_rate_fiat_btc = $value;
-        return $this;
-    }
 
 
     /**
@@ -137,13 +131,13 @@ class Trade extends Model implements TradeInterface
         return $avgBuyRate;
 
     }
-    public function addSellResults() {
+    public function addSellResults()
+    {
+        $avgBuyRate = $this->getAvgBuyRate();
         $this->setAttribute('avg_buy_rate', $this->getAvgBuyRate());
-        $this->setAttribute('buy_value', $this->avg_buy_rate * $this->volume_taken);
+        $this->setAttribute('buy_value', $avgBuyRate * $this->volume_taken);
         $this->setAttribute('revenue', $this->volume_taken * $this->rate - $this->buy_value) ;
 
         return $this;
     }
-
-
 }

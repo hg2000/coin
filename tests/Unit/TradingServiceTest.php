@@ -25,7 +25,7 @@ class TradingServiceTest extends \Tests\TestCase
         $this->date = Carbon::create('1970');
     }
 
-    protected function buyTrade($volume, $rate = 100)
+    protected function buyTrade($volume, $rate = 100, $source = 'EUR', $target = 'BTC', $purchaseRateFiatBtc = 100)
     {
         $this->date = $this->date->addDay();
         return  [
@@ -33,17 +33,17 @@ class TradingServiceTest extends \Tests\TestCase
               'date' => $this->date,
               'platform_id' => 'bitcoin.de',
               'trade_id' => str_random(10),
-              'source_currency' => 'EUR',
-              'target_currency' => 'BTC',
+              'source_currency' => $source,
+              'target_currency' => $target,
               'rate' => $rate,
               'volume' => $volume,
               'fee_fiat' => 0,
               'fee_coin' => 0,
-              'purchase_rate_fiat_btc' => null,
+              'purchase_rate_fiat_btc' => $purchaseRateFiatBtc,
               'type' => 'buy',
           ];
     }
-    protected function sellTrade($volume, $rate = 100)
+    protected function sellTrade($volume, $rate = 100, $source='BTC', $target='EUR', $purchaseRateFiatBtc = 100)
     {
         $this->date = $this->date->addDay();
         return [
@@ -51,13 +51,13 @@ class TradingServiceTest extends \Tests\TestCase
               'date' => $this->date,
               'platform_id' => 'bitcoin.de',
               'trade_id' => str_random(10),
-              'source_currency' => 'BTC',
-              'target_currency' => 'EUR',
+              'source_currency' => $source,
+              'target_currency' => $target,
               'rate' => $rate,
               'volume' => $volume,
               'fee_fiat' => 0,
               'fee_coin' => 0,
-              'purchase_rate_fiat_btc' => null,
+              'purchase_rate_fiat_btc' => $purchaseRateFiatBtc,
               'type' => 'sell',
           ];
     }
@@ -65,54 +65,49 @@ class TradingServiceTest extends \Tests\TestCase
     /**
      * @test
      */
-    public function getAveragePurchaseRate()
+    public function getResultRevenue()
     {
         $trading = new \App\Service\TradingService();
 
         DB::table('trades')->truncate();
-        DB::table('trades')->insert($this->buyTrade(1));
 
-        $result = $trading->getAveragePurchaseRate('BTC', 'EUR');
+        DB::table('trades')->insert($this->buyTrade(1, 100));
+        $result = $trading->getResultRevenue('BTC', 'EUR');
+        $this->assertEquals(-100, $result);
+
+        DB::table('trades')->insert($this->buyTrade(1, 100));
+        $result = $trading->getResultRevenue('BTC', 'EUR');
+        $this->assertEquals(-200, $result);
+
+        DB::table('trades')->insert($this->sellTrade(1, 400));
+        $result = $trading->getResultRevenue('BTC', 'EUR');
+        $this->assertEquals(200, $result);
+
+        DB::table('trades')->insert($this->buyTrade(1, 100));
+        $result = $trading->getResultRevenue('BTC', 'EUR');
         $this->assertEquals(100, $result);
 
-        DB::table('trades')->insert($this->buyTrade(1));
+        DB::table('trades')->insert($this->sellTrade(1, 100));
+        $result = $trading->getResultRevenue('BTC', 'EUR');
+        $this->assertEquals(200, $result);
 
-        $result = $trading->getAveragePurchaseRate('BTC', 'EUR');
-        $this->assertEquals(150, $result);
 
-        DB::table('trades')->insert($this->sellTrade(1));
+        DB::table('trades')->insert($this->buyTrade(1, 5, 'BTC', 'ETH'));
+        $result = $trading->getResultRevenue('BTC', 'ETH');
+        $this->assertEquals(-5, $result);
 
-        $result = $trading->getAveragePurchaseRate('BTC', 'EUR');
-        $this->assertEquals(150, $result);
+        DB::table('trades')->insert($this->buyTrade(1, 10, 'BTC', 'ETH'));
+        $result = $trading->getResultRevenue('BTC', 'ETH');
+        $this->assertEquals(-15, $result);
 
-        DB::table('trades')->insert($this->buyTrade(1));
-        $result = $trading->getAveragePurchaseRate('BTC', 'EUR');
-        $this->assertEquals(100, $result);
+        DB::table('trades')->insert($this->sellTrade(1, 10, 'ETH', 'BTC'));
+        $result = $trading->getResultRevenue('BTC', 'ETH');
+        $this->assertEquals(-5, $result);
 
-        DB::table('trades')->insert($this->sellTrade(2));
+        DB::table('trades')->insert($this->buyTrade(1, 5, 'BTC', 'ETH'));
+        $result = $trading->getResultRevenue('BTC', 'ETH');
+        $this->assertEquals(-10, $result);
 
-        $result = $trading->getAveragePurchaseRate('BTC', 'EUR');
-        $this->assertEquals(100, $result);
-
-        DB::table('trades')->insert($this->buyTrade(1));
-        $result = $trading->getAveragePurchaseRate('BTC', 'EUR');
-        $this->assertEquals(500, $result);
-
-        DB::table('trades')->insert($this->buyTrade(1));
-        $result = $trading->getAveragePurchaseRate('BTC', 'ETH');
-        $this->assertEquals(5, $result);
-
-        DB::table('trades')->insert($this->buyTrade(1));
-        $result = $trading->getAveragePurchaseRate('BTC', 'ETH');
-        $this->assertEquals(7.5, $result);
-
-        DB::table('trades')->insert($this->sellTrade(1));
-        $result = $trading->getAveragePurchaseRate('BTC', 'ETH');
-        $this->assertEquals(7.5, $result);
-
-        DB::table('trades')->insert($this->buyTrade(1));
-        $result = $trading->getAveragePurchaseRate('BTC', 'ETH');
-        $this->assertEquals(7.5, $result);
     }
 
     /**
@@ -160,8 +155,8 @@ class TradingServiceTest extends \Tests\TestCase
         $sellPool = $trading->getSellPool('BTC');
         $this->assertEquals($sellPool->count(), 1);
         $sellTrade = $sellPool->pop();
-        $this->assertEquals($sellTrade->avg_buy_rate, 100);
-        $this->assertEquals($sellTrade->revenue, 50);
+        $this->assertEquals(100, $sellTrade->avg_buy_rate);
+        $this->assertEquals(-50, $sellTrade->revenue);
 
         DB::table('trades')->truncate();
         DB::table('trades')->insert($this->buyTrade(1, 100));
@@ -172,7 +167,7 @@ class TradingServiceTest extends \Tests\TestCase
         $this->assertEquals($sellPool->count(), 1);
         $sellTrade = $sellPool->pop();
         $this->assertEquals($sellTrade->avg_buy_rate, 150);
-        $this->assertEquals($sellTrade->revenue, 250);
+        $this->assertEquals($sellTrade->revenue, 100);
 
         DB::table('trades')->truncate();
         DB::table('trades')->insert($this->buyTrade(1, 100));
@@ -204,6 +199,51 @@ class TradingServiceTest extends \Tests\TestCase
         $this->assertEquals($sellPool->count(), 2);
         $sellTrade = $sellPool->pop();
         $this->assertEquals($sellTrade->avg_buy_rate, 100);
+
+    }
+
+
+    /**
+     * @test
+     */
+    public function getAveragePurchaseRateBtcCoin() {
+
+        DB::table('trades')->truncate();
+        $trading = App::make(TradingService::class);
+
+        $trade = $this->buyTrade(1, 100);
+        DB::table('trades')->insert($trade);
+
+        $trade = $this->buyTrade(1, 200);
+        DB::table('trades')->insert($trade);
+
+        $trade = $this->sellTrade(1, 150);
+        DB::table('trades')->insert($trade);
+
+        $trade = $this->buyTrade(1, 150);
+        DB::table('trades')->insert($trade);
+
+        $rate = $trading->getAveragePurchaseRateBtcCoin('EUR', 'BTC');
+        $this->assertEquals(150, $rate);
+    }
+
+    /**
+     * @test
+     */
+    public function getAveragePurchaseRateFiatBtc() {
+
+        DB::table('trades')->truncate();
+        $trading = App::make(TradingService::class);
+
+        $trade = $this->buyTrade($volume = 1, $rate = 100, $source = 'EUR', $target = 'BTC', $purchaseRateFiatBtc = 100);
+        DB::table('trades')->insert($trade);
+
+        $trade = $this->buyTrade($volume = 1, $rate = 0.5, $source = 'BTC', $target = 'ETH', $purchaseRateFiatBtc = 100);
+        DB::table('trades')->insert($trade);
+
+        $rate = $trading->getAveragePurchaseRateBtcCoin('EUR', 'BTC');
+
+        dump($rate);
 
     }
 }

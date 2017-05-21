@@ -5,6 +5,7 @@ return  [
     'fiat' => env('API.FIAT_CURRENCY', 'EUR'),
     'fiatSymbol' => env('API.FIAT_CURRENCY_SYMBOL', '€'),
     'watchList' => env('API.WATCHLIST', []),
+    'dateCorrections' => env('DATE_CORRECTIONS'),
     'drivers' => [
         'poloniex' => [
             'key' => env('API.POLONIEX.KEY'),

@@ -28,7 +28,7 @@ class BitcoindeDriver implements \App\Driver\DriverInterface
      */
     public function getTradeHistory(\DateTime $from, \DateTime $to) : Collection
     {
-        
+
         $tradesResponse = $this->request(Connector::METHOD_SHOW_MY_TRADES, [
             'state' => 1,
             'page' => 1
@@ -97,9 +97,7 @@ class BitcoindeDriver implements \App\Driver\DriverInterface
                 $feeFiat = $rawTrade['fee_eur'],
                 $feeCoin = $rawTrade['fee_btc']
             );
-            if ($rawTrade['type'] == 'buy') {
-                $trade->purchaseRateBtcFiat = $rawTrade['price'];
-            }
+
             $tradeCollection->push($trade);
         }
 

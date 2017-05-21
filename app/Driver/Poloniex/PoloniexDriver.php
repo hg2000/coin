@@ -133,6 +133,7 @@ class PoloniexDriver implements \App\Driver\DriverInterface
     {
         if (!$this->volumes) {
             $balances = $this->connector->get_balances();
+            
             if (isset($balances['error'])) {
                 throw new \Exception('Poloniex API error: ' . $balances['error']);
             }
