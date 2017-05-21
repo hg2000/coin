@@ -71,9 +71,9 @@
                   <td></td>
                   <td></td>
                   <td></td>
-                  <td></td>
                   <td>{{ formatFiat(sum.purchaseValueFiat)}}</td>
                   <td>{{ formatFiat(sum.currenValueFiat) }}</td>
+                  <td>{{ formatFiat(sum.currentRevenueFiat) }}</td>
                   <td>{{ formatPercent(sum.totalRevenueRate) }}</td>
                 </tr>
               </tbody>

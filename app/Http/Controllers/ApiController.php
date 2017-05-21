@@ -74,9 +74,9 @@ class ApiController extends BaseController
 
             ];
             $sum['totalRevenueBtc'] = $sum['tradingRevenueBtc'] + $sum['currenValueBtc'];
-            $sum['totalRevenueFiat'] = $sum['tradingRevenueFiat'] + $sum['currenValueFiat'];
             $sum['purchaseValueFiat'] = $balances->pluck('purchaseValueFiat')->sum();
             $sum['currentRevenueFiat'] = $sum['currenValueFiat'] - $sum['purchaseValueFiat'];
+            $sum['totalRevenueFiat'] = $sum['tradingRevenueFiat'] + $sum['currentRevenueFiat'];
 
             if ($sum['purchaseValueFiat'] > 0) {
 
