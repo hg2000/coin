@@ -72,7 +72,7 @@
                   <td></td>
                   <td></td>
                   <td>{{ formatFiat(sum.purchaseValueFiat)}}</td>
-                  <td>{{ formatFiat(sum.currenValueFiat) }}</td>
+                  <td>{{ formatFiat(sum.currentValueFiat) }}</td>
                   <td>{{ formatFiat(sum.currentRevenueFiat) }}</td>
                   <td>{{ formatPercent(sum.totalRevenueRate) }}</td>
                 </tr>
@@ -117,14 +117,24 @@
               </thead>
               <tbody>
                 <tr>
-                  <th>BTC/{{ fiat }} Trades</th>
+                  <th>BTC/{{ fiat }} Trade Revenue</th>
                   <td>{{ formatCoin(sum.tradingRevenueBtc) }} B</td>
                   <td>{{ formatFiat(sum.tradingRevenueFiat) }}</td>
                 </tr>
                 <tr>
+                  <th>Buy Volume</th>
+                  <td>{{ formatCoin(sum.buyVolumeBtc) }} B</td>
+                  <td>{{ formatFiat(sum.buyVolumeFiat) }}</td>
+                </tr>
+                <tr>
+                  <th>Sell Volume</th>
+                  <td>{{ formatCoin(sum.sellVolumeBtc) }} B</td>
+                  <td>{{ formatFiat(sum.sellVolumeFiat) }}</td>
+                </tr>
+                <tr>
                   <th>Current Coin Value</th>
-                  <td>{{ formatCoin(sum.currenValueBtc) }} B</td>
-                  <td>{{ formatFiat(sum.currenValueFiat) }}</td>
+                  <td>{{ formatCoin(sum.currentValueBtc) }} B</td>
+                  <td>{{ formatFiat(sum.currentValueFiat) }}</td>
                 </tr>
                 <tr class="info">
                   <th>Total Revenue</th>

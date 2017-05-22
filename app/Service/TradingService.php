@@ -468,7 +468,6 @@ class TradingService
         $sellVolumeFiat = 0;
 
         foreach ($trades as $trade) {
-
             if ($trade->type == 'buy') {
                 $buyVolumeFiat += $trade->rate * $trade->volume;
                 $buyVolumeBtc += $trade->volume;
@@ -478,6 +477,9 @@ class TradingService
             }
         }
 
+
+        $revenueBtc = $sellVolumeBtc - $buyVolumeBtc;
+        $revenueFiat = $sellVolumeFiat - $buyVolumeFiat;
         return collect([
             'buyVolumeBtc' => $buyVolumeBtc,
             'sellVolumeBtc' => $sellVolumeBtc,
@@ -485,6 +487,8 @@ class TradingService
             'sellVolumeFiat' => $sellVolumeFiat,
         ]);
     }
+
+
 
     /**
      * Requests all current rates from the api drivers
