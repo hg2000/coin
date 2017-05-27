@@ -27,7 +27,9 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
          $schedule->command('rates:store')
-                  ->hourly();
+                  ->cron('0 */4 * * *');
+         $schedule->command('rates:alert')
+                  ->cron('10 * * * * ');
     }
 
     /**

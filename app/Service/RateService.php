@@ -12,7 +12,8 @@ use \Illuminate\Support\Facades\Mail;
  */
 class RateService
 {
-    public function analyseRateChanges() {
+    public function analyseRateChanges()
+    {
 
         $trading = App::make(TradingService::class);
         $balances = $trading->getcurrentBalanceInfo();
@@ -29,7 +30,7 @@ class RateService
             if ($key != 'BTC') {
 
                 if (isset($lastRates[$key])) {
-                    $balance = $balances->filter(function($localItem) use ($key){
+                    $balance = $balances->filter(function ($localItem) use ($key) {
                         return $localItem['currency'] == $key;
                     })->first();
 
@@ -53,9 +54,10 @@ class RateService
         return [ $diffItems, $ratesRaw->date ];
     }
 
-    public function rateChangeAlert() {
+    public function rateChangeAlert()
+    {
 
-        $alertChangeRate = 10;
+        $alertChangeRate = config('api.alertChangeRate');
 
         $rateService = App::make(RateService::class);
         $rateChanges = $rateService->analyseRateChanges();
@@ -67,20 +69,23 @@ class RateService
         $decreasesBtc = collect();
 
         $increasesBtc = $diffItems->filter(
-            function($item) use ($alertChangeRate){
+            function ($item) use ($alertChangeRate) {
                 if ($item['diffBtc'] >= $alertChangeRate) {
                     return $item;
                 }
-            });
+            }
+        );
         $decreasesBtc = $diffItems->filter(
-            function($item) use ($alertChangeRate){
+            function ($item) use ($alertChangeRate) {
                 if (($item['diffBtc']) <= $alertChangeRate * -1) {
                     return $item;
                 }
-            });
+            }
+        );
 
-        Mail::to(config('api.mail.alert.receiver.adress'))->send(new Alert($alertChangeRate, $increasesBtc, $decreasesBtc, $date));
+        if (!$increasesBtc->isEmpty() || !$decreasesBtc->isEmpty()) {
+            Mail::to(config('api.mail.alert.receiver.adress'))->send(new Alert($alertChangeRate, $increasesBtc, $decreasesBtc, $date));
+
+        }
     }
-
-
 }
