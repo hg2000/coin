@@ -11,6 +11,7 @@ use \App;
 
 use \App\Utility\Format;
 use \App\Service\TradingService;
+use \App\Service\RateService;
 
 class ApiController extends BaseController
 {
@@ -84,7 +85,7 @@ class ApiController extends BaseController
             $sum['totalRevenueBtc'] = $sum['tradingRevenueBtc'] + $sum['currentValueBtc'];
 
             if ($sum['purchaseValueFiat'] > 0) {
-                $totalRevenueRate = 100 / $sum['purchaseValueFiat']  * $sum['totalRevenueFiat'];
+                $totalRevenueRate = $sum['totalRevenueFiat'] / $sum['purchaseValueFiat'] * 100;
             } else {
                 $totalRevenueRate = 0;
             }
@@ -108,4 +109,6 @@ class ApiController extends BaseController
     {
         $this->trading->getSellPool($key);
     }
+
+
 }
