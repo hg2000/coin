@@ -17,6 +17,7 @@ class RateService
 
         $trading = App::make(TradingService::class);
         $balances = $trading->getcurrentBalanceInfo();
+
         $ratesRaw = Rate::orderBy('date', 'desc')->take(1)->get()->first();
 
         $lastRates = unserialize($ratesRaw->rates);
@@ -27,28 +28,26 @@ class RateService
             $pastRateBtc = $values[0];
             $pastRateFiat = $values[1];
 
-            if ($key != 'BTC') {
+            if (isset($lastRates[$key])) {
+                $balance = $balances->filter(function ($localItem) use ($key) {
+                    return $localItem['currency'] == $key;
+                })->first();
 
-                if (isset($lastRates[$key])) {
-                    $balance = $balances->filter(function ($localItem) use ($key) {
-                        return $localItem['currency'] == $key;
-                    })->first();
+                if ($balance) {
+                    $currentRateBtc = $balance['currentRateBtc'];
+                    $currentRateFiat = $balance['currentRateFiat'];
+                    $diffBtc = (integer)floor(($currentRateBtc - $pastRateBtc) / $pastRateBtc * 100);
+                    $diffFiat = (integer)floor(($currentRateFiat - $pastRateFiat) / $pastRateFiat * 100);
 
-                    if ($balance) {
-                        $currentRateBtc = $balance['currentRateBtc'];
-                        $currentRateFiat = $balance['currentRateFiat'];
-                        $diffBtc = (integer)floor(($currentRateBtc - $pastRateBtc) / $pastRateBtc * 100);
-                        $diffFiat = (integer)floor(($currentRateFiat - $pastRateFiat) / $pastRateFiat * 100);
-
-                        $diffItem = collect();
-                        $diffItem->put('currency', $key);
-                        $diffItem->put('diffBtc', $diffBtc);
-                        $diffItem->put('diffFiat', $diffFiat);
-                        $diffItems->push($diffItem);
-                    }
-
+                    $diffItem = collect();
+                    $diffItem->put('currency', $key);
+                    $diffItem->put('diffBtc', $diffBtc);
+                    $diffItem->put('diffFiat', $diffFiat);
+                    $diffItems->push($diffItem);
                 }
+
             }
+
         }
 
         return [ $diffItems, $ratesRaw->date ];
@@ -56,12 +55,11 @@ class RateService
 
     public function rateChangeAlert()
     {
-
         $alertChangeRate = config('api.alertChangeRate');
+
 
         $rateService = App::make(RateService::class);
         $rateChanges = $rateService->analyseRateChanges();
-
         $date = $rateChanges[1];
         $diffItems = $rateChanges[0];
 
@@ -70,14 +68,14 @@ class RateService
 
         $increasesBtc = $diffItems->filter(
             function ($item) use ($alertChangeRate) {
-                if ($item['diffBtc'] >= $alertChangeRate) {
+                if ($item['diffFiat'] >= $alertChangeRate) {
                     return $item;
                 }
             }
         );
         $decreasesBtc = $diffItems->filter(
             function ($item) use ($alertChangeRate) {
-                if (($item['diffBtc']) <= $alertChangeRate * -1) {
+                if (($item['diffFiat']) <= $alertChangeRate * -1) {
                     return $item;
                 }
             }

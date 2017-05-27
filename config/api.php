@@ -18,7 +18,7 @@ return  [
             'driverClass' => App\Driver\Bitcoinde\BitcoindeDriver::class
         ],
     ],
-    'alertChangeRate' => env('API.ALERT_CHANGE_RATE') ?? 10,
+    'alertChangeRate' => env('ALERT_CHANGE_RATE') ?? 10,
     'mail' => [
         'alert' =>[
             'subject' => env('MAIL_ALERT_SUBJECT'),
