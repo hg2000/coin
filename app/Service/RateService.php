@@ -18,7 +18,8 @@ class RateService
         $trading = App::make(TradingService::class);
         $balances = $trading->getcurrentBalanceInfo();
 
-        $ratesRaw = Rate::orderBy('date', 'desc')->take(1)->get()->first();
+        $ratesRaw = Rate::orderBy('date', 'desc')->take(2)->get();
+        $ratesRaw = $ratesRaw[1];
 
         $lastRates = unserialize($ratesRaw->rates);
         $diffItems = collect();
@@ -66,6 +67,7 @@ class RateService
         $increasesBtc = collect();
         $decreasesBtc = collect();
 
+
         $increasesBtc = $diffItems->filter(
             function ($item) use ($alertChangeRate) {
                 if ($item['diffFiat'] >= $alertChangeRate) {
@@ -73,6 +75,7 @@ class RateService
                 }
             }
         );
+
         $decreasesBtc = $diffItems->filter(
             function ($item) use ($alertChangeRate) {
                 if (($item['diffFiat']) <= $alertChangeRate * -1) {
