@@ -58,7 +58,6 @@ class RateService
     {
         $alertChangeRate = config('api.alertChangeRate');
 
-
         $rateService = App::make(RateService::class);
         $rateChanges = $rateService->analyseRateChanges();
         $date = $rateChanges[1];
@@ -67,19 +66,30 @@ class RateService
         $increasesBtc = collect();
         $decreasesBtc = collect();
 
-
         $increasesBtc = $diffItems->filter(
             function ($item) use ($alertChangeRate) {
-                if ($item['diffFiat'] >= $alertChangeRate) {
-                    return $item;
+                if ($item['currency'] == 'BTC') {
+                    if ($item['diffFiat'] >= $alertChangeRate) {
+                        return $item;
+                    }
+                } else {
+                    if ($item['diffBtc'] >= $alertChangeRate) {
+                        return $item;
+                    }
                 }
             }
         );
 
         $decreasesBtc = $diffItems->filter(
             function ($item) use ($alertChangeRate) {
-                if (($item['diffFiat']) <= $alertChangeRate * -1) {
-                    return $item;
+                if ($item['currency'] == 'BTC') {
+                    if (($item['diffFiat']) <= $alertChangeRate * -1) {
+                        return $item;
+                    }
+                } else {
+                    if (($item['diffFiat']) <= $alertChangeRate * -1) {
+                        return $item;
+                    }
                 }
             }
         );
