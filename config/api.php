@@ -17,5 +17,18 @@ return  [
             'secret' => env('API.BITCOINDE.SECRET'),
             'driverClass' => App\Driver\Bitcoinde\BitcoindeDriver::class
         ],
+    ],
+    'alertChangeRate' => env('ALERT_CHANGE_RATE') ?? 10,
+    'mail' => [
+        'alert' =>[
+            'subject' => env('MAIL_ALERT_SUBJECT'),
+            'receiver' => [
+                'adress' => env('MAIL_ALERT_RECEIVER_ADRESS')
+            ],
+            'sender' => [
+                'name' => env('MAIL_ALERT_SENDER_NAME'),
+                'adress' => env('MAIL_ALERT_SENDER_ADRESS')
+            ]
+        ]
     ]
 ];

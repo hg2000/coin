@@ -246,4 +246,22 @@ class TradingServiceTest extends \Tests\TestCase
         dump($rate);
 
     }
+
+    /**
+     * @test
+     */
+    public function getSumBtcFiatTrades() {
+
+        DB::table('trades')->truncate();
+        $trading = App::make(TradingService::class);
+
+        $trade = $this->buyTrade(1, 100);
+        DB::table('trades')->insert($trade);
+
+        $trade = $this->sellTrade(2, 200);
+        DB::table('trades')->insert($trade);
+
+        $trading->getSumBtcFiatTrades();
+
+    }
 }

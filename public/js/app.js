@@ -3747,6 +3747,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['fiatsymbol', 'fiat'],
@@ -23459,7 +23469,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_vm._v(_vm._s(_vm.formatCoin(item.revenueBTC)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(item.purchaseValueFiat)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(item.currentValueFiat)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(item.revenueFiat)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatPercent(item.revenueRate)))])])
   })), _vm._v(" "), _c('tbody', [_c('tr', {
     staticClass: "info"
-  }, [_c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(_vm.sum.purchaseValueFiat)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(_vm.sum.currenValueFiat)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatPercent(_vm.sum.totalRevenueRate)))])])])])])])]) : _vm._e()]), _vm._v(" "), (_vm.error == 0) ? _c('div', [(_vm.sum == 0) ? _c('div', {
+  }, [_c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(_vm.sum.purchaseValueFiat)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(_vm.sum.currentValueFiat)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(_vm.sum.currentRevenueFiat)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatPercent(_vm.sum.totalRevenueRate)))])])])])])])]) : _vm._e()]), _vm._v(" "), (_vm.error == 0) ? _c('div', [(_vm.sum == 0) ? _c('div', {
     staticClass: "alert alert-warning"
   }, [_c('p', [_vm._v("\n          Please Wait\n        ")])]) : _vm._e()]) : _vm._e(), _vm._v(" "), (_vm.error != 0) ? _c('div', {
     staticClass: "alert alert-danger"
@@ -23475,7 +23485,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "panel-body"
   }, [_c('p', [_c('table', {
     staticClass: "table"
-  }, [_c('thead', [_c('tr', [_c('th'), _vm._v(" "), _c('th', [_vm._v("BTC")]), _vm._v(" "), _c('th', [_vm._v(_vm._s(_vm.fiat))])])]), _vm._v(" "), _c('tbody', [_c('tr', [_c('th', [_vm._v("BTC/" + _vm._s(_vm.fiat) + " Trades")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(_vm.sum.tradingRevenueBtc)) + " B")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(_vm.sum.tradingRevenueFiat)))])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Current Coin Value")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(_vm.sum.currenValueBtc)) + " B")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(_vm.sum.currenValueFiat)))])]), _vm._v(" "), _c('tr', {
+  }, [_c('thead', [_c('tr', [_c('th'), _vm._v(" "), _c('th', [_vm._v("BTC")]), _vm._v(" "), _c('th', [_vm._v(_vm._s(_vm.fiat))])])]), _vm._v(" "), _c('tbody', [_c('tr', [_c('th', [_vm._v("BTC/" + _vm._s(_vm.fiat) + " Trade Revenue")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(_vm.sum.tradingRevenueBtc)) + " B")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(_vm.sum.tradingRevenueFiat)))])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Buy Volume")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(_vm.sum.buyVolumeBtc)) + " B")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(_vm.sum.buyVolumeFiat)))])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Sell Volume")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(_vm.sum.sellVolumeBtc)) + " B")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(_vm.sum.sellVolumeFiat)))])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Current Coin Value")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(_vm.sum.currentValueBtc)) + " B")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(_vm.sum.currentValueFiat)))])]), _vm._v(" "), _c('tr', {
     staticClass: "info"
   }, [_c('th', [_vm._v("Total Revenue")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(_vm.sum.totalRevenueBtc)) + " B")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(_vm.sum.totalRevenueFiat)))])])])])])])]) : _vm._e()])])])
 },staticRenderFns: []}

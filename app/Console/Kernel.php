@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         Commands\ClearHistory::class,
         Commands\StoreRates::class,
+        Commands\Alert::class,
     ];
 
     /**
@@ -26,7 +27,9 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
          $schedule->command('rates:store')
-                  ->twiceDaily(8, 16);
+                  ->cron('0 */4 * * *');
+         $schedule->command('rates:alert')
+                  ->cron('10 * * * * ');
     }
 
     /**

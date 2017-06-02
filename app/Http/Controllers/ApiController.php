@@ -11,6 +11,7 @@ use \App;
 
 use \App\Utility\Format;
 use \App\Service\TradingService;
+use \App\Service\RateService;
 
 class ApiController extends BaseController
 {
@@ -69,18 +70,22 @@ class ApiController extends BaseController
                 'buyVolumeFiat' => $sumBtcFiatTrades['buyVolumeFiat'],
                 'tradingRevenueBtc' => $sumBtcFiatTrades['sellVolumeBtc'] - $sumBtcFiatTrades['buyVolumeBtc'],
                 'tradingRevenueFiat' => $sumBtcFiatTrades['sellVolumeFiat'] - $sumBtcFiatTrades['buyVolumeFiat'],
-                'currenValueBtc' => $balances->pluck('currentValueBtc')->sum(),
-                'currenValueFiat' => $balances->pluck('currentValueFiat')->sum(),
+                'currentValueBtc' => $balances->pluck('currentValueBtc')->sum(),
+                'currentValueFiat' => $balances->pluck('currentValueFiat')->sum(),
 
             ];
-            $sum['totalRevenueBtc'] = $sum['tradingRevenueBtc'] + $sum['currenValueBtc'];
-            $sum['totalRevenueFiat'] = $sum['tradingRevenueFiat'] + $sum['currenValueFiat'];
+            $sum['totalRevenueBtc'] = $sum['tradingRevenueBtc'] + $sum['currentValueBtc'];
             $sum['purchaseValueFiat'] = $balances->pluck('purchaseValueFiat')->sum();
-            $sum['currentRevenueFiat'] = $sum['currenValueFiat'] - $sum['purchaseValueFiat'];
+            $sum['purchaseValueBtc'] = $balances->pluck('purchaseValueBtc')->sum();
+            $sum['currentRevenueBtc'] = $sum['currentValueBtc'] - $sum['purchaseValueBtc'];
+            $sum['currentRevenueFiat'] = $sum['currentValueFiat'] - $sum['purchaseValueFiat'];
+            $sum['totalRevenueFiat'] = $sum['tradingRevenueFiat'] + $sum['currentRevenueFiat'];
+
+            $sum['totalRevenueFiat'] = $sum['tradingRevenueFiat'] + $sum['currentValueFiat'];
+            $sum['totalRevenueBtc'] = $sum['tradingRevenueBtc'] + $sum['currentValueBtc'];
 
             if ($sum['purchaseValueFiat'] > 0) {
-
-                $totalRevenueRate = 100 / $sum['purchaseValueFiat']  * $sum['totalRevenueFiat'];
+                $totalRevenueRate = $sum['totalRevenueFiat'] / $sum['purchaseValueFiat'] * 100;
             } else {
                 $totalRevenueRate = 0;
             }
@@ -104,4 +109,6 @@ class ApiController extends BaseController
     {
         $this->trading->getSellPool($key);
     }
+
+
 }

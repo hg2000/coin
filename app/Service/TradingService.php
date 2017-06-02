@@ -468,7 +468,6 @@ class TradingService
         $sellVolumeFiat = 0;
 
         foreach ($trades as $trade) {
-
             if ($trade->type == 'buy') {
                 $buyVolumeFiat += $trade->rate * $trade->volume;
                 $buyVolumeBtc += $trade->volume;
@@ -478,6 +477,9 @@ class TradingService
             }
         }
 
+
+        $revenueBtc = $sellVolumeBtc - $buyVolumeBtc;
+        $revenueFiat = $sellVolumeFiat - $buyVolumeFiat;
         return collect([
             'buyVolumeBtc' => $buyVolumeBtc,
             'sellVolumeBtc' => $sellVolumeBtc,
@@ -485,6 +487,8 @@ class TradingService
             'sellVolumeFiat' => $sellVolumeFiat,
         ]);
     }
+
+
 
     /**
      * Requests all current rates from the api drivers
@@ -604,22 +608,22 @@ class TradingService
             $sevenDaysAgoRateBtc = $sevenDaysAgoRate->get('btc');
 
             if ($yesterdaysRateFiat) {
-                $rateDiffDayFiat = (100 / $yesterdaysRateFiat * $rateFiat) - 100;
+                $rateDiffDayFiat =  ($rateFiat - $yesterdaysRateFiat) / $yesterdaysRateFiat  * 100;
             } else {
                 $rateDiffDayFiat = 0;
             }
             if ($yesterdaysRateBtc) {
-                $rateDiffDayBtc = (100 / $yesterdaysRateBtc * $rateBtc) - 100;
+                $rateDiffDayBtc = ($rateBtc - $yesterdaysRateBtc) / $yesterdaysRateBtc * 100;
             } else {
                 $rateDiffDayBtc = 0;
             }
             if ($sevenDaysAgoRateFiat) {
-                $rateDiffSevenDaysAgoFiat = (100 / $sevenDaysAgoRateFiat * $rateFiat) - 100;
+                $rateDiffSevenDaysAgoFiat = ($rateFiat - $sevenDaysAgoRateFiat) / $sevenDaysAgoRateFiat * 100;
             } else {
                 $rateDiffSevenDaysAgoFiat = 0;
             }
             if ($sevenDaysAgoRateBtc) {
-                $rateDiffSevenDaysAgoBtc = (100 / $sevenDaysAgoRateBtc * $rateBtc) - 100;
+                $rateDiffSevenDaysAgoBtc = ($rateBtc - $sevenDaysAgoRateBtc) / $sevenDaysAgoRateBtc * 100;
             } else {
                 $rateDiffSevenDaysAgoBtc = 0;
             }
