@@ -23340,7 +23340,7 @@ var Component = __webpack_require__(3)(
   /* cssModules */
   null
 )
-Component.options.__file = "/home/vagrant/Code/coin/resources/assets/js/components/Coin.vue"
+Component.options.__file = "/home/hendrikg/Code/coin/resources/assets/js/components/Coin.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Coin.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -23374,7 +23374,7 @@ var Component = __webpack_require__(3)(
   /* cssModules */
   null
 )
-Component.options.__file = "/home/vagrant/Code/coin/resources/assets/js/components/History.vue"
+Component.options.__file = "/home/hendrikg/Code/coin/resources/assets/js/components/History.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] History.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -23408,7 +23408,7 @@ var Component = __webpack_require__(3)(
   /* cssModules */
   null
 )
-Component.options.__file = "/home/vagrant/Code/coin/resources/assets/js/components/Volumes.vue"
+Component.options.__file = "/home/hendrikg/Code/coin/resources/assets/js/components/Volumes.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Volumes.vue: functional components are not supported with templates, they should use render functions.")}
 
