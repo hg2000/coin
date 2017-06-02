@@ -31,18 +31,14 @@ class ApiController extends BaseController
      * Returns an json encoded array of all trades.
      * @return string (json)
      */
-    public function getTradeHistory()
+    public function getTradeHistory($from = null, $to = null, $currencyKey = null)
     {
-
         try {
             $trades = $this->trading->getTradeHistory();
             return response()->json($trades);
 
         } catch (\Exception $e) {
-            return response()->json([
-                $e->getMessage(),
-                $e->getTraceAsString()
-                ], 500);
+            return $this->returnException($e);
         }
 
     }
@@ -98,17 +94,30 @@ class ApiController extends BaseController
                 'sum' => $sum
             ]);
         } catch (\Exception $e) {
-              return response()->json([
-                 $e->getMessage(),
-                 $e->getTraceAsString()
-                 ], 500);
+            return $this->returnException($e);
         }
     }
 
     public function getCoinDetail($key)
     {
-        $this->trading->getSellPool($key);
+        try {
+            $sellPool = $this->trading->getSellPool($key);
+            return response()->json(
+                [
+                    'sellPool' => $sellPool
+                ]
+            );
+        } catch (\Exception $e) {
+            return $this->returnException($e);
+        }
+
     }
 
-
+    protected function returnException(\Exception $e)
+    {
+        return response()->json([
+           $e->getMessage(),
+           $e->getTraceAsString()
+           ], 500);
+    }
 }

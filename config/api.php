@@ -2,6 +2,14 @@
 return  [
     'active' =>  env('API.ACTIVE'),
     'cacheDuration' => env('API.CACHE.DURATION'),
+    'volumes' => [
+        'cacheDuration' => env('API.VOLUMES.CACHE.DURATION ') ?? 15
+    ],
+    'tradeHistory' => [
+        'forceCompleteRefresh' => env('API.TRADE_HISTORY.FORCE_REFRESH') ?? false,
+        'cacheDuration' => env('API.TRADE_HISTORY.CACHE.DURATION') ?? 15,
+        'cache' => env('API.TRADE_HISTORY.ENABLE_UPDATE') ?? true
+    ],
     'fiat' => env('API.FIAT_CURRENCY', 'EUR'),
     'fiatSymbol' => env('API.FIAT_CURRENCY_SYMBOL', '€'),
     'watchList' => env('API.WATCHLIST', []),

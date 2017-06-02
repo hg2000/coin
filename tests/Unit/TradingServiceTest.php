@@ -147,12 +147,13 @@ class TradingServiceTest extends \Tests\TestCase
     {
 
         $trading = App::make(TradingService::class);
-
         DB::table('trades')->truncate();
         DB::table('trades')->insert($this->buyTrade(2, 100));
         DB::table('trades')->insert($this->sellTrade(1, 50));
 
+
         $sellPool = $trading->getSellPool('BTC');
+
         $this->assertEquals($sellPool->count(), 1);
         $sellTrade = $sellPool->pop();
         $this->assertEquals(100, $sellTrade->avg_buy_rate);
@@ -199,7 +200,6 @@ class TradingServiceTest extends \Tests\TestCase
         $this->assertEquals($sellPool->count(), 2);
         $sellTrade = $sellPool->pop();
         $this->assertEquals($sellTrade->avg_buy_rate, 100);
-
     }
 
 

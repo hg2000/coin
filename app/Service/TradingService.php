@@ -23,6 +23,7 @@ class TradingService
      */
     public function getTradeHistory($from = null, $to = null, $currencyKey = null)
     {
+
         if (!$from) {
             $from = Carbon::create(1970);
         }
@@ -36,8 +37,10 @@ class TradingService
         } else {
             $lastUpdate = $lastUpdate->updated_at;
             $diff = $lastUpdate->diffInMinutes(Carbon::now());
-            if ($diff >= config('api.cacheDuration')) {
-                $this->updateTradeHistory(false);
+            if ($diff >= config('api.tradeHistory.cacheDuration')) {
+                if (config('api.tradeHistory.enableUpdate')) {
+                    $this->updateTradeHistory();
+                }
             }
         }
 
@@ -110,11 +113,13 @@ class TradingService
 
     /**
      * Stores the trade history in the database
-     * param boolean  foreces the refresh of the whole trade history
+     * param boolean  forces the refresh of the whole trade history
      */
-    public function updateTradeHistory($forceRefresh = true)
+    public function updateTradeHistory($forceRefresh = null)
     {
-
+        if ($forceRefresh === null) {
+            $forceRefresh = config('api.tradeHistory.forceCompleteRefresh');
+        }
         $startTime = Carbon::now();
 
         if ($forceRefresh) {
@@ -131,7 +136,6 @@ class TradingService
         $drivers = $this->getActiveDrivers();
 
         foreach ($drivers as $driver) {
-
             $trades = $driver->getTradeHistory($from, Carbon::now());
             foreach ($trades as $trade) {
                 $trade->created_at = Carbon::now();
@@ -526,7 +530,6 @@ class TradingService
 
     public function getSellPool($key)
     {
-
         $trades = $this->getTradeHistory(null, null, $key);
 
         $sellPool = $trades->filter(function ($item) {
