@@ -3510,29 +3510,40 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['fiatsymbol', 'fiat'],
-  data: function data() {
-    return {
-      sellPoolItems: 0,
-      error: 0
-    };
-  },
-  methods: {
-    makeRequest: function makeRequest() {
-      var _this = this;
+    props: ['fiatsymbol', 'fiat'],
+    data: function data() {
+        return {
+            sellPoolItems: 0,
+            error: 0
+        };
+    },
+    methods: {
+        makeRequest: function makeRequest() {
+            var _this = this;
 
-      this.$http.get('/api/coin/' + this.$route.params.id).then(function (response) {
-        _this.sellPoolItems = response.body.sellPool;
-      }, function (response) {
-        _this.error = response.body;
-      });
+            this.$http.get('/api/coin/' + this.$route.params.id).then(function (response) {
+                _this.sellPoolItems = response.body.sellPool;
+            }, function (response) {
+                _this.error = response.body;
+            });
+        }
+    },
+    mounted: function mounted() {
+        this.makeRequest();
     }
-  },
-  mounted: function mounted() {
-    this.makeRequest();
-  }
 });
 
 /***/ }),
@@ -23544,18 +23555,37 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "panel panel-default"
   }, [_c('div', {
     staticClass: "panel-heading"
-  }, [_vm._v("Trade History " + _vm._s(_vm.$route.params.id))]), _vm._v(" "), _c('div', {
-    staticClass: "panel-body"
-  }, [_c('p', [_c('table', {
+  }, [_vm._v("Trade History " + _vm._s(_vm.$route.params.id))]), _vm._v(" "), _c('p', [_c('table', {
     staticClass: "table table-striped table-responsive table-hover"
-  }, [_c('thead', [_c('tr', [_c('th', [_vm._v("Date")]), _vm._v(" "), _c('th', [_vm._v("platformId")]), _vm._v(" "), _c('th', [_vm._v("Type")]), _vm._v(" "), _c('th', [_vm._v("Currency Pair")]), _vm._v(" "), _c('th', [_vm._v("volumes")]), _vm._v(" "), _c('th', [_vm._v("Buy Value")]), _vm._v(" "), _c('th', [_vm._v("Sell Value")]), _vm._v(" "), _c('th', [_vm._v("Revenue")]), _vm._v(" "), _c('th', [_vm._v("Purchase Rate (" + _vm._s(_vm.fiat) + "/BTC)")])])]), _vm._v(" "), _c('tbody', _vm._l((_vm.sellPoolItems), function(item) {
-    return _c('tr', [_c('td', [_vm._v(_vm._s(item.date))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.platform_id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.type))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.source_currency) + "/" + _vm._s(item.target_currency))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.volume_taken))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.buy_value))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.value_btc))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.revenue))])])
-  }))])])])]) : _vm._e(), _vm._v(" "), (_vm.error == 0) ? _c('div', [(_vm.sellPoolItems == 0) ? _c('div', {
+  }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.sellPoolItems), function(item) {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(item.date) + "\n\n                                        "), _c('div', {
+      staticClass: "collapse",
+      attrs: {
+        "id": 'buy-pool-' + item.id
+      }
+    }, [_c('ul', {
+      staticClass: "list-group"
+    }, _vm._l((item.buy_pool), function(buyItem) {
+      return _c('li', {
+        staticClass: "list-group-item"
+      }, [_vm._v("\n                                                    Date: " + _vm._s(buyItem.date)), _c('br'), _vm._v(" Volume: " + _vm._s(buyItem.volume_taken)), _c('br'), _vm._v(" Value BTC: " + _vm._s(buyItem.value_btc)), _c('br'), _vm._v(" Value Fiat: " + _vm._s(buyItem.value_fiat)), _c('br')])
+    }))])]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.platform_id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.type))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.source_currency) + "/" + _vm._s(item.target_currency))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.volume_taken))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.buy_value))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.value_btc))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.revenue))]), _vm._v(" "), _c('td', [_c('a', {
+      staticClass: "btn btn-primary",
+      attrs: {
+        "data-toggle": "collapse",
+        "href": '#buy-pool-' + item.id,
+        "aria-expanded": "false",
+        "aria-controls": "collapseExample"
+      }
+    }, [_vm._v("\n                                            Show Buy Pool\n                                        ")])])])
+  }))])])]) : _vm._e()]), _vm._v(" "), (_vm.error == 0) ? _c('div', [(_vm.sellPoolItems == 0) ? _c('div', {
     staticClass: "alert alert-warning"
-  }, [_c('p', [_vm._v("\n            Please Wait\n          ")])]) : _vm._e()]) : _vm._e(), _vm._v(" "), (_vm.error != 0) ? _c('div', {
+  }, [_c('p', [_vm._v("\n                        Please Wait\n                    ")])]) : _vm._e()]) : _vm._e(), _vm._v(" "), (_vm.error != 0) ? _c('div', {
     staticClass: "alert alert-danger"
-  }, [_c('p', [_vm._v("\n          " + _vm._s(_vm.error) + "\n        ")])]) : _vm._e()])])])
-},staticRenderFns: []}
+  }, [_c('p', [_vm._v("\n                    " + _vm._s(_vm.error) + "\n                ")])]) : _vm._e()])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('thead', [_c('tr', [_c('th', [_vm._v("Date")]), _vm._v(" "), _c('th', [_vm._v("platformId")]), _vm._v(" "), _c('th', [_vm._v("Type")]), _vm._v(" "), _c('th', [_vm._v("Currency Pair")]), _vm._v(" "), _c('th', [_vm._v("volumes")]), _vm._v(" "), _c('th', [_vm._v("Buy Value")]), _vm._v(" "), _c('th', [_vm._v("Sell Value")]), _vm._v(" "), _c('th', [_vm._v("Revenue")]), _vm._v(" "), _c('th', [_vm._v("Buy Pool")])])])
+}]}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
