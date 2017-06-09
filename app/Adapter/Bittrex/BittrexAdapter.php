@@ -51,7 +51,7 @@ class BittrexAdapter implements \App\Adapter\AdapterInterface
                 $type,
                 $sourceCurrency = $currencyPair[0],
                 $targetCurrency = $currencyPair[1],
-                $rate = $item->Price,
+                $rate = $item->PricePerUnit,
                 $volume = $item->Quantity,
                 $feeFiat = 0,
                 $feeCoin = 0,
