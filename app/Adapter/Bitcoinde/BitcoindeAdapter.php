@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Driver\Bitcoinde;
+namespace App\Adapter\Bitcoinde;
 
 use \Illuminate\Support\Collection;
 use \App\Trade;
 use \Carbon\Carbon;
 
-class BitcoindeDriver implements \App\Driver\DriverInterface
+class BitcoindeAdapter implements \App\Adapter\AdapterInterface
 {
     /**
      * Connector to Bitcon.de
@@ -144,7 +144,7 @@ class BitcoindeDriver implements \App\Driver\DriverInterface
     public function getCoinVolume($currencyKey) : float
     {
         if ($currencyKey != 'BTC') {
-            throw new \Exception('Bitcoin.de driver only supports the currency for volume request. "BTC".' . $currencyKey . ' is not allowed.');
+            throw new \Exception('Bitcoin.de adapter only supports the currency for volume request. "BTC".' . $currencyKey . ' is not allowed.');
         }
 
         $result = $this->request(Connector::METHOD_SHOW_ACCOUNT_INFO);

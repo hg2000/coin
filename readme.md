@@ -25,8 +25,8 @@ Gives an overview of your crypto trading activities
 
 ## Add another crypto trading plattform
 
-1. Create a class which implements the `DriverInterface` from `App\Driver\DriverInterface.php`. See `Bitcoinde` and `Poloniex` implementations as examples.
-2. Add the plattform credentials in `config/app.php` in the "driver" section
-3. Add Driver to `api.active` config (in `.env` or `config.app.php`)
+1. Create a class which implements the `AdapterInterface` from `App\Adapter\AdapterInterface.php`. See `Bitcoinde` and `Poloniex` implementations as examples.
+2. Add the plattform credentials in `config/app.php` in the "adapter" section
+3. Add Adapter to `api.active` config (in `.env` or `config.app.php`)
 
-You may test your driver class by creating a test which extends the `AbstractDriverTest` class under `tests/Integration`.
+You may test your adapter class by creating a test which extends the `AbstractAdapterTest` class under `tests/Integration`.

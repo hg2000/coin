@@ -4,6 +4,7 @@ namespace App\Service;
 use \App;
 use \App\Trade;
 use \App\Rate;
+use \App\TradePool;
 use \App\Service\Helper;
 use \Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
@@ -133,10 +134,10 @@ class TradingService
             }
         }
 
-        $drivers = $this->getActiveDrivers();
+        $adapters = $this->getActiveAdapters();
 
-        foreach ($drivers as $driver) {
-            $trades = $driver->getTradeHistory($from, Carbon::now());
+        foreach ($adapters as $adapter) {
+            $trades = $adapter->getTradeHistory($from, Carbon::now());
             foreach ($trades as $trade) {
                 $trade->created_at = Carbon::now();
                 $trade->updated_at = Carbon::now();
@@ -327,10 +328,10 @@ class TradingService
      */
     public function getCurrentVolumes()
     {
-        $drivers = $this->getActiveDrivers();
+        $adapters = $this->getActiveAdapters();
         $allVolumes = collect();
-        foreach ($drivers as $driver) {
-            $volumes = $driver->getCoinVolumes();
+        foreach ($adapters as $adapter) {
+            $volumes = $adapter->getCoinVolumes();
             foreach ($volumes as $key => $value) {
                 if ($allVolumes->has($key)) {
                     $allVolumes[$key] = $allVolumes[$key] + $value;
@@ -353,12 +354,12 @@ class TradingService
      */
     public function getCurrentRate($currencyKeySource, $currencyKeyTarget)
     {
-        $drivers = $this->getActiveDrivers();
+        $adapters = $this->getActiveAdapters();
 
         $hit = false;
         $resultRate = 0;
-        foreach ($drivers as $driver) {
-            $rate = $driver->getCurrentRate($currencyKeySource, $currencyKeyTarget);
+        foreach ($adapters as $adapter) {
+            $rate = $adapter->getCurrentRate($currencyKeySource, $currencyKeyTarget);
             if ($rate != -1) {
                 $hit = 1;
                 if ($resultRate !== 0) {
@@ -420,20 +421,20 @@ class TradingService
     }
 
     /**
-     * Returns instances of all active driver classes
+     * Returns instances of all active adapter classes
      * @return array
      */
-    public function getActiveDrivers()
+    public function getActiveAdapters()
     {
         $apis = explode(',', config('api.active'));
-        $drivers = [];
+        $adapters = [];
         foreach ($apis as $apiKey) {
-            $conf = config('api.drivers.' . $apiKey);
-            $driver = App::make($conf['driverClass'], [$conf['key'], $conf['secret']]);
-            $driver->addWatchList(explode(',', config('api.watchList')));
-            $drivers[] = $driver;
+            $conf = config('api.adapters.' . $apiKey);
+            $adapter = App::make($conf['adapterClass'], [$conf['key'], $conf['secret']]);
+            $adapter->addWatchList(explode(',', config('api.watchList')));
+            $adapters[] = $adapter;
         }
-        return $drivers;
+        return $adapters;
     }
 
     public function getSellVolume($sourceCurrencyKey, $targetCurrencyKey)
@@ -495,7 +496,7 @@ class TradingService
 
 
     /**
-     * Requests all current rates from the api drivers
+     * Requests all current rates from the api adapters
      * and stores them in the db
      * @return \App\Rate
      */
@@ -528,6 +529,25 @@ class TradingService
         return $rate;
     }
 
+    public function getSellPool($key) {
+
+        $trades = $this->getTradeHistory(null, null, $key);
+
+        $trades = $trades->sortBy('date');
+        $allSellTrades = $trades->filter(function ($item) {
+            return ($item->type == 'sell');
+        })->sortByDesc('date');
+        $allBuyTrades = $trades->diff($allSellTrades);
+        while (!$allSellTrades->isEmpty()) {
+            $sellTrade = $allSellTrades->pop();
+            $tradePool = new TradePool($sellTrade, $allBuyTrades);
+        }
+
+
+
+    }
+
+/*
     public function getSellPool($key)
     {
         $trades = $this->getTradeHistory(null, null, $key);
@@ -575,7 +595,7 @@ class TradingService
         }
         return $sellResultPool;
     }
-
+*/
 
     public function getcurrentBalanceInfo()
     {

@@ -1,6 +1,6 @@
 <?php
 
-namespace APP\Driver\Bitcoinde;
+namespace APP\Adapter\Bitcoinde;
 
 use \Exception;
 

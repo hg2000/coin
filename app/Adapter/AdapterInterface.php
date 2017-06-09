@@ -1,9 +1,9 @@
 <?php
-namespace App\Driver;
+namespace App\Adapter;
 
 use \Illuminate\Support\Collection;
 
-interface DriverInterface
+interface AdapterInterface
 {
 
 

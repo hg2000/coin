@@ -3521,6 +3521,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['fiatsymbol', 'fiat'],
@@ -23568,7 +23574,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, _vm._l((item.buy_pool), function(buyItem) {
       return _c('li', {
         staticClass: "list-group-item"
-      }, [_vm._v("\n                                                    Date: " + _vm._s(buyItem.date)), _c('br'), _vm._v(" Volume: " + _vm._s(buyItem.volume_taken)), _c('br'), _vm._v(" Value BTC: " + _vm._s(buyItem.value_btc)), _c('br'), _vm._v(" Value Fiat: " + _vm._s(buyItem.value_fiat)), _c('br')])
+      }, [_c('strong', [_vm._v(_vm._s(buyItem.volume_taken) + " taken from buy pool trade from " + _vm._s(buyItem.date) + ".")]), _c('br'), _vm._v("\n                                                    Original Pool Volume: " + _vm._s(buyItem.volume_before)), _c('br'), _vm._v("\n                                                    Remaining in Pool: " + _vm._s(buyItem.volume)), _c('br'), _vm._v(" "), _c('br'), _vm._v("\n                                                    Value (BTC): " + _vm._s(buyItem.value_taken_btc)), _c('br'), _vm._v("\n                                                    Purchase Value BTC:  " + _vm._s(buyItem.purchase_value_taken_btc)), _c('br'), _vm._v("\n                                                    Revenue BTC:  " + _vm._s(buyItem.revenue_taken_btc)), _c('br')])
     }))])]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.platform_id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.type))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.source_currency) + "/" + _vm._s(item.target_currency))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.volume_taken))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.buy_value))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.value_btc))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.revenue))]), _vm._v(" "), _c('td', [_c('a', {
       staticClass: "btn btn-primary",
       attrs: {

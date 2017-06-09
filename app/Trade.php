@@ -31,7 +31,6 @@ class Trade extends Model implements TradeInterface
         $this->setAttribute('original_volume', $volume);
         $this->setAttribute('fee_fiat', $feeFiat);
         $this->setAttribute('fee_coin', $feeCoin);
-
     }
 
     public function getVolumeValueBTCAttribute()
@@ -81,6 +80,7 @@ class Trade extends Model implements TradeInterface
         }
 
         $remainingBuyVolume = $buyTrade->volume - $this->volume;
+        $buyTrade->setAttribute('volume_before', $buyTrade->volume);
         if ($remainingBuyVolume >= 0) {
             $buyTrade->setAttribute('volume_taken', $this->volume);
             $buyTrade->volume = $remainingBuyVolume;
@@ -93,6 +93,10 @@ class Trade extends Model implements TradeInterface
             $this->volume = $remainingBuyVolume * -1;
         }
 
+        $buyTrade->setAttribute('purchase_value_taken_btc', $buyTrade->rate * $buyTrade->volume_taken);
+        $buyTrade->setAttribute('purchase_value_taken_fiat', $buyTrade->rate * $buyTrade->volume_taken * $buyTrade->purchase_rate_fiat_btc);
+        $buyTrade->setAttribute('value_taken_btc',  $buyTrade->volume_taken * $this->rate);
+        $buyTrade->setAttribute('revenue_taken_btc',  $buyTrade->value_taken_btc - $buyTrade->purchase_value_taken_btc);
 
         if ($this->getAttribute('buy_pool')) {
             $this->buy_pool->push($buyTrade);
@@ -101,7 +105,6 @@ class Trade extends Model implements TradeInterface
             $buyPool->push($buyTrade);
             $this->setAttribute('buy_pool', $buyPool);
         }
-
         return $buyTrade;
     }
 
@@ -139,5 +142,38 @@ class Trade extends Model implements TradeInterface
         $this->setAttribute('revenue', $this->volume_taken * $this->rate - $this->buy_value) ;
 
         return $this;
+    }
+
+
+    /**
+     * Reduces the volume by the given amount and returns the transfer volume
+     *
+     * @param  float $volume
+     * @return float    transfer volume
+     */
+    public function takeVolume($volume) {
+        if (!$this->type == 'buy') {
+            throw new \Exception('Trying to take volume from trade which is not of type "buy"');
+        }
+        $this->setAttribute('volume_before_taken', $this->volume);
+        $this->setAttribute('volume_taken', $volume);
+        $this->volume -= $volume;
+        if ($this->volume < 0 ){
+            $transferVolume = $this->volume *-1;
+            $this->volume = 0;
+        } else {
+            $transferVolume = 0;
+        }
+
+        $this->value_btc = $this->volume * $this->rate;
+        $this->value_fiat = $this->volume * $this->rate * $this->purchase_rate_fiat_btc;
+
+        $this->purchase_value_taken_btc = $this->volume_taken * $this->rate;
+        $this->purchase_value_taken_fiat = $this->volume * $this->rate * $this->purchase_rate_fiat_btc;
+
+        return $transferVolume;
+
+
+
     }
 }

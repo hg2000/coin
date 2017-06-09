@@ -1,5 +1,5 @@
 <?php
-namespace App\Driver\Poloniex;
+namespace App\Adapter\Poloniex;
 
     /**
      *  Based on https://pastebin.com/iuezwGRZ

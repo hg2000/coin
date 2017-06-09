@@ -6,25 +6,21 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-use \App\Driver\DriverInterface;
-use \App\Driver\Bitcoinde\BitcoindeDriver;
+use \App\Adapter\AdapterInterface;
+use \App\Adapter\Bitcoinde\BitcoindeAdapter;
 
-class BitcoindeDriverTest extends AbstractDriverTest
+class BitcoindeAdapterTest extends AbstractAdapterTest
 {
     /**
-    * @var driverInterface
+    * @var adapterInterface
     */
-    protected $driver;
+    protected $adapter;
 
     public function __construct()
     {
         parent::__construct();
-        $this->setDriver(new BitcoindeDriver(config('connections.bitcoinde.key'), config('connections.bitcoinde.secret')));
+        $this->setAdapter(new BitcoindeAdapter(config('api.adapters.bitcoinde.key'), config('api.adapters.bitcoinde.secret')));
         $this->currency1 = 'BTC';
         $this->currency2 = 'EUR';
     }
-
-
-
-
 }

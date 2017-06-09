@@ -6,6 +6,7 @@ return  [
         'cacheDuration' => env('API.VOLUMES.CACHE.DURATION ') ?? 15
     ],
     'tradeHistory' => [
+        'enableUpdate' => env('API.TRADE_HISTORY.ENABLE_UPDATE') ?? true,
         'forceCompleteRefresh' => env('API.TRADE_HISTORY.FORCE_REFRESH') ?? false,
         'cacheDuration' => env('API.TRADE_HISTORY.CACHE.DURATION') ?? 15,
         'cache' => env('API.TRADE_HISTORY.ENABLE_UPDATE') ?? true
@@ -14,16 +15,21 @@ return  [
     'fiatSymbol' => env('API.FIAT_CURRENCY_SYMBOL', '€'),
     'watchList' => env('API.WATCHLIST', []),
     'dateCorrections' => env('DATE_CORRECTIONS'),
-    'drivers' => [
+    'adapters' => [
         'poloniex' => [
             'key' => env('API.POLONIEX.KEY'),
             'secret' => env('API.POLONIEX.SECRET'),
-            'driverClass' => App\Driver\Poloniex\PoloniexDriver::class
+            'adapterClass' => App\Adapter\Poloniex\PoloniexAdapter::class
         ],
         'bitcoinde' => [
             'key' => env('API.BITCOINDE.KEY'),
             'secret' => env('API.BITCOINDE.SECRET'),
-            'driverClass' => App\Driver\Bitcoinde\BitcoindeDriver::class
+            'adapterClass' => App\Adapter\Bitcoinde\BitcoindeAdapter::class
+        ],
+        'bittrex' => [
+            'key' => env('API.BITTREX.KEY'),
+            'secret' => env('API.BITTREX.SECRET'),
+            'adapterClass' => App\Adapter\Bittrex\BittrexAdapter::class
         ],
     ],
     'alertChangeRate' => env('ALERT_CHANGE_RATE') ?? 10,

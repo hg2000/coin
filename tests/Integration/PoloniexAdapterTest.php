@@ -6,20 +6,20 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-use \App\Driver\DriverInterface;
-use \App\Driver\Poloniex\PoloniexDriver;
+use \App\Adapter\AdapterInterface;
+use \App\Adapter\Poloniex\PoloniexAdapter;
 
-class PoloniexDriverTest extends AbstractDriverTest
+class PoloniexAdapterTest extends AbstractAdapterTest
 {
     /**
-    * @var driverInterface
+    * @var adapterInterface
     */
-    protected $driver;
+    protected $adapters;
 
     public function __construct()
     {
         parent::__construct();
-        $this->setDriver(new PoloniexDriver(config('connections.poloniex.key'), config('connections.poloniex.secret')));
+        $this->setAdapter(new PoloniexAdapter(config('api.adapters.poloniex.key'), config('api.adapters.poloniex.secret')));
         $this->currency1 = 'BTC';
         $this->currency2 = 'MAID';
     }

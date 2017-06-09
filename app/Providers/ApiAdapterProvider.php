@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-class ApiDriverProvider extends ServiceProvider
+class ApiAdapterProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.
@@ -26,10 +26,10 @@ class ApiDriverProvider extends ServiceProvider
         $apis = explode(',', config('api.active'));
 
         foreach ($apis as $apiKey) {
-            $conf = config('api.drivers.' . $apiKey);
+            $conf = config('api.adapters.' . $apiKey);
             if ($conf) {
-                $this->app->singleton($conf['driverClass'], function ($app) use ($conf) {
-                    return new $conf['driverClass']($conf['key'], $conf['secret']);
+                $this->app->singleton($conf['adapterClass'], function ($app) use ($conf) {
+                    return new $conf['adapterClass']($conf['key'], $conf['secret']);
                 });
             }
         }

@@ -101,10 +101,16 @@ class ApiController extends BaseController
     public function getCoinDetail($key)
     {
         try {
-            $sellPool = $this->trading->getSellPool($key);
+            
+            $sellPool = $this->trading->getSellPool($key)->sortByDesc('date');
+
+            // Necessery because otherwise ordering falls bas to original order while iterating in the template
+            foreach($sellPool as $item) {
+                $result[] = $item;
+            }
             return response()->json(
                 [
-                    'sellPool' => $sellPool
+                    'sellPool' => $result
                 ]
             );
         } catch (\Exception $e) {

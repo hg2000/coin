@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Driver\Poloniex;
+namespace App\Adapter\Poloniex;
 
 use \Illuminate\Support\Collection;
 use \App\Trade;
 use \Carbon\Carbon;
 
-class PoloniexDriver implements \App\Driver\DriverInterface
+class PoloniexAdapter implements \App\Adapter\AdapterInterface
 {
 
     protected $rates;
@@ -42,6 +42,7 @@ class PoloniexDriver implements \App\Driver\DriverInterface
             if ($currency != 'BTC') {
 
                 $items = $this->connector->get_my_trade_history('BTC_' . $currency, $from->getTimestamp(), $to->getTimestamp());
+
                 if (isset($items['error'])) {
                     throw new \Exception('Poloniex API error: ' . $items['error']);
                 }
@@ -118,7 +119,7 @@ class PoloniexDriver implements \App\Driver\DriverInterface
     public function getCoinVolume($currencyKey) : float
     {
         $volumes = $this->getCoinVolumes();
-        if (!$volumes->has($currencyKey)) {
+        if ($volumes->has($currencyKey)) {
             return (float)$volumes->get($currencyKey);
         } else {
             return 0;
@@ -133,7 +134,7 @@ class PoloniexDriver implements \App\Driver\DriverInterface
     {
         if (!$this->volumes) {
             $balances = $this->connector->get_balances();
-            
+
             if (isset($balances['error'])) {
                 throw new \Exception('Poloniex API error: ' . $balances['error']);
             }

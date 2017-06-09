@@ -7,12 +7,12 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Collection;
 
-use \App\Driver\DriverInterface;
+use \App\Adapter\AdapterInterface;
 use \App\TradeInterface;
-use \App\Driver\Bitcoinde\BitcoindeDriver;
+use \App\Adapter\Bitcoinde\BitcoindeAdapter;
 use \Carbon\Carbon;
 
-abstract class AbstractDriverTest extends TestCase
+abstract class AbstractAdapterTest extends TestCase
 {
 
     use \Tests\CreatesApplication;
@@ -27,18 +27,18 @@ abstract class AbstractDriverTest extends TestCase
         $this->createApplication();
     }
 
-    public function setDriver(DriverInterface $driver)
+    public function setAdapter(AdapterInterface $adapter)
     {
-        $this->driver = $driver;
+        $this->adapter = $adapter;
         return $this;
     }
     /**
      * @test
      */
-    public function a_driver_returns_a_rate_for_a_currency_pair()
+    public function a_adapter_returns_a_rate_for_a_currency_pair()
     {
 
-        $rate = $this->driver->getCurrentRate($this->currency1, $this->currency2);
+        $rate = $this->adapter->getCurrentRate($this->currency1, $this->currency2);
         $this->assertTrue(is_numeric($rate));
     }
 
@@ -46,19 +46,19 @@ abstract class AbstractDriverTest extends TestCase
     /**
      * @test
      */
-    public function a_driver_returns_the_avaible_coin_volume_of_a_currency()
+    public function a_adapter_returns_the_avaible_coin_volume_of_a_currency()
     {
-            $volume = $this->driver->getCoinVolume($this->currency1);
+            $volume = $this->adapter->getCoinVolume($this->currency1);
             $this->assertTrue(is_numeric($volume));
     }
 
     /**
      * @test
      */
-    public function a_driver_returns_a_trade_history()
+    public function a_adapter_returns_a_trade_history()
     {
 
-        $trades = $this->driver->getTradeHistory(Carbon::create(2010), Carbon::now());
+        $trades = $this->adapter->getTradeHistory(Carbon::create(2010), Carbon::now());
         $trade = $trades->first();
         $this->assertTrue($trade instanceof TradeInterface);
     }
@@ -66,9 +66,9 @@ abstract class AbstractDriverTest extends TestCase
     /**
      * @test
      */
-    public function a_driver_returns_a_collection_of_currency_volume_pairs()
+    public function a_adapter_returns_a_collection_of_currency_volume_pairs()
     {
-        $volumes = $this->driver->getCoinVolumes();
+        $volumes = $this->adapter->getCoinVolumes();
         $this->assertTrue($volumes instanceof Collection);
         $keys = $volumes->keys()->first();
         $this->assertTrue(
@@ -82,9 +82,9 @@ abstract class AbstractDriverTest extends TestCase
     /**
      * @test
      */
-    public function a_driver_returns_a_current_rate_or_minus_one()
+    public function a_adapter_returns_a_current_rate_or_minus_one()
     {
-        $rate = $this->driver->getCurrentRate('dcjdcbsdhe3dhbfv', 'cdsjcnsdcezf');
+        $rate = $this->adapter->getCurrentRate('dcjdcbsdhe3dhbfv', 'cdsjcnsdcezf');
         $this->assertEquals($rate, -1);
     }
 }

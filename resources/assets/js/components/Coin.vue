@@ -27,7 +27,13 @@
                                         <div class="collapse" :id="'buy-pool-' + item.id">
                                             <ul class="list-group">
                                                 <li class="list-group-item" v-for="buyItem in item.buy_pool">
-                                                    Date: {{ buyItem.date }}<br> Volume: {{ buyItem.volume_taken }}<br> Value BTC: {{ buyItem.value_btc }}<br> Value Fiat: {{ buyItem.value_fiat }}<br>
+                                                    <strong>{{ buyItem.volume_taken }} taken from buy pool trade from {{ buyItem.date }}.</strong><br>
+                                                    Original Pool Volume: {{ buyItem.volume_before }}<br>
+                                                    Remaining in Pool: {{ buyItem.volume }}<br>
+<br>
+                                                    Value (BTC): {{ buyItem.value_taken_btc }}<br>
+                                                    Purchase Value BTC:  {{ buyItem.purchase_value_taken_btc }}<br>
+                                                    Revenue BTC:  {{ buyItem.revenue_taken_btc }}<br>
                                                 </li>
                                             </ul>
                                         </div>
