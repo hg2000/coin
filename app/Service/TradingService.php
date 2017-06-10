@@ -529,22 +529,28 @@ class TradingService
         return $rate;
     }
 
-    public function getSellPool($key) {
+    public function getSellPool($sourceCurrency, $targetCurrency) {
 
-        $trades = $this->getTradeHistory(null, null, $key);
-
+        $trades = $this->getTradeHistory(null, null, $sourceCurrency);
         $trades = $trades->sortBy('date');
-        $allSellTrades = $trades->filter(function ($item) {
-            return ($item->type == 'sell');
-        })->sortByDesc('date');
-        $allBuyTrades = $trades->diff($allSellTrades);
+
+        $allSellTrades = $trades->filter(function ($item) use ($sourceCurrency, $targetCurrency) {
+            return ($item->type == 'sell' && $item->source_currency == $sourceCurrency && $item->target_currency == $targetCurrency);
+        });
+
+        $allBuyTrades = $trades->filter(function($item) use ($sourceCurrency, $targetCurrency) {
+            return ($item->type == 'buy' && $item->target_currency == $sourceCurrency && $item->source_currency == $targetCurrency);
+        });
+
+
+
+        $sellPool = collect();
         while (!$allSellTrades->isEmpty()) {
             $sellTrade = $allSellTrades->pop();
             $tradePool = new TradePool($sellTrade, $allBuyTrades);
+            $sellPool->push($tradePool);
         }
-
-
-
+        return $sellPool;
     }
 
 /*

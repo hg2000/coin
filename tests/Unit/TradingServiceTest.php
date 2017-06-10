@@ -145,61 +145,62 @@ class TradingServiceTest extends \Tests\TestCase
      */
     public function getSellPool()
     {
-
         $trading = App::make(TradingService::class);
+
         DB::table('trades')->truncate();
-        DB::table('trades')->insert($this->buyTrade(2, 100));
-        DB::table('trades')->insert($this->sellTrade(1, 50));
+        DB::table('trades')->insert($this->buyTrade(2, 100, 'BTC', 'GAME', 100));
+        DB::table('trades')->insert($this->sellTrade(1, 50, 'GAME', 'BTC', 100));
 
-
-        $sellPool = $trading->getSellPool('BTC');
-
+        $sellPool = $trading->getSellPool('GAME', 'BTC');
         $this->assertEquals($sellPool->count(), 1);
-        $sellTrade = $sellPool->pop();
-        $this->assertEquals(100, $sellTrade->avg_buy_rate);
-        $this->assertEquals(-50, $sellTrade->revenue);
+        $sellPoolItem = $sellPool->pop();
+        $this->assertEquals(-50, $sellPoolItem->sell_trade->revenue_btc);
+        $this->assertEquals(-5000, $sellPoolItem->sell_trade->revenue_fiat);
 
         DB::table('trades')->truncate();
-        DB::table('trades')->insert($this->buyTrade(1, 100));
-        DB::table('trades')->insert($this->buyTrade(1, 200));
-        DB::table('trades')->insert($this->sellTrade(2, 200));
+        DB::table('trades')->insert($this->buyTrade(1, 100, 'BTC', 'GAME', 100));
+        DB::table('trades')->insert($this->buyTrade(1, 200, 'BTC', 'GAME', 100));
+        DB::table('trades')->insert($this->sellTrade(2, 200, 'GAME','BTC', 100));
 
-        $sellPool = $trading->getSellPool('BTC');
-        $this->assertEquals($sellPool->count(), 1);
-        $sellTrade = $sellPool->pop();
-        $this->assertEquals($sellTrade->avg_buy_rate, 150);
-        $this->assertEquals($sellTrade->revenue, 100);
+        $sellPool = $trading->getSellPool('GAME', 'BTC');
+        $sellPoolItem = $sellPool->pop();
+        $this->assertEquals(100, $sellPoolItem->sell_trade->revenue_btc);
 
         DB::table('trades')->truncate();
-        DB::table('trades')->insert($this->buyTrade(1, 100));
-        DB::table('trades')->insert($this->buyTrade(1, 200));
-        DB::table('trades')->insert($this->sellTrade(1));
+        DB::table('trades')->insert($this->buyTrade(1, 300, 'BTC', 'GAME', 100));
+        DB::table('trades')->insert($this->buyTrade(1, 200, 'BTC', 'GAME', 100));
+        DB::table('trades')->insert($this->buyTrade(1, 100, 'BTC', 'GAME', 100));
+        DB::table('trades')->insert($this->sellTrade(1, 200, 'GAME','BTC', 100));
+        DB::table('trades')->insert($this->sellTrade(2, 200, 'GAME','BTC', 100));
 
-        $sellPool = $trading->getSellPool('BTC');
-        $this->assertEquals($sellPool->count(), 1);
-        $sellTrade = $sellPool->pop();
-        $this->assertEquals($sellTrade->avg_buy_rate, 100);
+        $sellPool = $trading->getSellPool('GAME', 'BTC');
+        $sellPoolItem = $sellPool->pop();
+        $this->assertEquals(-100, $sellPoolItem->sell_trade->revenue_btc);
+        $sellPoolItem = $sellPool->pop();
+        $this->assertEquals(100, $sellPoolItem->sell_trade->revenue_btc);
 
-        DB::table('trades')->truncate();
-        DB::table('trades')->insert($this->buyTrade(1, 200));
-        DB::table('trades')->insert($this->sellTrade(2));
-
-        $sellPool = $trading->getSellPool('BTC');
-        $this->assertEquals($sellPool->count(), 1);
-        $sellTrade = $sellPool->pop();
-        $this->assertEquals($sellTrade->avg_buy_rate, 100);
 
         DB::table('trades')->truncate();
-        DB::table('trades')->insert($this->buyTrade(1, 200));
-        DB::table('trades')->insert($this->sellTrade(2, 100));
-        DB::table('trades')->insert($this->buyTrade(1, 200));
-        DB::table('trades')->insert($this->sellTrade(2, 100));
-        DB::table('trades')->insert($this->buyTrade(1, 100));
+        DB::table('trades')->insert($this->buyTrade(1, 100, 'BTC', 'GAME', 100));
+        DB::table('trades')->insert($this->sellTrade(2, 100, 'GAME', 'BTC', 100));
+        $sellPool = $trading->getSellPool('GAME', 'BTC');
+        $sellPoolItem = $sellPool->pop();
+        $this->assertEquals(100, $sellPoolItem->sell_trade->revenue_btc);
 
-        $sellPool = $trading->getSellPool('BTC');
-        $this->assertEquals($sellPool->count(), 2);
-        $sellTrade = $sellPool->pop();
-        $this->assertEquals($sellTrade->avg_buy_rate, 100);
+        DB::table('trades')->truncate();
+        DB::table('trades')->insert($this->buyTrade(4, 100, 'EUR', 'BTC', 100));
+        DB::table('trades')->insert($this->buyTrade(1, 200, 'BTC', 'GAME', 100));
+        DB::table('trades')->insert($this->buyTrade(1, 300, 'BTC', 'MAID', 100));
+        DB::table('trades')->insert($this->sellTrade(1, 200, 'BTC', 'EUR', 100));
+        DB::table('trades')->insert($this->sellTrade(1, 400, 'GAME', 'BTC', 100));
+        $sellPool = $trading->getSellPool('GAME', 'BTC');
+        $sellPoolItem = $sellPool->pop();
+        $this->assertEquals(200, $sellPoolItem->sell_trade->revenue_btc);
+
+        $sellPool = $trading->getSellPool('BTC', 'EUR');
+        $sellPoolItem = $sellPool->pop();
+        $this->assertEquals(0, $sellPoolItem->sell_trade->revenue_btc);
+        $this->assertEquals(100, $sellPoolItem->sell_trade->revenue_fiat);
     }
 
 
