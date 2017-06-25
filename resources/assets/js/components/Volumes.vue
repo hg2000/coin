@@ -50,7 +50,7 @@
 
                   <td>{{ formatCoin(item.purchaseValueBtc) }}</td>
                   <td>{{ formatCoin(item.currentValueBtc) }}</td>
-                  <td>{{ formatCoin(item.revenueBtc) }}</td>
+                  <td>{{ formatCoin(item.currentRevenueBtc) }}</td>
                   <td class="border-right">{{ formatPercent(item.revenueRateBtc) }}</td>
 
                   <td>{{ formatFiat(item.purchaseValueFiat) }}</td>
@@ -74,7 +74,7 @@
                   <td></td>
                   <td>{{ formatCoin(sum.purchaseValueBtc)}} B</td>
                   <td>{{ formatCoin(sum.currentValueBtc) }} B</td>
-                  <td>{{ formatCoin(sum.tradingRevenueBtc) }} B</td>
+                  <td>{{ formatCoin(sum.currentRevenueBtc) }} B</td>
                   <td>{{ formatPercent(sum.tradingRevenueRateBtc) }}</td>
 
                   <td>{{ formatFiat(sum.purchaseValueFiat)}}</td>

@@ -80,15 +80,15 @@ class ApiController extends BaseController
             $sum['totalRevenueFiat'] = $sum['tradingRevenueFiat'] + $sum['currentValueFiat'];
             $sum['totalRevenueBtc'] = $sum['tradingRevenueBtc'] + $sum['currentValueBtc'];
 
-            if ($sum['tradingRevenueFiat'] > 0) {
-                $tradingRevenueRateFiat = 100 / $sum['tradingRevenueFiat'] * $sum['purchaseValueFiat'];
+            if ($sum['purchaseValueFiat'] > 0) {
+                $tradingRevenueRateFiat = 100 / $sum['purchaseValueFiat'] * $sum['currentRevenueFiat'];
             } else {
                 $tradingRevenueRateFiat = 0;
             }
             $sum['tradingRevenueRateFiat'] = $tradingRevenueRateFiat;
 
-            if ($sum['tradingRevenueBtc'] > 0) {
-                $tradingRevenueRateBtc = 100 / $sum['tradingRevenueBtc'] * $sum['tradingRevenueBtc'];
+            if ($sum['purchaseValueBtc'] > 0) {
+                $tradingRevenueRateBtc = 100 / $sum['purchaseValueBtc'] * $sum['currentRevenueBtc'];
             } else {
                 $tradingRevenueRateBtc = 0;
             }
