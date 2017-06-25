@@ -3806,6 +3806,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['fiatsymbol', 'fiat'],
@@ -23500,9 +23506,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "border-right"
   }, [_vm._v("Currency")]), _vm._v(" "), _c('th', [_vm._v("Volume")]), _vm._v(" "), _c('th', [_vm._v("Current Rate (Coin/BTC)")]), _vm._v(" "), _c('th', [_vm._v("Current Rate (Coin/" + _vm._s(_vm.fiat) + ")")]), _vm._v(" "), _c('th', [_vm._v("Rate Diff 1 Day (Coin/" + _vm._s(_vm.fiat) + ")")]), _vm._v(" "), _c('th', {
     staticClass: "border-right"
-  }, [_vm._v("Rate Diff 7 Days ago (Coin/" + _vm._s(_vm.fiat) + ")")]), _vm._v(" "), _c('th', [_vm._v("Avg purchase rate(Coin/" + _vm._s(_vm.fiat) + ")")]), _vm._v(" "), _c('th', [_vm._v("Avg purchase rate(BTC/COIN)")]), _vm._v(" "), _c('th', [_vm._v("Purchase Value (BTC)")]), _c('th', [_vm._v("Current Value (BTC)")]), _vm._v(" "), _c('th', {
+  }, [_vm._v("Rate Diff 7 Days ago (Coin/" + _vm._s(_vm.fiat) + ")")]), _vm._v(" "), _c('th', [_vm._v("Avg purchase rate(Coin/" + _vm._s(_vm.fiat) + ")")]), _vm._v(" "), _c('th', [_vm._v("Avg purchase rate(BTC/COIN)")]), _vm._v(" "), _c('th', [_vm._v("Purchase Value (BTC)")]), _c('th', [_vm._v("Current Value (BTC)")]), _vm._v(" "), _c('th', [_vm._v("Revenue (BTC)")]), _vm._v(" "), _c('th', {
     staticClass: "border-right"
-  }, [_vm._v("Revenue (BTC)")]), _vm._v(" "), _c('th', [_vm._v("Purchase value (" + _vm._s(_vm.fiat) + ")")]), _vm._v(" "), _c('th', [_vm._v("Current Value (" + _vm._s(_vm.fiat) + ")")]), _vm._v(" "), _c('th', [_vm._v("Revenue (" + _vm._s(_vm.fiat) + ")")]), _vm._v(" "), _c('th', [_vm._v("Revenue (%)")])])]), _vm._v(" "), _c('tbody', _vm._l((_vm.balances), function(item) {
+  }, [_vm._v("Revenue Rate (BTC)")]), _vm._v(" "), _c('th', [_vm._v("Purchase value (" + _vm._s(_vm.fiat) + ")")]), _vm._v(" "), _c('th', [_vm._v("Current Value (" + _vm._s(_vm.fiat) + ")")]), _vm._v(" "), _c('th', [_vm._v("Revenue (" + _vm._s(_vm.fiat) + ")")]), _vm._v(" "), _c('th', [_vm._v("Revenue (%)")]), _vm._v(" "), _c('th', [_vm._v("Chart")])])]), _vm._v(" "), _c('tbody', _vm._l((_vm.balances), function(item) {
     return _c('tr', [_c('td', {
       staticClass: "border-right"
     }, [_c('a', {
@@ -23513,12 +23519,17 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "border-right"
     }, [_vm._v(_vm._s(_vm.formatPercent(item.rateDiffSevenDaysAgoFiat)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(item.averagePurchaseRateCoinFiat)))]), _vm._v(" "), _c('td', {
       staticClass: "border-right"
-    }, [_vm._v(_vm._s(_vm.formatCoin(item.averagePurchaseRateBtcCoin)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(item.purchaseValueBtc)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(item.currentValueBtc)))]), _vm._v(" "), _c('td', {
+    }, [_vm._v(_vm._s(_vm.formatCoin(item.averagePurchaseRateBtcCoin)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(item.purchaseValueBtc)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(item.currentValueBtc)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(item.revenueBtc)))]), _vm._v(" "), _c('td', {
       staticClass: "border-right"
-    }, [_vm._v(_vm._s(_vm.formatCoin(item.revenueBTC)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(item.purchaseValueFiat)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(item.currentValueFiat)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(item.revenueFiat)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatPercent(item.revenueRate)))])])
+    }, [_vm._v(_vm._s(_vm.formatPercent(item.revenueRateBtc)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(item.purchaseValueFiat)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(item.currentValueFiat)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(item.revenueFiat)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatPercent(item.revenueRateFiat)))]), _vm._v(" "), _c('td', [_c('a', {
+      attrs: {
+        "href": item.chartUrl,
+        "target": "_blank"
+      }
+    }, [_vm._v("Link")])])])
   })), _vm._v(" "), _c('tbody', [_c('tr', {
     staticClass: "info"
-  }, [_c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(_vm.sum.purchaseValueFiat)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(_vm.sum.currentValueFiat)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(_vm.sum.currentRevenueFiat)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatPercent(_vm.sum.totalRevenueRate)))])])])])])])]) : _vm._e()]), _vm._v(" "), (_vm.error == 0) ? _c('div', [(_vm.sum == 0) ? _c('div', {
+  }, [_c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(_vm.sum.purchaseValueBtc)) + " B")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(_vm.sum.currentValueBtc)) + " B")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(_vm.sum.tradingRevenueBtc)) + " B")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatPercent(_vm.sum.tradingRevenueRateBtc)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(_vm.sum.purchaseValueFiat)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(_vm.sum.currentValueFiat)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(_vm.sum.currentRevenueFiat)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatPercent(_vm.sum.tradingRevenueRateFiat)))])])])])])])]) : _vm._e()]), _vm._v(" "), (_vm.error == 0) ? _c('div', [(_vm.sum == 0) ? _c('div', {
     staticClass: "alert alert-warning"
   }, [_c('p', [_vm._v("\n          Please Wait\n        ")])]) : _vm._e()]) : _vm._e(), _vm._v(" "), (_vm.error != 0) ? _c('div', {
     staticClass: "alert alert-danger"

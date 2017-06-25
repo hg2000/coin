@@ -70,7 +70,7 @@ class ApiController extends BaseController
                 'currentValueFiat' => $balances->pluck('currentValueFiat')->sum(),
 
             ];
-            $sum['totalRevenueBtc'] = $sum['tradingRevenueBtc'] + $sum['currentValueBtc'];
+
             $sum['purchaseValueFiat'] = $balances->pluck('purchaseValueFiat')->sum();
             $sum['purchaseValueBtc'] = $balances->pluck('purchaseValueBtc')->sum();
             $sum['currentRevenueBtc'] = $sum['currentValueBtc'] - $sum['purchaseValueBtc'];
@@ -80,13 +80,19 @@ class ApiController extends BaseController
             $sum['totalRevenueFiat'] = $sum['tradingRevenueFiat'] + $sum['currentValueFiat'];
             $sum['totalRevenueBtc'] = $sum['tradingRevenueBtc'] + $sum['currentValueBtc'];
 
-            if ($sum['purchaseValueFiat'] > 0) {
-                $totalRevenueRate = $sum['totalRevenueFiat'] / $sum['purchaseValueFiat'] * 100;
+            if ($sum['tradingRevenueFiat'] > 0) {
+                $tradingRevenueRateFiat = 100 / $sum['tradingRevenueFiat'] * $sum['purchaseValueFiat'];
             } else {
-                $totalRevenueRate = 0;
+                $tradingRevenueRateFiat = 0;
             }
+            $sum['tradingRevenueRateFiat'] = $tradingRevenueRateFiat;
 
-            $sum['totalRevenueRate'] = $totalRevenueRate;
+            if ($sum['tradingRevenueBtc'] > 0) {
+                $tradingRevenueRateBtc = 100 / $sum['tradingRevenueBtc'] * $sum['tradingRevenueBtc'];
+            } else {
+                $tradingRevenueRateBtc = 0;
+            }
+            $sum['tradingRevenueRateBtc'] = $tradingRevenueRateBtc;
 
             return response()
             ->json([
@@ -101,8 +107,8 @@ class ApiController extends BaseController
     public function getCoinDetail($key)
     {
         try {
-            
-            $sellPool = $this->trading->getSellPool($key)->sortByDesc('date');
+
+            $sellPool = $this->trading->getSellPool($key, 'BTC')->sortByDesc('date');
 
             // Necessery because otherwise ordering falls bas to original order while iterating in the template
             foreach($sellPool as $item) {

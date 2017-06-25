@@ -24,12 +24,14 @@
 
                   <th>Purchase Value (BTC)</td>
                   <th>Current Value (BTC)</th>
-                  <th class="border-right">Revenue (BTC)</th>
+                  <th>Revenue (BTC)</th>
+                  <th class="border-right">Revenue Rate (BTC)</th>
 
                   <th>Purchase value ({{ fiat}})</th>
                   <th>Current Value ({{ fiat }})</th>
                   <th>Revenue ({{ fiat }})</th>
                   <th>Revenue (%)</th>
+                  <th>Chart</th>
                 </tr>
               </thead>
 
@@ -48,12 +50,14 @@
 
                   <td>{{ formatCoin(item.purchaseValueBtc) }}</td>
                   <td>{{ formatCoin(item.currentValueBtc) }}</td>
-                  <td class="border-right">{{ formatCoin(item.revenueBTC) }}</td>
+                  <td>{{ formatCoin(item.revenueBtc) }}</td>
+                  <td class="border-right">{{ formatPercent(item.revenueRateBtc) }}</td>
 
                   <td>{{ formatFiat(item.purchaseValueFiat) }}</td>
                   <td>{{ formatFiat(item.currentValueFiat) }}</td>
                   <td>{{ formatFiat(item.revenueFiat) }}</td>
-                  <td>{{ formatPercent(item.revenueRate) }}</td>
+                  <td>{{ formatPercent(item.revenueRateFiat) }}</td>
+                  <td><a :href="item.chartUrl" target="_blank">Link</a></td>
 
                 </tr>
               </tbody>
@@ -68,13 +72,15 @@
 
                   <td></td>
                   <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
+                  <td>{{ formatCoin(sum.purchaseValueBtc)}} B</td>
+                  <td>{{ formatCoin(sum.currentValueBtc) }} B</td>
+                  <td>{{ formatCoin(sum.tradingRevenueBtc) }} B</td>
+                  <td>{{ formatPercent(sum.tradingRevenueRateBtc) }}</td>
+
                   <td>{{ formatFiat(sum.purchaseValueFiat)}}</td>
                   <td>{{ formatFiat(sum.currentValueFiat) }}</td>
                   <td>{{ formatFiat(sum.currentRevenueFiat) }}</td>
-                  <td>{{ formatPercent(sum.totalRevenueRate) }}</td>
+                  <td>{{ formatPercent(sum.tradingRevenueRateFiat) }}</td>
                 </tr>
               </tbody>
 

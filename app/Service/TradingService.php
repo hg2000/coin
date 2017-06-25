@@ -542,8 +542,6 @@ class TradingService
             return ($item->type == 'buy' && $item->target_currency == $sourceCurrency && $item->source_currency == $targetCurrency);
         });
 
-
-
         $sellPool = collect();
         while (!$allSellTrades->isEmpty()) {
             $sellTrade = $allSellTrades->pop();
@@ -668,6 +666,9 @@ class TradingService
             $item->put('currentValueFiat', $rateFiat * $volume);
             $item->put('currentValueBtc', $rateBtc * $volume);
 
+            $keyPair = ($currencyKey == 'BTC' ) ? 'BTC' . config('api.fiat') : $currencyKey . 'BTC';
+            $item->put('chartUrl', 'https://www.tradingview.com/chart/' . $keyPair . '/');
+
             // Average purchase rates
             if ($currencyKey == 'BTC') {
                 $item->put('averagePurchaseRateBtcCoin', 1);
@@ -690,14 +691,21 @@ class TradingService
                 $item->put('sellVolume', $this->getSellVolume($currencyKey, 'BTC'));
             }
             $item->put('revenueFiat', $item['currentValueFiat'] - $item['purchaseValueFiat']);
-            $item->put('revenueBTC', $item['currentValueBtc'] - $item['purchaseValueBtc']);
+            $item->put('revenueBtc', $item['currentValueBtc'] - $item['purchaseValueBtc']);
 
-            if ($item['purchaseValueFiat'] > 0) {
-                $revenueRate = (100 / $item['purchaseValueFiat'] * $item['revenueFiat']);
+            if ($item['purchaseValueBtc'] > 0) {
+                $revenueRateBtc = (100 / $item['purchaseValueBtc'] * $item['revenueBtc']);
             } else {
-                $revenueRate = 0;
+                $revenueRateBtc = 0;
             }
-            $item->put('revenueRate', $revenueRate);
+            $item->put('revenueRateBtc', $revenueRateBtc);
+            
+            if ($item['purchaseValueFiat'] > 0) {
+                $revenueRateFiat = (100 / $item['purchaseValueFiat'] * $item['revenueFiat']);
+            } else {
+                $revenueRateFiat = 0;
+            }
+            $item->put('revenueRateFiat', $revenueRateFiat);
             $balances->push($item);
 
         }
