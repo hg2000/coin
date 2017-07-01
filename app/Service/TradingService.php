@@ -542,12 +542,14 @@ class TradingService
             return ($item->type == 'buy' && $item->target_currency == $sourceCurrency && $item->source_currency == $targetCurrency);
         });
 
-        $sellPool = collect();
+        $sellPool = [];
         while (!$allSellTrades->isEmpty()) {
             $sellTrade = $allSellTrades->pop();
             $tradePool = new TradePool($sellTrade, $allBuyTrades);
-            $sellPool->push($tradePool);
+//TODO  Some attriibutes are not stored!
+            $sellPool[] = $tradePool;
         }
+
         return $sellPool;
     }
 
@@ -699,7 +701,7 @@ class TradingService
                 $revenueRateBtc = 0;
             }
             $item->put('revenueRateBtc', $revenueRateBtc);
-            
+
             if ($item['purchaseValueFiat'] > 0) {
                 $revenueRateFiat = (100 / $item['purchaseValueFiat'] * $item['revenueFiat']);
             } else {

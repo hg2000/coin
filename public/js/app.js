@@ -3519,14 +3519,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['fiatsymbol', 'fiat'],
@@ -3545,6 +3537,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }, function (response) {
                 _this.error = response.body;
             });
+        },
+        formatFiat: function formatFiat(n) {
+            return numeral(n).format('0,0.00') + " " + this.fiatsymbol;
+        },
+        formatCoin: function formatCoin(n) {
+            return numeral(n).format('0,0.0000');
+        },
+        formatPercent: function formatPercent(n) {
+            return numeral(n).format('0.00') + " %";
         }
     },
     mounted: function mounted() {
@@ -23575,33 +23576,33 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v("Trade History " + _vm._s(_vm.$route.params.id))]), _vm._v(" "), _c('p', [_c('table', {
     staticClass: "table table-striped table-responsive table-hover"
   }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.sellPoolItems), function(item) {
-    return _c('tr', [_c('td', [_vm._v(_vm._s(item.date) + "\n\n                                        "), _c('div', {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(item.sell_trade.date) + "\n\n                                    "), _c('div', {
       staticClass: "collapse",
       attrs: {
-        "id": 'buy-pool-' + item.id
+        "id": 'buy-pool-' + item.sell_trade.id
       }
     }, [_c('ul', {
       staticClass: "list-group"
-    }, _vm._l((item.buy_pool), function(buyItem) {
+    }, _vm._l((item.buy_trades), function(buyItem) {
       return _c('li', {
         staticClass: "list-group-item"
-      }, [_c('strong', [_vm._v(_vm._s(buyItem.volume_taken) + " taken from buy pool trade from " + _vm._s(buyItem.date) + ".")]), _c('br'), _vm._v("\n                                                    Original Pool Volume: " + _vm._s(buyItem.volume_before)), _c('br'), _vm._v("\n                                                    Remaining in Pool: " + _vm._s(buyItem.volume)), _c('br'), _vm._v(" "), _c('br'), _vm._v("\n                                                    Value (BTC): " + _vm._s(buyItem.value_taken_btc)), _c('br'), _vm._v("\n                                                    Purchase Value BTC:  " + _vm._s(buyItem.purchase_value_taken_btc)), _c('br'), _vm._v("\n                                                    Revenue BTC:  " + _vm._s(buyItem.revenue_taken_btc)), _c('br')])
-    }))])]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.platform_id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.type))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.source_currency) + "/" + _vm._s(item.target_currency))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.volume_taken))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.buy_value))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.value_btc))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.revenue))]), _vm._v(" "), _c('td', [_c('a', {
+      }, [_c('strong', [_vm._v(_vm._s(buyItem.volume_taken) + " taken from buy pool trade from " + _vm._s(buyItem.date) + ".")]), _c('br'), _vm._v(" Original Pool Volume: " + _vm._s(buyItem.volume_before)), _c('br'), _vm._v(" Remaining in Pool: " + _vm._s(buyItem.volume)), _c('br'), _vm._v(" "), _c('br'), _vm._v(" Value (BTC): " + _vm._s(buyItem.value_taken_btc)), _c('br'), _vm._v(" Purchase Value BTC: " + _vm._s(buyItem.purchase_value_taken_btc)), _c('br'), _vm._v(" Revenue BTC: " + _vm._s(buyItem.revenue_taken_btc)), _c('br')])
+    }))])]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.sell_trade.platform_id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.sell_trade.type))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.sell_trade.source_currency) + "/" + _vm._s(item.sell_trade.target_currency))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(item.sell_trade.volume)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(item.sell_trade.revenue_btc)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(item.sell_trade.revenue_fiat)))]), _vm._v(" "), _c('td', [_c('a', {
       staticClass: "btn btn-primary",
       attrs: {
         "data-toggle": "collapse",
-        "href": '#buy-pool-' + item.id,
+        "href": '#buy-pool-' + item.sell_trade.id,
         "aria-expanded": "false",
         "aria-controls": "collapseExample"
       }
     }, [_vm._v("\n                                            Show Buy Pool\n                                        ")])])])
   }))])])]) : _vm._e()]), _vm._v(" "), (_vm.error == 0) ? _c('div', [(_vm.sellPoolItems == 0) ? _c('div', {
     staticClass: "alert alert-warning"
-  }, [_c('p', [_vm._v("\n                        Please Wait\n                    ")])]) : _vm._e()]) : _vm._e(), _vm._v(" "), (_vm.error != 0) ? _c('div', {
+  }, [_c('p', [_vm._v("\n                    Please Wait\n                ")])]) : _vm._e()]) : _vm._e(), _vm._v(" "), (_vm.error != 0) ? _c('div', {
     staticClass: "alert alert-danger"
-  }, [_c('p', [_vm._v("\n                    " + _vm._s(_vm.error) + "\n                ")])]) : _vm._e()])])
+  }, [_c('p', [_vm._v("\n                " + _vm._s(_vm.error) + "\n            ")])]) : _vm._e()])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('thead', [_c('tr', [_c('th', [_vm._v("Date")]), _vm._v(" "), _c('th', [_vm._v("platformId")]), _vm._v(" "), _c('th', [_vm._v("Type")]), _vm._v(" "), _c('th', [_vm._v("Currency Pair")]), _vm._v(" "), _c('th', [_vm._v("volumes")]), _vm._v(" "), _c('th', [_vm._v("Buy Value")]), _vm._v(" "), _c('th', [_vm._v("Sell Value")]), _vm._v(" "), _c('th', [_vm._v("Revenue")]), _vm._v(" "), _c('th', [_vm._v("Buy Pool")])])])
+  return _c('thead', [_c('tr', [_c('th', [_vm._v("Date")]), _vm._v(" "), _c('th', [_vm._v("platformId")]), _vm._v(" "), _c('th', [_vm._v("Type")]), _vm._v(" "), _c('th', [_vm._v("Currency Pair")]), _vm._v(" "), _c('th', [_vm._v("volume")]), _vm._v(" "), _c('th', [_vm._v("Revenue BTC")]), _vm._v(" "), _c('th', [_vm._v("Revenue Fiat")])])])
 }]}
 module.exports.render._withStripped = true
 if (false) {
