@@ -118,6 +118,8 @@ return [
             'password' => env('REDIS_PASSWORD', null),
             'port' => env('REDIS_PORT', 6379),
             'database' => 0,
+            'scheme' => env('REDIS_SCHEME', 'tcp'),
+            'path' => env('REDIS_PATH', false)
         ],
 
     ],
