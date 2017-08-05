@@ -8,6 +8,7 @@ use \App\TradePool;
 use \App\Service\Helper;
 use \Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redis;
 
 class TradingService
 {
@@ -328,6 +329,11 @@ class TradingService
      */
     public function getCurrentVolumes()
     {
+        $cache = Redis::get('allVolumes');
+        if ($cache) {
+            return unserialize($cache);
+        }
+
         $adapters = $this->getActiveAdapters();
         $allVolumes = collect();
         foreach ($adapters as $adapter) {
@@ -340,6 +346,7 @@ class TradingService
                 }
             }
         }
+        Redis::set('allVolumes', serialize($allVolumes));
         return $allVolumes;
     }
 
@@ -454,6 +461,10 @@ class TradingService
      */
     public function getSumBtcFiatTrades()
     {
+        $cache = Redis::get('sumBtcFiatTrades');
+        if ($cache) {
+            return collect(unserialize($cache));
+        }
 
         $trades =  Trade::where(function ($query) {
                               $query->where('target_currency', '=', config('api.fiat'))
@@ -485,12 +496,16 @@ class TradingService
 
         $revenueBtc = $sellVolumeBtc - $buyVolumeBtc;
         $revenueFiat = $sellVolumeFiat - $buyVolumeFiat;
-        return collect([
+
+        $result = [
             'buyVolumeBtc' => $buyVolumeBtc,
             'sellVolumeBtc' => $sellVolumeBtc,
             'buyVolumeFiat' => $buyVolumeFiat,
             'sellVolumeFiat' => $sellVolumeFiat,
-        ]);
+        ];
+
+        $cache = Redis::set('sumBtcFiatTrades', serialize($result));
+        return collect($result);
     }
 
 
@@ -606,6 +621,11 @@ class TradingService
     public function getcurrentBalanceInfo()
     {
 
+        $cache = Redis::get('balances');
+        if ($cache) {
+            return unserialize($cache);
+        }
+
         $balances = collect();
         $volumes = $this->getCurrentVolumes();
         $rateBtcFiat = $this->getCurrentRate('BTC', config('api.fiat'));
@@ -711,7 +731,7 @@ class TradingService
             $balances->push($item);
 
         }
-
+        Redis::set('balances', serialize($balances));
         return $balances;
     }
 }

@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
         Commands\ClearHistory::class,
         Commands\StoreRates::class,
         Commands\Alert::class,
+        Commands\RefreshCache::class,
     ];
 
     /**

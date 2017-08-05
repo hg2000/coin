@@ -54,7 +54,6 @@ class ApiController extends BaseController
             $balances = collect();
             $volumes = $this->trading->getCurrentVolumes();
             $rateBtcFiat = $this->trading->getCurrentRate('BTC', config('api.fiat'));
-
             $balances = $this->trading->getcurrentBalanceInfo();
 
             $sumBtcFiatTrades = $this->trading->getSumBtcFiatTrades();

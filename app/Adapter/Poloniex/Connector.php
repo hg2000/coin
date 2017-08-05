@@ -33,9 +33,6 @@ class Connector
 
         // generate the POST data string
         $post_data = http_build_query($req, '', '&');
-
-
-
         $sign = hash_hmac('sha512', $post_data, $secret);
 
         // generate the extra headers
@@ -61,8 +58,7 @@ class Connector
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
         // run the query
-        $res = curl_exec($ch);
-
+        $res = curl_exec($ch);    
         if ($res === false) {
             throw new Exception('Curl error: '.curl_error($ch));
         }

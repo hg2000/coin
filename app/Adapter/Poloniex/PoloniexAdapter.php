@@ -134,7 +134,7 @@ class PoloniexAdapter implements \App\Adapter\AdapterInterface
     {
         if (!$this->volumes) {
             $balances = $this->connector->get_balances();
-
+            
             if (isset($balances['error'])) {
                 throw new \Exception('Poloniex API error: ' . $balances['error']);
             }
@@ -147,6 +147,7 @@ class PoloniexAdapter implements \App\Adapter\AdapterInterface
 
             }
         }
+
         return $volumes;
     }
 

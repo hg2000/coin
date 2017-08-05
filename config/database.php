@@ -109,6 +109,8 @@ return [
 
     'redis' => [
 
+        'useRedis' => env('USE_REDIS', false),
+
         'client' => 'predis',
 
         'default' => [
