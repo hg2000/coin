@@ -6,6 +6,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use App\Service\CacheService;
 
 use \App;
 
@@ -51,9 +52,9 @@ class ApiController extends BaseController
     public function getVolumes()
     {
         try {
-            $balances = collect();
             $volumes = $this->trading->getCurrentVolumes();
             $rateBtcFiat = $this->trading->getCurrentRate('BTC', config('api.fiat'));
+            $balances = collect();
             $balances = $this->trading->getcurrentBalanceInfo();
 
             $sumBtcFiatTrades = $this->trading->getSumBtcFiatTrades();
@@ -110,7 +111,7 @@ class ApiController extends BaseController
             $sellPool = $this->trading->getSellPool($key, 'BTC')->sortByDesc('date');
 
             // Necessery because otherwise ordering falls bas to original order while iterating in the template
-            foreach($sellPool as $item) {
+            foreach ($sellPool as $item) {
                 $result[] = $item;
             }
             return response()->json(
@@ -122,6 +123,21 @@ class ApiController extends BaseController
             return $this->returnException($e);
         }
 
+    }
+
+    public function getClear()
+    {
+        try {
+            $cacheService = resolve(CacheService::class);
+            $cacheService->clear();
+            $this->getVolumes();
+            $this->getTradeHistory();
+            $now = new \DateTime();
+            $cacheService->set('lastUpdate', $now->format('d.m.Y h:s'));
+            return response()->json('Cache has been cleared.');
+        } catch (\Exception $e) {
+            return $this->returnException($e);
+        }
     }
 
     protected function returnException(\Exception $e)

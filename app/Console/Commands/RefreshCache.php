@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Redis;
 use App\Http\Controllers\ApiController;
+use App\Service\CacheService;
 
 class RefreshCache extends Command
 {
@@ -20,7 +21,7 @@ class RefreshCache extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Refreshs the app cash';
 
     /**
      * Create a new command instance.
@@ -39,10 +40,8 @@ class RefreshCache extends Command
      */
     public function handle()
     {
-        Redis::set('allVolumes', null);
-        Redis::set('sumBtcFiatTrades', null);
-        Redis::set('balances', null);
-        $controller = resolve(ApiController::class);
-        $controller->getVolumes();
+        $controller = \App::make(ApiController::class);
+        $controller->getClear();
+        $this->info('cache cleared');
     }
 }

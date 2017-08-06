@@ -8,12 +8,22 @@ use \App\TradePool;
 use \App\Service\Helper;
 use \Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Redis;
+use App\Service\CacheService;
 
 class TradingService
 {
 
     protected $resultCache;
+
+    /**
+     * App/Service/CacheService
+     */
+    protected $cacheService;
+
+    public function __construct()
+    {
+        $this->cacheService = resolve(CacheService::class);
+    }
 
     /**
      * Returns the history of all trades
@@ -25,6 +35,10 @@ class TradingService
      */
     public function getTradeHistory($from = null, $to = null, $currencyKey = null)
     {
+        $cache = $this->cacheService->get('tradeHistory');
+        if ($cache) {
+            return unserialize($cache);
+        }
 
         if (!$from) {
             $from = Carbon::create(1970);
@@ -32,19 +46,8 @@ class TradingService
         if (!$to) {
             $to = Carbon::now();
         }
-        $lastUpdate = Trade::orderBy('updated_at', 'asc')->take(1)->get()->first();
 
-        if (empty($lastUpdate)) {
-            $this->updateTradeHistory(true);
-        } else {
-            $lastUpdate = $lastUpdate->updated_at;
-            $diff = $lastUpdate->diffInMinutes(Carbon::now());
-            if ($diff >= config('api.tradeHistory.cacheDuration')) {
-                if (config('api.tradeHistory.enableUpdate')) {
-                    $this->updateTradeHistory();
-                }
-            }
-        }
+        $this->updateTradeHistory();
 
         if ($currencyKey) {
             $trades = Trade::where('source_currency', 'LIKE', $currencyKey)
@@ -59,13 +62,14 @@ class TradingService
         $trades = $trades->map(function ($item) {
             return $item->addAll();
         });
+
+        $this->cacheService->set('tradeHistory', serialize($trades));
         return $trades;
     }
 
 
     protected function getTradeCorrections()
     {
-
         $corrections = config('api.dateCorrections');
         if (!$corrections) {
             return null;
@@ -119,9 +123,6 @@ class TradingService
      */
     public function updateTradeHistory($forceRefresh = null)
     {
-        if ($forceRefresh === null) {
-            $forceRefresh = config('api.tradeHistory.forceCompleteRefresh');
-        }
         $startTime = Carbon::now();
 
         if ($forceRefresh) {
@@ -200,7 +201,6 @@ class TradingService
 
     protected function calculateAverageRate($currencyKeyA, $currencyKeyB, $field = 'rate', $date = null)
     {
-
         if (!$date) {
             $date = Carbon::now();
         }
@@ -232,7 +232,6 @@ class TradingService
 
     public function getAveragePurchaseRateBtcCoin($currencyKeyA, $currencyKeyB, $date = null)
     {
-
         return $this->calculateAverageRate($currencyKeyA, $currencyKeyB, 'rate', $date);
     }
 
@@ -255,7 +254,6 @@ class TradingService
      */
     public function getResultRevenue($currencyKeyA, $currencyKeyB, $rateField = 'rate', $date = null)
     {
-
         return  $this->getAverageTradeResults($currencyKeyA, $currencyKeyB, $rateField, $date)['resultValue'];
     }
 
@@ -329,7 +327,7 @@ class TradingService
      */
     public function getCurrentVolumes()
     {
-        $cache = Redis::get('allVolumes');
+        $cache = $this->cacheService->get('allVolumes');
         if ($cache) {
             return unserialize($cache);
         }
@@ -346,7 +344,7 @@ class TradingService
                 }
             }
         }
-        Redis::set('allVolumes', serialize($allVolumes));
+        $this->cacheService->set('allVolumes', serialize($allVolumes));
         return $allVolumes;
     }
 
@@ -361,6 +359,11 @@ class TradingService
      */
     public function getCurrentRate($currencyKeySource, $currencyKeyTarget)
     {
+        $cache = $this->cacheService->get('currentRate' . $currencyKeySource . $currencyKeyTarget);
+        if ($cache) {
+            return $cache;
+        }
+
         $adapters = $this->getActiveAdapters();
 
         $hit = false;
@@ -376,10 +379,13 @@ class TradingService
             }
         }
         if ($hit) {
-            return $resultRate;
+            $result = $resultRate;
+
         } else {
-            return -1;
+            $result = -1;
         }
+        $this->cacheService->set('currentRate' . $currencyKeySource . $currencyKeyTarget, $result);
+        return $result;
     }
 
  /**
@@ -461,7 +467,7 @@ class TradingService
      */
     public function getSumBtcFiatTrades()
     {
-        $cache = Redis::get('sumBtcFiatTrades');
+        $cache = $this->cacheService->get('sumBtcFiatTrades');
         if ($cache) {
             return collect(unserialize($cache));
         }
@@ -504,7 +510,7 @@ class TradingService
             'sellVolumeFiat' => $sellVolumeFiat,
         ];
 
-        $cache = Redis::set('sumBtcFiatTrades', serialize($result));
+        $cache = $this->cacheService->set('sumBtcFiatTrades', serialize($result));
         return collect($result);
     }
 
@@ -544,7 +550,8 @@ class TradingService
         return $rate;
     }
 
-    public function getSellPool($sourceCurrency, $targetCurrency) {
+    public function getSellPool($sourceCurrency, $targetCurrency)
+    {
 
         $trades = $this->getTradeHistory(null, null, $sourceCurrency);
         $trades = $trades->sortBy('date');
@@ -553,7 +560,7 @@ class TradingService
             return ($item->type == 'sell' && $item->source_currency == $sourceCurrency && $item->target_currency == $targetCurrency);
         });
 
-        $allBuyTrades = $trades->filter(function($item) use ($sourceCurrency, $targetCurrency) {
+        $allBuyTrades = $trades->filter(function ($item) use ($sourceCurrency, $targetCurrency) {
             return ($item->type == 'buy' && $item->target_currency == $sourceCurrency && $item->source_currency == $targetCurrency);
         });
 
@@ -621,8 +628,9 @@ class TradingService
     public function getcurrentBalanceInfo()
     {
 
-        $cache = Redis::get('balances');
+        $cache = $this->cacheService->get('balances');
         if ($cache) {
+
             return unserialize($cache);
         }
 
@@ -731,7 +739,7 @@ class TradingService
             $balances->push($item);
 
         }
-        Redis::set('balances', serialize($balances));
+        $this->cacheService->set('balances', serialize($balances));
         return $balances;
     }
 }

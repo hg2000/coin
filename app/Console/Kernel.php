@@ -29,8 +29,10 @@ class Kernel extends ConsoleKernel
     {
          $schedule->command('rates:store')
                   ->cron('0 */4 * * *');
-         $schedule->command('rates:alert')
-                  ->cron('10 * * * * ');
+         $schedule->command('rates:refresh')
+                  ->cron('/30 * * * *');
+    //     $schedule->command('rates:alert')
+    //              ->cron('10 * * * * ');
     }
 
     /**

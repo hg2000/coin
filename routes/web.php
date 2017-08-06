@@ -18,4 +18,5 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('trade_history/{key?}', 'ApiController@getTradeHistory')->name('api.trade_history.get');
     Route::get('volumes', 'ApiController@getVolumes')->name('api.volumes.get');
     Route::get('coin/{key}', 'ApiController@getCoinDetail')->name('api.coin.get');
+    Route::get('clear', 'ApiController@getClear')->name('api.coin.clear');
 });

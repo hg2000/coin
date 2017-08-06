@@ -178,6 +178,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\ApiAdapterProvider::class,
         App\Providers\TradingServiceProvider::class,
+        App\Providers\CacheServiceProvider::class,
 
     ],
 

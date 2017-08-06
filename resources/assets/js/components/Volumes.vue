@@ -23,15 +23,15 @@
                   <th>Avg purchase rate(BTC/COIN)</th>
 
                   <th>Purchase Value (BTC)</td>
-                  <th>Current Value (BTC)</th>
-                  <th>Revenue (BTC)</th>
-                  <th class="border-right">Revenue Rate (BTC)</th>
+                    <th>Current Value (BTC)</th>
+                    <th>Revenue (BTC)</th>
+                    <th class="border-right">Revenue Rate (BTC)</th>
 
-                  <th>Purchase value ({{ fiat}})</th>
-                  <th>Current Value ({{ fiat }})</th>
-                  <th>Revenue ({{ fiat }})</th>
-                  <th>Revenue (%)</th>
-                  <th>Chart</th>
+                    <th>Purchase value ({{ fiat}})</th>
+                    <th>Current Value ({{ fiat }})</th>
+                    <th>Revenue ({{ fiat }})</th>
+                    <th>Revenue (%)</th>
+                    <th>Chart</th>
                 </tr>
               </thead>
 
@@ -190,6 +190,9 @@ export default {
     formatPercent: function(n) {
       return numeral(n).format('0.00') + " %";
     },
+    clearCache: function() {
+      console.log('ok');
+    }
 
   },
   mounted() {

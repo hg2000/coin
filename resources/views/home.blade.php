@@ -23,7 +23,9 @@
   </head>
   <body>
     <div id="app">
+
         <nav class="navbar navbar-default">
+
           <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -42,11 +44,17 @@
                 <li><router-link to="/volumes">Volumes</router-link></li>
                 <li><router-link to="/history">History</router-link></li>
               </ul>
+              <ul class="nav navbar-nav navbar-right">
+                <li><router-link to="/clear" class="btn btn-default">Clear Cache</router-link></li>
+              </ul>
 
             </div><!-- /.navbar-collapse -->
-          </div><!-- /.container-fluid -->
-        </nav>
 
+
+          </div><!-- /.container-fluid -->
+
+        </nav>
+          <p class="pull-right"><small>Last refresh: {{ $lastUpdate }}</small></p>
       <router-view fiatsymbol="{{ $fiatsymbol }}" fiat="{{ $fiat }}"></router-view>
     </div>
 
