@@ -1,156 +1,162 @@
 <template>
-<div class="container-fluid">
+<div>
 
-  <div class="row">
-    <div class="col-md-12">
-      <div class="panel panel-default" v-if="balances != 0">
-        <div class="panel-heading">Coin Portfolio</div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xs-12">
 
-        <div class="panel-body">
+        <div class="panel panel-default" v-if="balances != 0">
+          <div class="panel-heading">Coin Portfolio</div>
+          <div class="panel-body">
+
+            <div class="table-responsive">
+              <table class="table table-striped table-responsive table-hover">
+                <thead>
+                  <tr>
+                    <th class="border-right">Currency</th>
+                    <th>Volume</th>
+                    <th>Current Rate (Coin/BTC)</th>
+
+                    <th>Current Rate (Coin/{{ fiat }})</th>
+                    <th>Rate Diff 1 Day (Coin/{{ fiat }})</th>
+                    <th class="border-right">Rate Diff 7 Days ago (Coin/{{ fiat }})</th>
+
+                    <th>Avg purchase rate(Coin/{{ fiat }})</th>
+                    <th>Avg purchase rate(BTC/COIN)</th>
+
+                    <th>Purchase Value (BTC)</td>
+                      <th>Current Value (BTC)</th>
+                      <th>Revenue (BTC)</th>
+                      <th class="border-right">Revenue Rate (BTC)</th>
+
+                      <th>Purchase value ({{ fiat}})</th>
+                      <th>Current Value ({{ fiat }})</th>
+                      <th>Revenue ({{ fiat }})</th>
+                      <th>Revenue (%)</th>
+                      <th>Chart</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="item in balances">
+                    <td class="border-right"> {{ item.currency }}</td>
+                    <td>{{ formatCoin(item.volume) }}</td>
+                    <td>{{ formatCoin(item.currentRateBtc) }}</td>
+
+                    <td>{{ formatFiat(item.currentRateFiat) }}</td>
+                    <td>{{ formatPercent(item.rateDiffDayFiat)}}</td>
+                    <td class="border-right">{{ formatPercent(item.rateDiffSevenDaysAgoFiat)}}</td>
+
+                    <td>{{ formatFiat(item.averagePurchaseRateCoinFiat) }}</td>
+                    <td class="border-right">{{ formatCoin(item.averagePurchaseRateBtcCoin) }}</td>
+
+                    <td>{{ formatCoin(item.purchaseValueBtc) }}</td>
+                    <td>{{ formatCoin(item.currentValueBtc) }}</td>
+                    <td>{{ formatCoin(item.currentRevenueBtc) }}</td>
+                    <td class="border-right">{{ formatPercent(item.revenueRateBtc) }}</td>
+
+                    <td>{{ formatFiat(item.purchaseValueFiat) }}</td>
+                    <td>{{ formatFiat(item.currentValueFiat) }}</td>
+                    <td>{{ formatFiat(item.revenueFiat) }}</td>
+                    <td>{{ formatPercent(item.revenueRateFiat) }}</td>
+                    <td><a :href="item.chartUrl" target="_blank">Link</a></td>
+                  </tr>
+
+                  <tr class="info">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+
+                    <td></td>
+                    <td></td>
+                    <td>{{ formatCoin(sum.purchaseValueBtc)}} B</td>
+                    <td>{{ formatCoin(sum.currentValueBtc) }} B</td>
+                    <td>{{ formatCoin(sum.currentRevenueBtc) }} B</td>
+                    <td>{{ formatPercent(sum.tradingRevenueRateBtc) }}</td>
+
+                    <td>{{ formatFiat(sum.purchaseValueFiat)}}</td>
+                    <td>{{ formatFiat(sum.currentValueFiat) }}</td>
+                    <td>{{ formatFiat(sum.currentRevenueFiat) }}</td>
+                    <td>{{ formatPercent(sum.tradingRevenueRateFiat) }}</td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!--end of .table-responsive-->
+          </div>
+        </div>
+        <!-- end of panel -->
+
+        <div v-if="error == 0">
+          <div v-if="balances == 0" class="alert alert-warning">
+            <p>
+              Please Wait
+            </p>
+          </div>
+        </div>
+        <div v-if="error != 0" class="alert alert-danger">
           <p>
-            <table class="table table-striped table-responsive table-hover">
-              <thead>
-                <tr>
-                  <th class="border-right">Currency</th>
-                  <th>Volume</th>
-                  <th>Current Rate (Coin/BTC)</th>
-
-                  <th>Current Rate (Coin/{{ fiat }})</th>
-                  <th>Rate Diff 1 Day (Coin/{{ fiat }})</th>
-                  <th class="border-right">Rate Diff 7 Days ago (Coin/{{ fiat }})</th>
-
-                  <th>Avg purchase rate(Coin/{{ fiat }})</th>
-                  <th>Avg purchase rate(BTC/COIN)</th>
-
-                  <th>Purchase Value (BTC)</td>
-                    <th>Current Value (BTC)</th>
-                    <th>Revenue (BTC)</th>
-                    <th class="border-right">Revenue Rate (BTC)</th>
-
-                    <th>Purchase value ({{ fiat}})</th>
-                    <th>Current Value ({{ fiat }})</th>
-                    <th>Revenue ({{ fiat }})</th>
-                    <th>Revenue (%)</th>
-                    <th>Chart</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                <tr v-for="item in balances">
-                  <td class="border-right"> {{ item.currency }}</td>
-                  <td>{{ formatCoin(item.volume) }}</td>
-                  <td>{{ formatCoin(item.currentRateBtc) }}</td>
-
-                  <td>{{ formatFiat(item.currentRateFiat) }}</td>
-                  <td>{{ formatPercent(item.rateDiffDayFiat)}}</td>
-                  <td class="border-right">{{ formatPercent(item.rateDiffSevenDaysAgoFiat)}}</td>
-
-                  <td>{{ formatFiat(item.averagePurchaseRateCoinFiat) }}</td>
-                  <td class="border-right">{{ formatCoin(item.averagePurchaseRateBtcCoin) }}</td>
-
-                  <td>{{ formatCoin(item.purchaseValueBtc) }}</td>
-                  <td>{{ formatCoin(item.currentValueBtc) }}</td>
-                  <td>{{ formatCoin(item.currentRevenueBtc) }}</td>
-                  <td class="border-right">{{ formatPercent(item.revenueRateBtc) }}</td>
-
-                  <td>{{ formatFiat(item.purchaseValueFiat) }}</td>
-                  <td>{{ formatFiat(item.currentValueFiat) }}</td>
-                  <td>{{ formatFiat(item.revenueFiat) }}</td>
-                  <td>{{ formatPercent(item.revenueRateFiat) }}</td>
-                  <td><a :href="item.chartUrl" target="_blank">Link</a></td>
-
-                </tr>
-              </tbody>
-              <tbody>
-                <tr class="info">
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-
-                  <td></td>
-                  <td></td>
-                  <td>{{ formatCoin(sum.purchaseValueBtc)}} B</td>
-                  <td>{{ formatCoin(sum.currentValueBtc) }} B</td>
-                  <td>{{ formatCoin(sum.currentRevenueBtc) }} B</td>
-                  <td>{{ formatPercent(sum.tradingRevenueRateBtc) }}</td>
-
-                  <td>{{ formatFiat(sum.purchaseValueFiat)}}</td>
-                  <td>{{ formatFiat(sum.currentValueFiat) }}</td>
-                  <td>{{ formatFiat(sum.currentRevenueFiat) }}</td>
-                  <td>{{ formatPercent(sum.tradingRevenueRateFiat) }}</td>
-                </tr>
-              </tbody>
-
-            </table>
-
+            {{error}}
           </p>
         </div>
+
       </div>
-    </div>
-    <div v-if="error == 0">
-      <div v-if="sum == 0" class="alert alert-warning">
-        <p>
-          Please Wait
-        </p>
-      </div>
-    </div>
-    <div v-if="error != 0" class="alert alert-danger">
-      <p>
-        {{error}}
-      </p>
     </div>
   </div>
 
 
+  <div class="container-fluid">
 
-  <div class="row">
-    <div class="col-md-12">
-      <div class="panel panel-default" v-if="sum != 0">
-        <div class="panel-heading">Balance</div>
 
-        <div class="panel-body">
-          <p>
-            <table class="table">
-              <thead>
-                <tr>
-                  <th></th>
-                  <th>BTC</th>
-                  <th>{{ fiat }}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th>BTC/{{ fiat }} Trade Revenue</th>
-                  <td>{{ formatCoin(sum.tradingRevenueBtc) }} B</td>
-                  <td>{{ formatFiat(sum.tradingRevenueFiat) }}</td>
-                </tr>
-                <tr>
-                  <th>Buy Volume</th>
-                  <td>{{ formatCoin(sum.buyVolumeBtc) }} B</td>
-                  <td>{{ formatFiat(sum.buyVolumeFiat) }}</td>
-                </tr>
-                <tr>
-                  <th>Sell Volume</th>
-                  <td>{{ formatCoin(sum.sellVolumeBtc) }} B</td>
-                  <td>{{ formatFiat(sum.sellVolumeFiat) }}</td>
-                </tr>
-                <tr>
-                  <th>Current Coin Value</th>
-                  <td>{{ formatCoin(sum.currentValueBtc) }} B</td>
-                  <td>{{ formatFiat(sum.currentValueFiat) }}</td>
-                </tr>
-                <tr class="info">
-                  <th>Total Revenue</th>
-                  <td>{{ formatCoin(sum.totalRevenueBtc) }} B</td>
-                  <td>{{ formatFiat(sum.totalRevenueFiat) }}</td>
-                </tr>
-              </tbody>
-            </table>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="panel panel-default" v-if="sum != 0">
+          <div class="panel-heading">Balance</div>
 
-          </p>
+          <div class="panel-body">
+            <p>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>BTC</th>
+                    <th>{{ fiat }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th>BTC/{{ fiat }} Trade Revenue</th>
+                    <td>{{ formatCoin(sum.tradingRevenueBtc) }} B</td>
+                    <td>{{ formatFiat(sum.tradingRevenueFiat) }}</td>
+                  </tr>
+                  <tr>
+                    <th>Buy Volume</th>
+                    <td>{{ formatCoin(sum.buyVolumeBtc) }} B</td>
+                    <td>{{ formatFiat(sum.buyVolumeFiat) }}</td>
+                  </tr>
+                  <tr>
+                    <th>Sell Volume</th>
+                    <td>{{ formatCoin(sum.sellVolumeBtc) }} B</td>
+                    <td>{{ formatFiat(sum.sellVolumeFiat) }}</td>
+                  </tr>
+                  <tr>
+                    <th>Current Coin Value</th>
+                    <td>{{ formatCoin(sum.currentValueBtc) }} B</td>
+                    <td>{{ formatFiat(sum.currentValueFiat) }}</td>
+                  </tr>
+                  <tr class="info">
+                    <th>Total Revenue</th>
+                    <td>{{ formatCoin(sum.totalRevenueBtc) }} B</td>
+                    <td>{{ formatFiat(sum.totalRevenueFiat) }}</td>
+                  </tr>
+                </tbody>
+              </table>
+
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -168,12 +174,17 @@ export default {
     return {
       balances: 0,
       sum: 0,
-      error: 0
+      error: 0,
+      balances: 0
     }
   },
   methods: {
     makeRequest: function() {
-      this.$http.get('/api/portfolio/').then(response => {
+      this.$http.get('/api/portfolio/', {
+        headers: {
+          'Accept': 'application/json'
+        }
+      }).then(response => {
         this.balances = response.body.balances;
         this.sum = response.body.sum;
       }, response => {
@@ -190,9 +201,6 @@ export default {
     formatPercent: function(n) {
       return numeral(n).format('0.00') + " %";
     },
-    clearCache: function() {
-      console.log('ok');
-    }
 
   },
   mounted() {

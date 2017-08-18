@@ -5,7 +5,7 @@
       <div v-if="error == 0">
         <div v-if="clearing" class="alert alert-warning">
           <p>
-            Clearing Cache. Please Wait.
+            Refreshing data. Please Wait.
           </p>
         </div>
         <div v-if="success != 0" class="alert alert-success">
@@ -39,7 +39,12 @@ export default {
   },
   methods: {
     makeRequest: function() {
-      this.$http.get('/api/clear').then(response => {
+      this.$http.get('/api/clear', {
+        headers: {
+          'Accept': 'application/json'
+        }
+      }).then(response => {
+
         this.success = response.body;
         this.clearing = false;
 

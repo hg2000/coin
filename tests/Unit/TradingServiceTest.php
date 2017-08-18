@@ -180,9 +180,6 @@ class TradingServiceTest extends \Tests\TestCase
         DB::table('trades')->insert($trade);
 
         $rate = $trading->getAveragePurchaseRateBtcCoin('EUR', 'BTC');
-
-        dump($rate);
-
     }
 
     /**

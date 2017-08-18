@@ -14,15 +14,13 @@ Vue.use(require('vue-resource'))
 
 const Portfolio = Vue.component('portfolio', require('./components/Portfolio.vue'));
 const History = Vue.component('history', require('./components/History.vue'));
-const Coin = Vue.component('coin', require('./components/Coin.vue'));
-const Clear = Vue.component('coin', require('./components/Clear.vue'));
+const Clear = Vue.component('clear', require('./components/Clear.vue'));
 
 
 const routes = [
   { path: '/', component: Portfolio },
   { path: '/portfolio', component: Portfolio },
   { path: '/history', component: History },
-  { path: '/coin/:id', component: Coin },
   { path: '/clear', component: Clear },
 ]
 
