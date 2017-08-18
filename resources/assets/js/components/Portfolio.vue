@@ -4,7 +4,7 @@
   <div class="row">
     <div class="col-md-12">
       <div class="panel panel-default" v-if="balances != 0">
-        <div class="panel-heading">Coin Volume Status</div>
+        <div class="panel-heading">Coin Portfolio</div>
 
         <div class="panel-body">
           <p>
@@ -173,7 +173,7 @@ export default {
   },
   methods: {
     makeRequest: function() {
-      this.$http.get('/api/volumes/').then(response => {
+      this.$http.get('/api/portfolio/').then(response => {
         this.balances = response.body.balances;
         this.sum = response.body.sum;
       }, response => {

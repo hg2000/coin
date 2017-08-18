@@ -49,7 +49,7 @@ class ApiController extends BaseController
      * and provides all data for the volume view.
      * @return string (json)
      */
-    public function getVolumes()
+    public function getPortfolio()
     {
         try {
             $volumes = $this->trading->getCurrentVolumes();
@@ -130,7 +130,7 @@ class ApiController extends BaseController
         try {
             $cacheService = resolve(CacheService::class);
             $cacheService->clear();
-            $this->getVolumes();
+            $this->getPortfolio();
             $this->getTradeHistory();
             $now = new \DateTime();
             $cacheService->set('lastUpdate', $now->format('d.m.Y h:s'));

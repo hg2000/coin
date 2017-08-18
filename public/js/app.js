@@ -2583,12 +2583,12 @@ window.Vue = Vue;
 Vue.use(__WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */]);
 Vue.use(__webpack_require__(4));
 
-var Volumes = Vue.component('volumes', __webpack_require__(41));
+var Portfolio = Vue.component('portfolio', __webpack_require__(41));
 var History = Vue.component('history', __webpack_require__(40));
 var Coin = Vue.component('coin', __webpack_require__(39));
 var Clear = Vue.component('coin', __webpack_require__(38));
 
-var routes = [{ path: '/', component: Volumes }, { path: '/volumes', component: Volumes }, { path: '/history', component: History }, { path: '/coin/:id', component: Coin }, { path: '/clear', component: Clear }];
+var routes = [{ path: '/', component: Portfolio }, { path: '/portfolio', component: Portfolio }, { path: '/history', component: History }, { path: '/coin/:id', component: Coin }, { path: '/clear', component: Clear }];
 
 var router = new __WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */]({
   routes: routes
@@ -3887,7 +3887,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     makeRequest: function makeRequest() {
       var _this = this;
 
-      this.$http.get('/api/volumes/').then(function (response) {
+      this.$http.get('/api/portfolio/').then(function (response) {
         _this.balances = response.body.balances;
         _this.sum = response.body.sum;
       }, function (response) {
@@ -23487,7 +23487,7 @@ var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(32),
   /* template */
-  __webpack_require__(43),
+  __webpack_require__(42),
   /* scopeId */
   null,
   /* cssModules */
@@ -23521,7 +23521,7 @@ var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(33),
   /* template */
-  __webpack_require__(44),
+  __webpack_require__(43),
   /* scopeId */
   null,
   /* cssModules */
@@ -23555,15 +23555,15 @@ var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(34),
   /* template */
-  __webpack_require__(42),
+  __webpack_require__(44),
   /* scopeId */
   null,
   /* cssModules */
   null
 )
-Component.options.__file = "/home/hendrikg/Code/coin/resources/assets/js/components/Volumes.vue"
+Component.options.__file = "/home/hendrikg/Code/coin/resources/assets/js/components/Portfolio.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] Volumes.vue: functional components are not supported with templates, they should use render functions.")}
+if (Component.options.functional) {console.error("[vue-loader] Portfolio.vue: functional components are not supported with templates, they should use render functions.")}
 
 /* hot reload */
 if (false) {(function () {
@@ -23572,9 +23572,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-1453b978", Component.options)
+    hotAPI.createRecord("data-v-84b1389a", Component.options)
   } else {
-    hotAPI.reload("data-v-1453b978", Component.options)
+    hotAPI.reload("data-v-84b1389a", Component.options)
   }
 })()}
 
@@ -23592,11 +23592,100 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-md-12"
+  }, [(_vm.sellPoolItems != 0) ? _c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_vm._v("Trade History " + _vm._s(_vm.$route.params.id))]), _vm._v(" "), _c('p', [_c('table', {
+    staticClass: "table table-striped table-responsive table-hover"
+  }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.sellPoolItems), function(item) {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(item.sell_trade.date) + "\n\n                                    "), _c('div', {
+      staticClass: "collapse",
+      attrs: {
+        "id": 'buy-pool-' + item.sell_trade.id
+      }
+    }, [_c('ul', {
+      staticClass: "list-group"
+    }, _vm._l((item.buy_trades), function(buyItem) {
+      return _c('li', {
+        staticClass: "list-group-item"
+      }, [_c('strong', [_vm._v(_vm._s(buyItem.volume_taken) + " taken from buy pool trade from " + _vm._s(buyItem.date) + ".")]), _c('br'), _vm._v(" Original Pool Volume: " + _vm._s(buyItem.volume_before)), _c('br'), _vm._v(" Remaining in Pool: " + _vm._s(buyItem.volume)), _c('br'), _vm._v(" "), _c('br'), _vm._v(" Value (BTC): " + _vm._s(buyItem.value_taken_btc)), _c('br'), _vm._v(" Purchase Value BTC: " + _vm._s(buyItem.purchase_value_taken_btc)), _c('br'), _vm._v(" Revenue BTC: " + _vm._s(buyItem.revenue_taken_btc)), _c('br')])
+    }))])]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.sell_trade.platform_id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.sell_trade.type))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.sell_trade.source_currency) + "/" + _vm._s(item.sell_trade.target_currency))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(item.sell_trade.volume)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(item.sell_trade.revenue_btc)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(item.sell_trade.revenue_fiat)))]), _vm._v(" "), _c('td', [_c('a', {
+      staticClass: "btn btn-primary",
+      attrs: {
+        "data-toggle": "collapse",
+        "href": '#buy-pool-' + item.sell_trade.id,
+        "aria-expanded": "false",
+        "aria-controls": "collapseExample"
+      }
+    }, [_vm._v("\n                                            Show Buy Pool\n                                        ")])])])
+  }))])])]) : _vm._e()]), _vm._v(" "), (_vm.error == 0) ? _c('div', [(_vm.sellPoolItems == 0) ? _c('div', {
+    staticClass: "alert alert-warning"
+  }, [_c('p', [_vm._v("\n                    Please Wait\n                ")])]) : _vm._e()]) : _vm._e(), _vm._v(" "), (_vm.error != 0) ? _c('div', {
+    staticClass: "alert alert-danger"
+  }, [_c('p', [_vm._v("\n                " + _vm._s(_vm.error) + "\n            ")])]) : _vm._e()])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('thead', [_c('tr', [_c('th', [_vm._v("Date")]), _vm._v(" "), _c('th', [_vm._v("platformId")]), _vm._v(" "), _c('th', [_vm._v("Type")]), _vm._v(" "), _c('th', [_vm._v("Currency Pair")]), _vm._v(" "), _c('th', [_vm._v("volume")]), _vm._v(" "), _c('th', [_vm._v("Revenue BTC")]), _vm._v(" "), _c('th', [_vm._v("Revenue Fiat")])])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-27f648f6", module.exports)
+  }
+}
+
+/***/ }),
+/* 43 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "container-fluid"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-md-12"
+  }, [(_vm.trades != 0) ? _c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_vm._v("Trade History")]), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  }, [_c('p', [_c('table', {
+    staticClass: "table table-striped table-responsive table-hover"
+  }, [_c('thead', [_c('tr', [_c('th', [_vm._v("Date")]), _vm._v(" "), _c('th', [_vm._v("platformId")]), _vm._v(" "), _c('th', [_vm._v("Type")]), _vm._v(" "), _c('th', [_vm._v("Currency Pair")]), _vm._v(" "), _c('th', [_vm._v("Rate (COIN/BTC)")]), _vm._v(" "), _c('th', [_vm._v("Volume Coin")]), _vm._v(" "), _c('th', [_vm._v("Value (BTC)")]), _vm._v(" "), _c('th', [_vm._v("Value (" + _vm._s(_vm.fiat) + ")")]), _vm._v(" "), _c('th', [_vm._v("Purchase Rate (" + _vm._s(_vm.fiat) + "/BTC)")])])]), _vm._v(" "), _c('tbody', _vm._l((_vm.trades), function(trade) {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(trade.date))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(trade.platform_id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(trade.type))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(trade.source_currency) + "-" + _vm._s(trade.target_currency))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(trade.rate)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(trade.volume)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(trade.value_btc)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(trade.value_fiat)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(trade.purchase_rate_fiat_btc)))])])
+  }))])])])]) : _vm._e(), _vm._v(" "), (_vm.error == 0) ? _c('div', [(_vm.trades == 0) ? _c('div', {
+    staticClass: "alert alert-warning"
+  }, [_c('p', [_vm._v("\n            Please Wait\n          ")])]) : _vm._e()]) : _vm._e(), _vm._v(" "), (_vm.error != 0) ? _c('div', {
+    staticClass: "alert alert-danger"
+  }, [_c('p', [_vm._v("\n          " + _vm._s(_vm.error) + "\n        ")])]) : _vm._e()])])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-3de995bf", module.exports)
+  }
+}
+
+/***/ }),
+/* 44 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "container-fluid"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-md-12"
   }, [(_vm.balances != 0) ? _c('div', {
     staticClass: "panel panel-default"
   }, [_c('div', {
     staticClass: "panel-heading"
-  }, [_vm._v("Coin Volume Status")]), _vm._v(" "), _c('div', {
+  }, [_vm._v("Coin Portfolio")]), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
   }, [_c('p', [_c('table', {
     staticClass: "table table-striped table-responsive table-hover"
@@ -23651,96 +23740,7 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-1453b978", module.exports)
-  }
-}
-
-/***/ }),
-/* 43 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "container-fluid"
-  }, [_c('div', {
-    staticClass: "row"
-  }, [_c('div', {
-    staticClass: "col-md-12"
-  }, [(_vm.sellPoolItems != 0) ? _c('div', {
-    staticClass: "panel panel-default"
-  }, [_c('div', {
-    staticClass: "panel-heading"
-  }, [_vm._v("Trade History " + _vm._s(_vm.$route.params.id))]), _vm._v(" "), _c('p', [_c('table', {
-    staticClass: "table table-striped table-responsive table-hover"
-  }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.sellPoolItems), function(item) {
-    return _c('tr', [_c('td', [_vm._v(_vm._s(item.sell_trade.date) + "\n\n                                    "), _c('div', {
-      staticClass: "collapse",
-      attrs: {
-        "id": 'buy-pool-' + item.sell_trade.id
-      }
-    }, [_c('ul', {
-      staticClass: "list-group"
-    }, _vm._l((item.buy_trades), function(buyItem) {
-      return _c('li', {
-        staticClass: "list-group-item"
-      }, [_c('strong', [_vm._v(_vm._s(buyItem.volume_taken) + " taken from buy pool trade from " + _vm._s(buyItem.date) + ".")]), _c('br'), _vm._v(" Original Pool Volume: " + _vm._s(buyItem.volume_before)), _c('br'), _vm._v(" Remaining in Pool: " + _vm._s(buyItem.volume)), _c('br'), _vm._v(" "), _c('br'), _vm._v(" Value (BTC): " + _vm._s(buyItem.value_taken_btc)), _c('br'), _vm._v(" Purchase Value BTC: " + _vm._s(buyItem.purchase_value_taken_btc)), _c('br'), _vm._v(" Revenue BTC: " + _vm._s(buyItem.revenue_taken_btc)), _c('br')])
-    }))])]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.sell_trade.platform_id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.sell_trade.type))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.sell_trade.source_currency) + "/" + _vm._s(item.sell_trade.target_currency))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(item.sell_trade.volume)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(item.sell_trade.revenue_btc)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(item.sell_trade.revenue_fiat)))]), _vm._v(" "), _c('td', [_c('a', {
-      staticClass: "btn btn-primary",
-      attrs: {
-        "data-toggle": "collapse",
-        "href": '#buy-pool-' + item.sell_trade.id,
-        "aria-expanded": "false",
-        "aria-controls": "collapseExample"
-      }
-    }, [_vm._v("\n                                            Show Buy Pool\n                                        ")])])])
-  }))])])]) : _vm._e()]), _vm._v(" "), (_vm.error == 0) ? _c('div', [(_vm.sellPoolItems == 0) ? _c('div', {
-    staticClass: "alert alert-warning"
-  }, [_c('p', [_vm._v("\n                    Please Wait\n                ")])]) : _vm._e()]) : _vm._e(), _vm._v(" "), (_vm.error != 0) ? _c('div', {
-    staticClass: "alert alert-danger"
-  }, [_c('p', [_vm._v("\n                " + _vm._s(_vm.error) + "\n            ")])]) : _vm._e()])])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('thead', [_c('tr', [_c('th', [_vm._v("Date")]), _vm._v(" "), _c('th', [_vm._v("platformId")]), _vm._v(" "), _c('th', [_vm._v("Type")]), _vm._v(" "), _c('th', [_vm._v("Currency Pair")]), _vm._v(" "), _c('th', [_vm._v("volume")]), _vm._v(" "), _c('th', [_vm._v("Revenue BTC")]), _vm._v(" "), _c('th', [_vm._v("Revenue Fiat")])])])
-}]}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-27f648f6", module.exports)
-  }
-}
-
-/***/ }),
-/* 44 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "container-fluid"
-  }, [_c('div', {
-    staticClass: "row"
-  }, [_c('div', {
-    staticClass: "col-md-12"
-  }, [(_vm.trades != 0) ? _c('div', {
-    staticClass: "panel panel-default"
-  }, [_c('div', {
-    staticClass: "panel-heading"
-  }, [_vm._v("Trade History")]), _vm._v(" "), _c('div', {
-    staticClass: "panel-body"
-  }, [_c('p', [_c('table', {
-    staticClass: "table table-striped table-responsive table-hover"
-  }, [_c('thead', [_c('tr', [_c('th', [_vm._v("Date")]), _vm._v(" "), _c('th', [_vm._v("platformId")]), _vm._v(" "), _c('th', [_vm._v("Type")]), _vm._v(" "), _c('th', [_vm._v("Currency Pair")]), _vm._v(" "), _c('th', [_vm._v("Rate (COIN/BTC)")]), _vm._v(" "), _c('th', [_vm._v("Volume Coin")]), _vm._v(" "), _c('th', [_vm._v("Value (BTC)")]), _vm._v(" "), _c('th', [_vm._v("Value (" + _vm._s(_vm.fiat) + ")")]), _vm._v(" "), _c('th', [_vm._v("Purchase Rate (" + _vm._s(_vm.fiat) + "/BTC)")])])]), _vm._v(" "), _c('tbody', _vm._l((_vm.trades), function(trade) {
-    return _c('tr', [_c('td', [_vm._v(_vm._s(trade.date))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(trade.platform_id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(trade.type))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(trade.source_currency) + "-" + _vm._s(trade.target_currency))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(trade.rate)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(trade.volume)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(trade.value_btc)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(trade.value_fiat)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(trade.purchase_rate_fiat_btc)))])])
-  }))])])])]) : _vm._e(), _vm._v(" "), (_vm.error == 0) ? _c('div', [(_vm.trades == 0) ? _c('div', {
-    staticClass: "alert alert-warning"
-  }, [_c('p', [_vm._v("\n            Please Wait\n          ")])]) : _vm._e()]) : _vm._e(), _vm._v(" "), (_vm.error != 0) ? _c('div', {
-    staticClass: "alert alert-danger"
-  }, [_c('p', [_vm._v("\n          " + _vm._s(_vm.error) + "\n        ")])]) : _vm._e()])])])
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-3de995bf", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-84b1389a", module.exports)
   }
 }
 
