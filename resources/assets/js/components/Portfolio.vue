@@ -37,7 +37,7 @@
 
               <tbody>
                 <tr v-for="item in balances">
-                  <td class="border-right"><a :href="'#/coin/' + item.currency"> {{ item.currency }}</a></td>
+                  <td class="border-right"> {{ item.currency }}</td>
                   <td>{{ formatCoin(item.volume) }}</td>
                   <td>{{ formatCoin(item.currentRateBtc) }}</td>
 

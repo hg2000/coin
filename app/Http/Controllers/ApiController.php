@@ -104,27 +104,9 @@ class ApiController extends BaseController
         }
     }
 
-    public function getCoinDetail($key)
-    {
-        try {
-
-            $sellPool = $this->trading->getSellPool($key, 'BTC')->sortByDesc('date');
-
-            // Necessery because otherwise ordering falls bas to original order while iterating in the template
-            foreach ($sellPool as $item) {
-                $result[] = $item;
-            }
-            return response()->json(
-                [
-                    'sellPool' => $result
-                ]
-            );
-        } catch (\Exception $e) {
-            return $this->returnException($e);
-        }
-
-    }
-
+    /**
+     * Deletes the Cache and fetches data from the apis
+     */
     public function getClear()
     {
         try {

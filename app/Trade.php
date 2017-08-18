@@ -66,48 +66,6 @@ class Trade extends Model implements TradeInterface
         return $this;
     }
 
-
-
-    /**
-     * Adds the corresponding buy trades a to sell trade
-     * and the volume of the buy trade
-     * @param Trade $trade
-     */
-    public function addBuyTrade(Trade $buyTrade)
-    {
-        if ($this->type != 'sell') {
-            throw new \Exception('Attempt to add a buy trade info to trade which is not of type "sell"');
-        }
-
-        $remainingBuyVolume = $buyTrade->volume - $this->volume;
-        $buyTrade->setAttribute('volume_before', $buyTrade->volume);
-        if ($remainingBuyVolume >= 0) {
-            $buyTrade->setAttribute('volume_taken', $this->volume);
-            $buyTrade->volume = $remainingBuyVolume;
-            $this->volume_taken += $this->volume;
-            $this->volume = 0;
-        } else {
-            $buyTrade->setAttribute('volume_taken', $buyTrade->volume);
-            $this->volume_taken += $buyTrade->volume;
-            $buyTrade->volume = 0;
-            $this->volume = $remainingBuyVolume * -1;
-        }
-
-        $buyTrade->setAttribute('purchase_value_taken_btc', $buyTrade->rate * $buyTrade->volume_taken);
-        $buyTrade->setAttribute('purchase_value_taken_fiat', $buyTrade->rate * $buyTrade->volume_taken * $buyTrade->purchase_rate_fiat_btc);
-        $buyTrade->setAttribute('value_taken_btc',  $buyTrade->volume_taken * $this->rate);
-        $buyTrade->setAttribute('revenue_taken_btc',  $buyTrade->value_taken_btc - $buyTrade->purchase_value_taken_btc);
-
-        if ($this->getAttribute('buy_pool')) {
-            $this->buy_pool->push($buyTrade);
-        } else {
-            $buyPool = collect();
-            $buyPool->push($buyTrade);
-            $this->setAttribute('buy_pool', $buyPool);
-        }
-        return $buyTrade;
-    }
-
     /**
      * If it is a sell trade and has buy trades assigned,
      * return the average buy price for all assigned buy trades
@@ -142,53 +100,5 @@ class Trade extends Model implements TradeInterface
         $this->setAttribute('revenue', $this->volume_taken * $this->rate - $this->buy_value) ;
 
         return $this;
-    }
-
-
-    /**
-     * Reduces the volume by the given amount and returns the transfer volume
-     *
-     * @param  float $volume
-     * @return float    transfer volume
-     */
-    public function takeVolume($takeVolume) {
-        if (!$this->type == 'buy') {
-            throw new \Exception('Trying to take volume from trade which is not of type "buy"');
-        }
-        $this->setAttribute('volume_before_taken', $this->volume);
-        if ($this->volume < $takeVolume) {
-            $transferVolume = ($this->volume - $takeVolume) * -1;
-            $this->volume_taken = $this->volume;
-            $this->volume = 0;
-        } else {
-            $transferVolume = 0;
-            $this->volume -= $takeVolume;
-            $this->volume_taken = $takeVolume;
-        }
-        if ($this->type == 'buy' && $this->source_currency == config('api.fiat') && $this->target_currency == 'BTC') {
-            $this->value_btc = $this->volume;
-        } else {
-            $this->value_btc = $this->volume * $this->rate;
-        }
-
-        if ($this->type == 'buy' && $this->source_currency == config('api.fiat') && $this->target_currency == 'BTC') {
-            $this->value_fiat = $this->volume * $this->rate;
-        } else {
-            $this->value_fiat = $this->volume * $this->rate * $this->purchase_rate_fiat_btc;
-        }
-
-        if ($this->type == 'buy' && $this->source_currency == config('api.fiat') && $this->target_currency == 'BTC') {
-            $this->purchase_value_taken_btc = $this->volume_taken;
-        } else {
-            $this->purchase_value_taken_btc = $this->volume_taken * $this->rate;
-        }
-
-        if ($this->type == 'buy' && $this->source_currency == config('api.fiat') && $this->target_currency == 'BTC') {
-            $this->purchase_value_taken_fiat = $this->volume_taken * $this->rate;
-        } else {
-            $this->purchase_value_taken_fiat = $this->volume_taken * $this->rate * $this->purchase_rate_fiat_btc;
-        }
-
-        return $transferVolume;
     }
 }
