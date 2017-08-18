@@ -4,7 +4,7 @@
   <div class="row">
     <div class="col-md-12">
       <div class="panel panel-default" v-if="balances != 0">
-        <div class="panel-heading">Coin Volume Status</div>
+        <div class="panel-heading">Coin Portfolio</div>
 
         <div class="panel-body">
           <p>
@@ -57,7 +57,7 @@
                   <td>{{ formatFiat(item.currentValueFiat) }}</td>
                   <td>{{ formatFiat(item.revenueFiat) }}</td>
                   <td>{{ formatPercent(item.revenueRateFiat) }}</td>
-                  <td><a :href="item.chartUrl" target="_blank">Link</a></td>
+                  <td><a :href="item.chartUrl" target="_blank">Trading View</a></td>
 
                 </tr>
               </tbody>

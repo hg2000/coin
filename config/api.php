@@ -22,6 +22,11 @@ return  [
             'secret' => env('API.BITTREX.SECRET'),
             'adapterClass' => App\Adapter\Bittrex\BittrexAdapter::class
         ],
+        'bitfinex' => [
+            'key' => env('API.BITFINEX.KEY'),
+            'secret' => env('API.BITFINEX.SECRET'),
+            'adapterClass' => App\Adapter\Bitfinex\Bitfinexdapter::class
+        ],
     ],
     'alertChangeRate' => env('ALERT_CHANGE_RATE') ?? 10,
     'mail' => [

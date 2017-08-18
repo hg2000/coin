@@ -2583,12 +2583,12 @@ window.Vue = Vue;
 Vue.use(__WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */]);
 Vue.use(__webpack_require__(4));
 
-var Volumes = Vue.component('volumes', __webpack_require__(41));
+var Portfolio = Vue.component('portfolio', __webpack_require__(55));
 var History = Vue.component('history', __webpack_require__(40));
 var Coin = Vue.component('coin', __webpack_require__(39));
 var Clear = Vue.component('coin', __webpack_require__(38));
 
-var routes = [{ path: '/', component: Volumes }, { path: '/volumes', component: Volumes }, { path: '/history', component: History }, { path: '/coin/:id', component: Coin }, { path: '/clear', component: Clear }];
+var routes = [{ path: '/', component: Portfolio }, { path: '/portfolio', component: Portfolio }, { path: '/history', component: History }, { path: '/coin/:id', component: Coin }, { path: '/clear', component: Clear }];
 
 var router = new __WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */]({
   routes: routes
@@ -3708,212 +3708,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 34 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['fiatsymbol', 'fiat'],
-  data: function data() {
-    return {
-      balances: 0,
-      sum: 0,
-      error: 0
-    };
-  },
-  methods: {
-    makeRequest: function makeRequest() {
-      var _this = this;
-
-      this.$http.get('/api/volumes/').then(function (response) {
-        _this.balances = response.body.balances;
-        _this.sum = response.body.sum;
-      }, function (response) {
-        _this.error = response.body;
-      });
-    },
-    formatFiat: function formatFiat(n) {
-      return numeral(n).format('0,0.00') + " " + this.fiatsymbol;
-    },
-    formatCoin: function formatCoin(n) {
-      return numeral(n).format('0,0.0000');
-    },
-    formatPercent: function formatPercent(n) {
-      return numeral(n).format('0.00') + " %";
-    },
-    clearCache: function clearCache() {
-      console.log('ok');
-    }
-
-  },
-  mounted: function mounted() {
-    this.makeRequest();
-  }
-});
-
-/***/ }),
+/* 34 */,
 /* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -23548,114 +23343,8 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 41 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var Component = __webpack_require__(2)(
-  /* script */
-  __webpack_require__(34),
-  /* template */
-  __webpack_require__(42),
-  /* scopeId */
-  null,
-  /* cssModules */
-  null
-)
-Component.options.__file = "/home/hendrikg/Code/coin/resources/assets/js/components/Volumes.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] Volumes.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-1453b978", Component.options)
-  } else {
-    hotAPI.reload("data-v-1453b978", Component.options)
-  }
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 42 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "container-fluid"
-  }, [_c('div', {
-    staticClass: "row"
-  }, [_c('div', {
-    staticClass: "col-md-12"
-  }, [(_vm.balances != 0) ? _c('div', {
-    staticClass: "panel panel-default"
-  }, [_c('div', {
-    staticClass: "panel-heading"
-  }, [_vm._v("Coin Volume Status")]), _vm._v(" "), _c('div', {
-    staticClass: "panel-body"
-  }, [_c('p', [_c('table', {
-    staticClass: "table table-striped table-responsive table-hover"
-  }, [_c('thead', [_c('tr', [_c('th', {
-    staticClass: "border-right"
-  }, [_vm._v("Currency")]), _vm._v(" "), _c('th', [_vm._v("Volume")]), _vm._v(" "), _c('th', [_vm._v("Current Rate (Coin/BTC)")]), _vm._v(" "), _c('th', [_vm._v("Current Rate (Coin/" + _vm._s(_vm.fiat) + ")")]), _vm._v(" "), _c('th', [_vm._v("Rate Diff 1 Day (Coin/" + _vm._s(_vm.fiat) + ")")]), _vm._v(" "), _c('th', {
-    staticClass: "border-right"
-  }, [_vm._v("Rate Diff 7 Days ago (Coin/" + _vm._s(_vm.fiat) + ")")]), _vm._v(" "), _c('th', [_vm._v("Avg purchase rate(Coin/" + _vm._s(_vm.fiat) + ")")]), _vm._v(" "), _c('th', [_vm._v("Avg purchase rate(BTC/COIN)")]), _vm._v(" "), _c('th', [_vm._v("Purchase Value (BTC)")]), _c('th', [_vm._v("Current Value (BTC)")]), _vm._v(" "), _c('th', [_vm._v("Revenue (BTC)")]), _vm._v(" "), _c('th', {
-    staticClass: "border-right"
-  }, [_vm._v("Revenue Rate (BTC)")]), _vm._v(" "), _c('th', [_vm._v("Purchase value (" + _vm._s(_vm.fiat) + ")")]), _vm._v(" "), _c('th', [_vm._v("Current Value (" + _vm._s(_vm.fiat) + ")")]), _vm._v(" "), _c('th', [_vm._v("Revenue (" + _vm._s(_vm.fiat) + ")")]), _vm._v(" "), _c('th', [_vm._v("Revenue (%)")]), _vm._v(" "), _c('th', [_vm._v("Chart")])])]), _vm._v(" "), _c('tbody', _vm._l((_vm.balances), function(item) {
-    return _c('tr', [_c('td', {
-      staticClass: "border-right"
-    }, [_c('a', {
-      attrs: {
-        "href": '#/coin/' + item.currency
-      }
-    }, [_vm._v(" " + _vm._s(item.currency))])]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(item.volume)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(item.currentRateBtc)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(item.currentRateFiat)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatPercent(item.rateDiffDayFiat)))]), _vm._v(" "), _c('td', {
-      staticClass: "border-right"
-    }, [_vm._v(_vm._s(_vm.formatPercent(item.rateDiffSevenDaysAgoFiat)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(item.averagePurchaseRateCoinFiat)))]), _vm._v(" "), _c('td', {
-      staticClass: "border-right"
-    }, [_vm._v(_vm._s(_vm.formatCoin(item.averagePurchaseRateBtcCoin)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(item.purchaseValueBtc)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(item.currentValueBtc)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(item.currentRevenueBtc)))]), _vm._v(" "), _c('td', {
-      staticClass: "border-right"
-    }, [_vm._v(_vm._s(_vm.formatPercent(item.revenueRateBtc)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(item.purchaseValueFiat)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(item.currentValueFiat)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(item.revenueFiat)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatPercent(item.revenueRateFiat)))]), _vm._v(" "), _c('td', [_c('a', {
-      attrs: {
-        "href": item.chartUrl,
-        "target": "_blank"
-      }
-    }, [_vm._v("Link")])])])
-  })), _vm._v(" "), _c('tbody', [_c('tr', {
-    staticClass: "info"
-  }, [_c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(_vm.sum.purchaseValueBtc)) + " B")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(_vm.sum.currentValueBtc)) + " B")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(_vm.sum.currentRevenueBtc)) + " B")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatPercent(_vm.sum.tradingRevenueRateBtc)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(_vm.sum.purchaseValueFiat)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(_vm.sum.currentValueFiat)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(_vm.sum.currentRevenueFiat)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatPercent(_vm.sum.tradingRevenueRateFiat)))])])])])])])]) : _vm._e()]), _vm._v(" "), (_vm.error == 0) ? _c('div', [(_vm.sum == 0) ? _c('div', {
-    staticClass: "alert alert-warning"
-  }, [_c('p', [_vm._v("\n          Please Wait\n        ")])]) : _vm._e()]) : _vm._e(), _vm._v(" "), (_vm.error != 0) ? _c('div', {
-    staticClass: "alert alert-danger"
-  }, [_c('p', [_vm._v("\n        " + _vm._s(_vm.error) + "\n      ")])]) : _vm._e()]), _vm._v(" "), _c('div', {
-    staticClass: "row"
-  }, [_c('div', {
-    staticClass: "col-md-12"
-  }, [(_vm.sum != 0) ? _c('div', {
-    staticClass: "panel panel-default"
-  }, [_c('div', {
-    staticClass: "panel-heading"
-  }, [_vm._v("Balance")]), _vm._v(" "), _c('div', {
-    staticClass: "panel-body"
-  }, [_c('p', [_c('table', {
-    staticClass: "table"
-  }, [_c('thead', [_c('tr', [_c('th'), _vm._v(" "), _c('th', [_vm._v("BTC")]), _vm._v(" "), _c('th', [_vm._v(_vm._s(_vm.fiat))])])]), _vm._v(" "), _c('tbody', [_c('tr', [_c('th', [_vm._v("BTC/" + _vm._s(_vm.fiat) + " Trade Revenue")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(_vm.sum.tradingRevenueBtc)) + " B")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(_vm.sum.tradingRevenueFiat)))])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Buy Volume")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(_vm.sum.buyVolumeBtc)) + " B")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(_vm.sum.buyVolumeFiat)))])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Sell Volume")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(_vm.sum.sellVolumeBtc)) + " B")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(_vm.sum.sellVolumeFiat)))])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Current Coin Value")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(_vm.sum.currentValueBtc)) + " B")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(_vm.sum.currentValueFiat)))])]), _vm._v(" "), _c('tr', {
-    staticClass: "info"
-  }, [_c('th', [_vm._v("Total Revenue")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(_vm.sum.totalRevenueBtc)) + " B")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(_vm.sum.totalRevenueFiat)))])])])])])])]) : _vm._e()])])])
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-1453b978", module.exports)
-  }
-}
-
-/***/ }),
+/* 41 */,
+/* 42 */,
 /* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -35550,6 +35239,323 @@ module.exports = function(module) {
 __webpack_require__(11);
 module.exports = __webpack_require__(12);
 
+
+/***/ }),
+/* 51 */,
+/* 52 */,
+/* 53 */,
+/* 54 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['fiatsymbol', 'fiat'],
+  data: function data() {
+    return {
+      balances: 0,
+      sum: 0,
+      error: 0
+    };
+  },
+  methods: {
+    makeRequest: function makeRequest() {
+      var _this = this;
+
+      this.$http.get('/api/volumes/').then(function (response) {
+        _this.balances = response.body.balances;
+        _this.sum = response.body.sum;
+      }, function (response) {
+        _this.error = response.body;
+      });
+    },
+    formatFiat: function formatFiat(n) {
+      return numeral(n).format('0,0.00') + " " + this.fiatsymbol;
+    },
+    formatCoin: function formatCoin(n) {
+      return numeral(n).format('0,0.0000');
+    },
+    formatPercent: function formatPercent(n) {
+      return numeral(n).format('0.00') + " %";
+    },
+    clearCache: function clearCache() {
+      console.log('ok');
+    }
+
+  },
+  mounted: function mounted() {
+    this.makeRequest();
+  }
+});
+
+/***/ }),
+/* 55 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(2)(
+  /* script */
+  __webpack_require__(54),
+  /* template */
+  __webpack_require__(56),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/hendrikg/Code/coin/resources/assets/js/components/Portfolio.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Portfolio.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-84b1389a", Component.options)
+  } else {
+    hotAPI.reload("data-v-84b1389a", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 56 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "container-fluid"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-md-12"
+  }, [(_vm.balances != 0) ? _c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_vm._v("Coin Portfolio")]), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  }, [_c('p', [_c('table', {
+    staticClass: "table table-striped table-responsive table-hover"
+  }, [_c('thead', [_c('tr', [_c('th', {
+    staticClass: "border-right"
+  }, [_vm._v("Currency")]), _vm._v(" "), _c('th', [_vm._v("Volume")]), _vm._v(" "), _c('th', [_vm._v("Current Rate (Coin/BTC)")]), _vm._v(" "), _c('th', [_vm._v("Current Rate (Coin/" + _vm._s(_vm.fiat) + ")")]), _vm._v(" "), _c('th', [_vm._v("Rate Diff 1 Day (Coin/" + _vm._s(_vm.fiat) + ")")]), _vm._v(" "), _c('th', {
+    staticClass: "border-right"
+  }, [_vm._v("Rate Diff 7 Days ago (Coin/" + _vm._s(_vm.fiat) + ")")]), _vm._v(" "), _c('th', [_vm._v("Avg purchase rate(Coin/" + _vm._s(_vm.fiat) + ")")]), _vm._v(" "), _c('th', [_vm._v("Avg purchase rate(BTC/COIN)")]), _vm._v(" "), _c('th', [_vm._v("Purchase Value (BTC)")]), _c('th', [_vm._v("Current Value (BTC)")]), _vm._v(" "), _c('th', [_vm._v("Revenue (BTC)")]), _vm._v(" "), _c('th', {
+    staticClass: "border-right"
+  }, [_vm._v("Revenue Rate (BTC)")]), _vm._v(" "), _c('th', [_vm._v("Purchase value (" + _vm._s(_vm.fiat) + ")")]), _vm._v(" "), _c('th', [_vm._v("Current Value (" + _vm._s(_vm.fiat) + ")")]), _vm._v(" "), _c('th', [_vm._v("Revenue (" + _vm._s(_vm.fiat) + ")")]), _vm._v(" "), _c('th', [_vm._v("Revenue (%)")]), _vm._v(" "), _c('th', [_vm._v("Chart")])])]), _vm._v(" "), _c('tbody', _vm._l((_vm.balances), function(item) {
+    return _c('tr', [_c('td', {
+      staticClass: "border-right"
+    }, [_c('a', {
+      attrs: {
+        "href": '#/coin/' + item.currency
+      }
+    }, [_vm._v(" " + _vm._s(item.currency))])]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(item.volume)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(item.currentRateBtc)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(item.currentRateFiat)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatPercent(item.rateDiffDayFiat)))]), _vm._v(" "), _c('td', {
+      staticClass: "border-right"
+    }, [_vm._v(_vm._s(_vm.formatPercent(item.rateDiffSevenDaysAgoFiat)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(item.averagePurchaseRateCoinFiat)))]), _vm._v(" "), _c('td', {
+      staticClass: "border-right"
+    }, [_vm._v(_vm._s(_vm.formatCoin(item.averagePurchaseRateBtcCoin)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(item.purchaseValueBtc)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(item.currentValueBtc)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(item.currentRevenueBtc)))]), _vm._v(" "), _c('td', {
+      staticClass: "border-right"
+    }, [_vm._v(_vm._s(_vm.formatPercent(item.revenueRateBtc)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(item.purchaseValueFiat)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(item.currentValueFiat)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(item.revenueFiat)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatPercent(item.revenueRateFiat)))]), _vm._v(" "), _c('td', [_c('a', {
+      attrs: {
+        "href": item.chartUrl,
+        "target": "_blank"
+      }
+    }, [_vm._v("Trading View")])])])
+  })), _vm._v(" "), _c('tbody', [_c('tr', {
+    staticClass: "info"
+  }, [_c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td'), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(_vm.sum.purchaseValueBtc)) + " B")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(_vm.sum.currentValueBtc)) + " B")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(_vm.sum.currentRevenueBtc)) + " B")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatPercent(_vm.sum.tradingRevenueRateBtc)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(_vm.sum.purchaseValueFiat)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(_vm.sum.currentValueFiat)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(_vm.sum.currentRevenueFiat)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatPercent(_vm.sum.tradingRevenueRateFiat)))])])])])])])]) : _vm._e()]), _vm._v(" "), (_vm.error == 0) ? _c('div', [(_vm.sum == 0) ? _c('div', {
+    staticClass: "alert alert-warning"
+  }, [_c('p', [_vm._v("\n          Please Wait\n        ")])]) : _vm._e()]) : _vm._e(), _vm._v(" "), (_vm.error != 0) ? _c('div', {
+    staticClass: "alert alert-danger"
+  }, [_c('p', [_vm._v("\n        " + _vm._s(_vm.error) + "\n      ")])]) : _vm._e()]), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-md-12"
+  }, [(_vm.sum != 0) ? _c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_vm._v("Balance")]), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  }, [_c('p', [_c('table', {
+    staticClass: "table"
+  }, [_c('thead', [_c('tr', [_c('th'), _vm._v(" "), _c('th', [_vm._v("BTC")]), _vm._v(" "), _c('th', [_vm._v(_vm._s(_vm.fiat))])])]), _vm._v(" "), _c('tbody', [_c('tr', [_c('th', [_vm._v("BTC/" + _vm._s(_vm.fiat) + " Trade Revenue")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(_vm.sum.tradingRevenueBtc)) + " B")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(_vm.sum.tradingRevenueFiat)))])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Buy Volume")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(_vm.sum.buyVolumeBtc)) + " B")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(_vm.sum.buyVolumeFiat)))])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Sell Volume")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(_vm.sum.sellVolumeBtc)) + " B")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(_vm.sum.sellVolumeFiat)))])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Current Coin Value")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(_vm.sum.currentValueBtc)) + " B")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(_vm.sum.currentValueFiat)))])]), _vm._v(" "), _c('tr', {
+    staticClass: "info"
+  }, [_c('th', [_vm._v("Total Revenue")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(_vm.sum.totalRevenueBtc)) + " B")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(_vm.sum.totalRevenueFiat)))])])])])])])]) : _vm._e()])])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-84b1389a", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);
