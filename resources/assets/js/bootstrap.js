@@ -53,3 +53,7 @@ window.axios.defaults.headers.common = {
 //     key: 'your-pusher-key'
 // });
 //
+//
+//
+
+numeral = require('numeral');

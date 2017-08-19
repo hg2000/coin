@@ -60,11 +60,13 @@
 </template>
 
 <script>
+import format from '../mixins/format.js';
 export default {
   props: [
     'fiatsymbol',
     'fiat'
   ],
+  mixins: [format],
   data: function() {
     return {
       trades: 0,
@@ -83,12 +85,6 @@ export default {
       }, response => {
         this.error = response.body;
       });
-    },
-    formatFiat: function(n) {
-      return numeral(n).format('0,0.00') + " " + this.fiatsymbol;
-    },
-    formatCoin: function(n) {
-      return numeral(n).format('0,0.0000');
     },
   },
   mounted() {
