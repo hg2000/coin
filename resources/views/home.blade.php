@@ -40,7 +40,7 @@
               </ul>
 
               <ul class="nav nav-pills navbar-right">
-                <li><router-link to="/clear"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></router-link></li>
+                <li class="refresh-button"><router-link to="/clear" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></router-link></li>
               </ul>
               <p class="navbar-text navbar-right refresh-info"><small>Last refresh: {{ $lastUpdate }}</small></p>
             </div><!-- /.navbar-collapse -->
