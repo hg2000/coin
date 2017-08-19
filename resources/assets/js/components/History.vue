@@ -5,7 +5,7 @@
       <div class="col-xs-12">
 
         <div class="panel panel-default" v-if="trades != 0">
-          <div class="panel-heading">Coin Portfolio</div>
+          <div class="panel-heading">Trade history</div>
           <div class="panel-body">
 
             <div class="table-responsive">

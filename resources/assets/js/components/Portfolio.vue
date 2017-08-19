@@ -62,25 +62,25 @@
                   </tr>
 
                   <tr class="info">
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <th>Total</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
 
-                    <td></td>
-                    <td></td>
-                    <td>{{ formatCoin(sum.purchaseValueBtc)}} B</td>
-                    <td>{{ formatCoin(sum.currentValueBtc) }} B</td>
-                    <td>{{ formatCoin(sum.currentRevenueBtc) }} B</td>
-                    <td>{{ formatPercent(sum.tradingRevenueRateBtc) }}</td>
+                    <th></th>
+                    <th></th>
+                    <th>{{ formatCoin(sum.purchaseValueBtc)}} B</th>
+                    <th>{{ formatCoin(sum.currentValueBtc) }} B</th>
+                    <th>{{ formatCoin(sum.currentRevenueBtc) }} B</th>
+                    <th>{{ formatPercent(sum.tradingRevenueRateBtc) }}</th>
 
-                    <td>{{ formatFiat(sum.purchaseValueFiat)}}</td>
-                    <td>{{ formatFiat(sum.currentValueFiat) }}</td>
-                    <td>{{ formatFiat(sum.currentRevenueFiat) }}</td>
-                    <td>{{ formatPercent(sum.tradingRevenueRateFiat) }}</td>
-                    <td></td>
+                    <th>{{ formatFiat(sum.purchaseValueFiat)}}</th>
+                    <th>{{ formatFiat(sum.currentValueFiat) }}</th>
+                    <th>{{ formatFiat(sum.currentRevenueFiat) }}</th>
+                    <th>{{ formatPercent(sum.tradingRevenueRateFiat) }}</th>
+                    <th></th>
                   </tr>
                 </tbody>
               </table>
@@ -103,61 +103,6 @@
           </p>
         </div>
 
-      </div>
-    </div>
-  </div>
-
-
-  <div class="container-fluid">
-
-
-    <div class="row">
-      <div class="col-md-12">
-        <div class="panel panel-default" v-if="sum != 0">
-          <div class="panel-heading">Balance</div>
-
-          <div class="panel-body">
-            <p>
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th>BTC</th>
-                    <th>{{ fiat }}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th>BTC/{{ fiat }} Trade Revenue</th>
-                    <td>{{ formatCoin(sum.tradingRevenueBtc) }} B</td>
-                    <td>{{ formatFiat(sum.tradingRevenueFiat) }}</td>
-                  </tr>
-                  <tr>
-                    <th>Buy Volume</th>
-                    <td>{{ formatCoin(sum.buyVolumeBtc) }} B</td>
-                    <td>{{ formatFiat(sum.buyVolumeFiat) }}</td>
-                  </tr>
-                  <tr>
-                    <th>Sell Volume</th>
-                    <td>{{ formatCoin(sum.sellVolumeBtc) }} B</td>
-                    <td>{{ formatFiat(sum.sellVolumeFiat) }}</td>
-                  </tr>
-                  <tr>
-                    <th>Current Coin Value</th>
-                    <td>{{ formatCoin(sum.currentValueBtc) }} B</td>
-                    <td>{{ formatFiat(sum.currentValueFiat) }}</td>
-                  </tr>
-                  <tr class="info">
-                    <th>Total Revenue</th>
-                    <td>{{ formatCoin(sum.totalRevenueBtc) }} B</td>
-                    <td>{{ formatFiat(sum.totalRevenueFiat) }}</td>
-                  </tr>
-                </tbody>
-              </table>
-
-            </p>
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -204,6 +149,7 @@ export default {
 
   },
   mounted() {
+        console.log(2);
     this.makeRequest();
   }
 }

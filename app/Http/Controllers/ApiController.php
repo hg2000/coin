@@ -38,6 +38,7 @@ class ApiController extends BaseController
         return response()->json($trades);
     }
 
+
     /**
      * Fetches current volume information from external apis
      * and provides all data for the volume view.
