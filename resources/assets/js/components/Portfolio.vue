@@ -70,7 +70,7 @@
                     <th></th>
                     <th></th>
                     <th></th>
-                    <th></th>
+                
                     <th>{{ formatCoin(sum.purchaseValueBtc)}} B</th>
                     <th>{{ formatCoin(sum.currentValueBtc) }} B</th>
                     <th>{{ formatCoin(sum.currentRevenueBtc) }} B</th>
