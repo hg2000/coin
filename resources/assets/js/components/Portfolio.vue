@@ -59,11 +59,13 @@
                     <td>{{ formatFiat(item.currentValueFiat) }}</td>
                     <td>{{ formatFiat(item.revenueFiat) }}</td>
                     <td>{{ formatPercent(item.revenueRateFiat) }}</td>
-                    <td><a :href="item.chartUrl" target="_blank">Link</a></td>
+                    <td><a :href="item.chartUrl" target="_blank">TradingView</a></td>
                   </tr>
 
                   <tr class="info">
                     <th>Total</th>
+                    <th></th>
+                    <th></th>
                     <th></th>
                     <th></th>
                     <th></th>
