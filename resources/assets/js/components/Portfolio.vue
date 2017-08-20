@@ -18,13 +18,13 @@
                     <th>Current Rate (Coin/BTC)</th>
 
                     <th>Current Rate (Coin/{{ fiat }})</th>
-                    <th>Rate Diff 1 Day (Coin/{{ fiat }})</th>
-                    <th class="border-right">Rate Diff 7 Days ago (Coin/{{ fiat }})</th>
+
+                    <th class="border-right">Rate 7 Days (Coin/{{ fiat }})</th>
 
                     <th>Avg purchase rate(Coin/{{ fiat }})</th>
                     <th>Avg purchase rate(BTC/COIN)</th>
 
-                    <th>Purchase Value (BTC)</td>
+                      <th>Purchase Value (BTC)</td>
                       <th>Current Value (BTC)</th>
                       <th>Revenue (BTC)</th>
                       <th class="border-right">Revenue Rate (BTC)</th>
@@ -39,12 +39,13 @@
                 <tbody>
                   <tr v-for="item in balances">
                     <td class="border-right"> {{ item.currency }}</td>
+
                     <td>{{ formatCoin(item.volume) }}</td>
                     <td>{{ formatCoin(item.currentRateBtc) }}</td>
 
                     <td>{{ formatFiat(item.currentRateFiat) }}</td>
-                    <td>{{ formatPercent(item.rateDiffDayFiat)}}</td>
-                    <td class="border-right">{{ formatPercent(item.rateDiffSevenDaysAgoFiat)}}</td>
+
+                    <td class="border-right"><graph :elementId="'btcgraph7' + item.id" :rates="dailyRates" :currency="item.currency" :title="formatPercent(item.rateDiffSevenDaysAgoFiat)" :target="1"></graph></td>
 
                     <td>{{ formatFiat(item.averagePurchaseRateCoinFiat) }}</td>
                     <td class="border-right">{{ formatCoin(item.averagePurchaseRateBtcCoin) }}</td>
@@ -66,9 +67,6 @@
                     <th></th>
                     <th></th>
                     <th></th>
-                    <th></th>
-                    <th></th>
-
                     <th></th>
                     <th></th>
                     <th>{{ formatCoin(sum.purchaseValueBtc)}} B</th>
@@ -99,7 +97,9 @@
         </div>
         <div v-if="error != 0" class="alert alert-danger">
           <p>
-            {{error}}
+            <strong>Error: {{error}}</strong><br>
+
+            {{trace}}<br>
           </p>
         </div>
 
@@ -110,19 +110,25 @@
 </template>
 
 <script>
+import VueCharts from 'vue-chartjs'
 import format from '../mixins/format.js';
+import Graph from '../components/Graph.js';
+
 export default {
   props: [
     'fiatsymbol',
     'fiat'
   ],
+  components: {Graph},
   mixins: [format],
   data: function() {
     return {
       balances: 0,
       sum: 0,
       error: 0,
-      balances: 0
+      trace: '',
+      balances: 0,
+      dailyRates: []
     }
   },
   methods: {
@@ -134,8 +140,11 @@ export default {
       }).then(response => {
         this.balances = response.body.balances;
         this.sum = response.body.sum;
+        this.dailyRates = response.body.dailyRateAverage;
       }, response => {
-        this.error = response.body;
+        var parsed = JSON.parse(response.body);
+        this.error = parsed.message;
+        this.trace = parsed.trace;
       });
 
     }

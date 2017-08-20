@@ -6,12 +6,25 @@ use \App\Trade;
 use \App\Rate;
 use \App\Mail\Alert;
 use \Illuminate\Support\Facades\Mail;
+use \App\Service\CacheService;
+use \Illuminate\Support\Collection;
 
 /**
  * Deals with rate related tasks
  */
 class RateService
 {
+    /**
+     * @var App\Service\CacheService
+     */
+    protected $cache;
+
+
+    public function __construct()
+    {
+        $this->cache = App::make(CacheService::class);
+    }
+
     public function analyseRateChanges()
     {
 
@@ -46,12 +59,91 @@ class RateService
                     $diffItem->put('diffFiat', $diffFiat);
                     $diffItems->push($diffItem);
                 }
-
             }
+        }
+        return [ $diffItems, $ratesRaw->date ];
+    }
 
+
+    /**
+     * Returns a collection of days with the average rate of each day
+     * @param  DateTime $from
+     * @param  DateTime $to
+     */
+    public function getDailyRateAverage(\DateTime $from, \DateTime $to)
+    {
+        $dayRateCollection = [];
+        $ratesRaw = Rate::where('date', '>=', $from)
+                        ->where('date', '<=', $to)->get();
+
+        $rates = $ratesRaw->map(function ($item) {
+            $item->rates = unserialize($item->rates);
+            return $item;
+        });
+
+        $ndate = clone($from);
+        $oneDay = new \DateInterval('P1D');
+        while ($ndate < $to) {
+
+            $dayRates = $rates->filter(function ($item) use ($ndate) {
+                $from = clone($ndate);
+                $from->setTime(0, 0);
+                $to = clone($ndate)->setTime(23, 59);
+                $date = \DateTime::createFromFormat('Y-m-d h:i:s', $item->date);
+
+                return ($date >= $from && $date <= $to);
+            });
+
+            $averageDayRates = $this->reduceToAverage($dayRates);
+            $dayRate = [];
+            $dayRate['date'] = clone($ndate);
+            $dayRate['date'] = $dayRate['date']->format('d');
+            $dayRate['rates'] = $averageDayRates->toArray();
+            $dayRateCollection[] = $dayRate;
+            $ndate = $ndate->add($oneDay);
         }
 
-        return [ $diffItems, $ratesRaw->date ];
+        return $dayRateCollection;
+    }
+
+
+    /**
+     * Reduces a collection of rates to an average value
+     * @return Illuminate\Support\Collection
+     */
+    public function reduceToAverage(Collection $ratesCollection)
+    {
+        $amount = $ratesCollection->count();
+        $reducedRatesCollection = $ratesCollection->reduce(function ($carry, $item) {
+            $item->rates = collect($item->rates);
+
+            $mappedRates = $item->rates->map(function ($rate, $key) use ($carry) {
+                if ($carry) {
+                    if ($rate[0] != 1) {
+                        $rate[0] += $carry->rates[$key][0];
+                    }
+                    if ($rate[1] != 1) {
+                        $rate[1] += $carry->rates[$key][1];
+                    }
+                }
+                return $rate;
+            });
+
+            $item->rates = $mappedRates;
+            return $item;
+        });
+
+        $reducedRatesCollection = $reducedRatesCollection->rates->map(function ($item) use ($amount) {
+            if ($item[0] != 0 && $item[0] != 1) {
+                $item[0] = $item[0] / $amount;
+            }
+            if ($item[1] != 1 && $item[1] != 1) {
+                $item[1] = $item[1] / $amount;
+            }
+            return $item;
+        });
+
+        return $reducedRatesCollection;
     }
 
     public function rateChangeAlert()
@@ -96,7 +188,6 @@ class RateService
 
         if (!$increasesBtc->isEmpty() || !$decreasesBtc->isEmpty()) {
             Mail::to(config('api.mail.alert.receiver.adress'))->send(new Alert($alertChangeRate, $increasesBtc, $decreasesBtc, $date));
-
         }
     }
 }

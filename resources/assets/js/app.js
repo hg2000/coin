@@ -1,6 +1,8 @@
 require('./bootstrap');
 
 import VueRouter from 'vue-router';
+import Chart from 'chart.js';
+
 window.Vue = Vue
 
 Vue.use(VueRouter);
@@ -24,6 +26,11 @@ const routes = [
 const router = new VueRouter({
   routes
 })
+
+
+
+
+
 
 const app = new Vue({
     router,

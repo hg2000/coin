@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'error' => 'An error occured'
+    'error' => 'Something went wrong...'
 ];

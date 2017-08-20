@@ -563,9 +563,11 @@ class TradingService
         $volumes = $this->getCurrentVolumes();
         $rateBtcFiat = $this->getCurrentRate('BTC', config('api.fiat'));
 
+        $n = 0;
         foreach ($volumes as $currencyKey => $volume) {
 
             $item = collect();
+            $item->put('id', $n);
             $item->put('currency', $currencyKey);
             $item->put('volume', $volume);
 
@@ -662,6 +664,7 @@ class TradingService
             }
             $item->put('revenueRateFiat', $revenueRateFiat);
             $balances->push($item);
+            $n++;
 
         }
         $this->cacheService->set('balances', serialize($balances));

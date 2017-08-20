@@ -42,7 +42,7 @@
           </div>
         </div>
         <div v-if="error == 0">
-          <div v-if="trades == 0" class="alert alert-warning">
+          <div v-if="balances == 0" class="alert alert-warning">
             <p>
               Please Wait
             </p>
@@ -50,7 +50,8 @@
         </div>
         <div v-if="error != 0" class="alert alert-danger">
           <p>
-            {{error}}
+            <strong>Error: {{error}}</strong><br>
+            {{trace}}<br>
           </p>
         </div>
       </div>
@@ -70,6 +71,7 @@ export default {
   data: function() {
     return {
       trades: 0,
+      trace: '',
       error: 0
     }
   },
@@ -83,7 +85,9 @@ export default {
       }).then(response => {
         this.trades = response.body;
       }, response => {
-        this.error = response.body;
+        var parsed = JSON.parse(response.body);
+        this.error = parsed.message;
+        this.trace = parsed.trace;
       });
     },
   },

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Artisan;
 use App;
 
 use App\Service\RateService;
+use App\Rate;
 use Illuminate\Support\Facades\DB;
 use \Carbon\Carbon;
 
@@ -92,7 +93,85 @@ class RateServiceTest extends \Tests\TestCase
     {
         $rateService = App::make(RateService::class);
         $rateService->ratechangealert();
+    }
+
+    /**
+     * TODO implement test
+     */
+    public function getDailyRateData()
+    {
+        $today = new \DateTime();
+        $today->setTime(23, 59);
+        $past = new \DateTime();
+        $past->setTime(0, 0);
+        $past->sub(new \DateInterval('P7D'));
+        $rateService = App::make(RateService::class);
+        $rateService->getDailyRateData('BTC', 'STRAT', $past, $today);
+
+    }
+
+    /**
+     * @test
+     */
+    public function reduceToAverage()
+    {
+        $rateService = App::make(RateService::class);
+        $rate1 = App::make(Rate::class);
+        $rate2 = App::make(Rate::class);
+
+        $date1 = new \DateTime();
+        $date1->setTime(1,0);
+        $date2 = new \DateTime();
+        $date2->setTime(2,0);
 
 
+        $rateItems1 = [
+            'BTC' => [
+                0 => 2,
+                1 => 3
+            ],
+            'STRAT' => [
+                0 => 3,
+                1 => 2
+            ],
+            'MAID' => [
+                0 => 1,
+                1 => 0
+            ]
+        ];
+        $rateItems2 = [
+            'BTC' => [
+                0 => 3,
+                1 => 2
+            ],
+            'STRAT' => [
+                0 => 4,
+                1 => 5
+            ],
+            'MAID' => [
+                0 => 1,
+                1 => 0
+            ]
+        ];
+
+        $rate1->date = $date1;
+        $rate1->rates = $rateItems1;
+        $rate2->date = $date2;
+        $rate2->rates = $rateItems2;
+
+        $rates = collect();
+        $rates->push($rate1);
+        $rates->push($rate2);
+
+        $result = $rateService->reduceToAverage($rates);
+
+        $this->assertEquals(2.5, $result['BTC'][0]);
+        $this->assertEquals(2.5, $result['BTC'][1]);
+
+        $this->assertEquals(3.5, $result['STRAT'][0]);
+        $this->assertEquals(3.5, $result['STRAT'][1]);
+
+        $this->assertEquals(1, $result['MAID'][0]);
+        $this->assertEquals(0, $result['MAID'][1]);
     }
 }

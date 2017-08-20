@@ -61,7 +61,8 @@
         </div>
         <div v-if="error != 0" class="alert alert-danger">
           <p>
-            {{error}}
+            <strong>Error: {{error}}</strong><br>
+            {{trace}}<br>
           </p>
         </div>
 
@@ -72,19 +73,23 @@
 </template>
 
 <script>
+import VueCharts from 'vue-chartjs'
 import format from '../mixins/format.js';
-export default {
+import Graph from '../components/Graph.js';
 
+export default {
   props: [
     'fiatsymbol',
     'fiat'
   ],
+  components: {Graph},
   mixins: [format],
   data: function() {
     return {
       balances: 0,
       sum: 0,
       error: 0,
+      trace: '',
       balances: 0
     }
   },
@@ -97,8 +102,10 @@ export default {
       }).then(response => {
         this.balances = response.body.balances;
         this.sum = response.body.sum;
-      }, response => {
-        this.error = response.body;
+      },  response => {
+        var parsed = JSON.parse(response.body);
+        this.error = parsed.message;
+        this.trace = parsed.trace;
       });
     },
   },

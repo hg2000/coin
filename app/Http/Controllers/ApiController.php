@@ -19,11 +19,17 @@ class ApiController extends BaseController
     /**
      * @var \App\Service\TradingService
      */
-    protected $trading;
+    protected $tradeService;
+
+    /**
+     * @var \App\Service\RateService
+     */
+    protected $rateService;
 
     public function __construct()
     {
-        $this->trading = App::make(TradingService::class);
+        $this->tradeService = App::make(TradingService::class);
+        $this->rateService = App::make(RateService::class);
     }
 
     /**
@@ -34,7 +40,7 @@ class ApiController extends BaseController
      */
     public function getTradeHistory($from = null, $to = null, $currencyKey = null)
     {
-        $trades = $this->trading->getTradeHistory();
+        $trades = $this->tradeService->getTradeHistory();
         return response()->json($trades);
     }
 
@@ -47,12 +53,12 @@ class ApiController extends BaseController
     public function getPortfolio()
     {
 
-        $volumes = $this->trading->getCurrentVolumes();
-        $rateBtcFiat = $this->trading->getCurrentRate('BTC', config('api.fiat'));
+        $volumes = $this->tradeService->getCurrentVolumes();
+        $rateBtcFiat = $this->tradeService->getCurrentRate('BTC', config('api.fiat'));
         $balances = collect();
-        $balances = $this->trading->getcurrentBalanceInfo();
+        $balances = $this->tradeService->getcurrentBalanceInfo();
 
-        $sumBtcFiatTrades = $this->trading->getSumBtcFiatTrades();
+        $sumBtcFiatTrades = $this->tradeService->getSumBtcFiatTrades();
 
         $sum = [
             'buyVolumeBtc' => $sumBtcFiatTrades['buyVolumeBtc'],
@@ -89,10 +95,21 @@ class ApiController extends BaseController
         }
         $sum['tradingRevenueRateBtc'] = $tradingRevenueRateBtc;
 
+
+        $today = new \DateTime();
+        $today->setTime(23,59);
+        $lastWeek = new \DateTime();
+        $lastWeek->sub(new \DateInterval('P7D'));
+        $lastWeek->setTime(0,0);
+        $dailyRateAverage = $this->rateService->getDailyRateAverage($lastWeek, $today);
+
+
         return response()
         ->json([
             'balances' => $balances,
-            'sum' => $sum
+            'sum' => $sum,
+            'dailyRateAverage' => $dailyRateAverage
+
         ]);
 
     }
