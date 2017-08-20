@@ -1,5 +1,5 @@
 export default {
-  template: '<div><canvas :id="elementId" class="chart-canvas" width="160" height="100" style="width: 160px; height: 100px"></canvas></div>',
+  template: '<div><canvas :id="elementId" class="chart-canvas" width="200" height="100" style="width: 200px; height: 100px"></canvas></div>',
   props: ['title', 'elementId', 'rates', 'currency', 'target'],
 
   mounted() {

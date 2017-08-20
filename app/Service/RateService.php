@@ -119,11 +119,13 @@ class RateService
 
             $mappedRates = $item->rates->map(function ($rate, $key) use ($carry) {
                 if ($carry) {
-                    if ($rate[0] != 1) {
-                        $rate[0] += $carry->rates[$key][0];
-                    }
-                    if ($rate[1] != 1) {
-                        $rate[1] += $carry->rates[$key][1];
+                    if (isset($carry->rates[$key])) {
+                        if ($rate[0] != 1) {
+                            $rate[0] += $carry->rates[$key][0];
+                        }
+                        if ($rate[1] != 1) {
+                            $rate[1] += $carry->rates[$key][1];
+                        }
                     }
                 }
                 return $rate;

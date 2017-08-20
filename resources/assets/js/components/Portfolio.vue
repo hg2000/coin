@@ -19,7 +19,7 @@
 
                     <th>Current Rate (Coin/{{ fiat }})</th>
 
-                    <th class="border-right">Rate 7 Days (Coin/{{ fiat }})</th>
+                    <th class="border-right">Rate 14 Days (Coin/{{ fiat }})</th>
 
                     <th>Avg purchase rate(Coin/{{ fiat }})</th>
                     <th>Avg purchase rate(BTC/COIN)</th>
@@ -70,7 +70,7 @@
                     <th></th>
                     <th></th>
                     <th></th>
-                
+
                     <th>{{ formatCoin(sum.purchaseValueBtc)}} B</th>
                     <th>{{ formatCoin(sum.currentValueBtc) }} B</th>
                     <th>{{ formatCoin(sum.currentRevenueBtc) }} B</th>

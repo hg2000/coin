@@ -99,7 +99,7 @@ class ApiController extends BaseController
         $today = new \DateTime();
         $today->setTime(23,59);
         $lastWeek = new \DateTime();
-        $lastWeek->sub(new \DateInterval('P7D'));
+        $lastWeek->sub(new \DateInterval('P14D'));
         $lastWeek->setTime(0,0);
         $dailyRateAverage = $this->rateService->getDailyRateAverage($lastWeek, $today);
 
