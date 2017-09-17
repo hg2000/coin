@@ -16,9 +16,6 @@
               </div>
             </div>
 
-
-
-
             <div class="table-responsive portfolio-table">
               <table class="table table-striped table-responsive table-hover">
                 <thead>
@@ -60,12 +57,12 @@
                     <th>Total</th>
                     <th></th>
                     <th></th>
+                    <th class="border-right"></th>
+                    <th class="border-right">{{ formatFiat(sum.purchaseValueFiat)}}</th>
+                    <th class="border-right">{{ formatFiat(sum.currentValueFiat) }}</th>
+                    <th class="border-right">{{ formatFiat(sum.currentRevenueFiat) }}</th>
+                    <th class="border-right">{{ formatPercent(sum.tradingRevenueRateFiat) }}</th>
                     <th></th>
-                    <th></th>
-                    <th>{{ formatFiat(sum.purchaseValueFiat)}}</th>
-                    <th>{{ formatFiat(sum.currentValueFiat) }}</th>
-                    <th>{{ formatFiat(sum.currentRevenueFiat) }}</th>
-                    <th>{{ formatPercent(sum.tradingRevenueRateFiat) }}</th>
                     <th></th>
                   </tr>
                 </tbody>
@@ -85,21 +82,21 @@
                     <td class="border-right">{{ formatCoin(item.revenueBtc) }} B</td>
                     <td class="border-right">{{ formatPercent(item.revenueRateBtc) }}</td>
 
-
-                    <td class="border-right">{{ formatCoin(item.volume) }} B</td>
+                    <td class="border-right">{{ formatCoin(item.volume) }}</td>
                     <td class="border-right"><a :href="item.chartUrl" target="_blank">TradingView</a></td>
+                    <td></td>
                   </tr>
 
                   <tr class="info">
                     <th>Total</th>
                     <th></th>
                     <th></th>
+                    <th class="border-right"></th>
+                    <th class="border-right">{{ formatCoin(sum.purchaseValueBtc)}} B</th>
+                    <th class="border-right">{{ formatCoin(sum.currentValueBtc) }} B</th>
+                    <th class="border-right">{{ formatCoin(sum.currentRevenueBtc) }} B</th>
+                    <th class="border-right">{{ formatPercent(sum.tradingRevenueRateBtc) }}</th>
                     <th></th>
-                    <th></th>
-                    <th>{{ formatCoin(sum.purchaseValueBtc)}} B</th>
-                    <th>{{ formatCoin(sum.currentValueBtc) }} B</th>
-                    <th>{{ formatCoin(sum.currentRevenueBtc) }} B</th>
-                    <th>{{ formatPercent(sum.tradingRevenueRateBtc) }}</th>
                     <th></th>
                   </tr>
 
