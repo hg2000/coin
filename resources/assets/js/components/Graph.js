@@ -1,19 +1,18 @@
 export default {
-  template: '<div><canvas :id="elementId" class="chart-canvas" width="200" height="100" style="width: 200px; height: 100px"></canvas></div>',
-  props: ['title', 'elementId', 'rates', 'currency', 'target'],
+  template: '<div><canvas  :id="elementId" class="chart-canvas" :width="width" :height="height"></canvas></div>',
+  props: ['title', 'elementId', 'rates', 'currency', 'target', 'width', 'height'],
 
   mounted() {
     var dates = [];
     this.rates.forEach(function(item) {
       dates.push(item.date);
-
     });
 
     var values = [];
     var currency = this.currency;
     var target = this.target;
-    this.rates.forEach(function(item) {
 
+    this.rates.forEach(function(item) {
       if (typeof item['rates'][currency] != 'undefined') {
         values.push(item['rates'][currency][target]);
       }
@@ -21,6 +20,7 @@ export default {
 
     var ctx = document.getElementById(this.elementId)
       .getContext('2d');
+
     var myChart = new Chart(ctx, {
       type: 'line',
       data: {
@@ -31,7 +31,14 @@ export default {
           fill: true
         }]
       },
+      methods: {
+        style: function() {
+          return 'width: 100px; height: 1001px';
+        }
+      },
       options: {
+        maintainAspectRatio: false,
+        responsive: false,
         legend: {
           display: false
         },

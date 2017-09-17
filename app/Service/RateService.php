@@ -114,6 +114,10 @@ class RateService
     public function reduceToAverage(Collection $ratesCollection)
     {
         $amount = $ratesCollection->count();
+        if ($amount == 0) {
+            return $ratesCollection;
+        }
+
         $reducedRatesCollection = $ratesCollection->reduce(function ($carry, $item) {
             $item->rates = collect($item->rates);
 

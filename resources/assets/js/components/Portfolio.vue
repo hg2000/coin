@@ -9,57 +9,51 @@
           <div class="panel-heading">Coin Portfolio</div>
           <div class="panel-body">
 
-            <div class="table-responsive">
+            <div class="clearfix">
+              <div class="btn-group currency-buttons pull-right" role="group" aria-label="Select base currency">
+                <button v-on:click="changeBaseCurrency(fiat)" type="button" class="btn btn-default" :class="activeCurrencyClass">{{fiatsymbol}}</button>
+                <button v-on:click="changeBaseCurrency('BTC')" type="button" class="btn btn-default">B</button>
+              </div>
+            </div>
+
+
+
+
+            <div class="table-responsive portfolio-table">
               <table class="table table-striped table-responsive table-hover">
                 <thead>
                   <tr>
-                    <th class="border-right">Currency</th>
-                    <th>Volume</th>
-                    <th>Current Rate (Coin/BTC)</th>
+                    <th>Currency</th>
+                    <th>Rate 14 Days)</th>
+                    <th>Current Rate</th>
+                    <th>Avg purchase rate</th>
+                    <th>Purchase Value</td>
+                      <th>Current Value</th>
+                      <th>Revenue</th>
+                      <th>Revenue Rate</th>
 
-                    <th>Current Rate (Coin/{{ fiat }})</th>
-
-                    <th class="border-right">Rate 14 Days (Coin/{{ fiat }})</th>
-
-                    <th>Avg purchase rate(Coin/{{ fiat }})</th>
-                    <th>Avg purchase rate(BTC/COIN)</th>
-
-                      <th>Purchase Value (BTC)</td>
-                      <th>Current Value (BTC)</th>
-                      <th>Revenue (BTC)</th>
-                      <th class="border-right">Revenue Rate (BTC)</th>
-
-                      <th>Purchase value ({{ fiat}})</th>
-                      <th>Current Value ({{ fiat }})</th>
-                      <th>Revenue ({{ fiat }})</th>
-                      <th>Revenue (%)</th>
+                      <th>Volume</th>
                       <th>Chart</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody v-if="baseCurrency == fiat">
                   <tr v-for="item in balances">
                     <td class="border-right"> {{ item.currency }}</td>
+                    <td class="border-right" style="width: 150px; padding: 0 2px">
+                      <graph :elementId="'btcgraph7' + item.id" :rates="dailyRates" :currency="item.currency" :title="formatPercent(item.rateDiffSevenDaysAgoFiat)" :target="1" :width="220" :height="110">
+                      </graph>
+                    </td>
 
-                    <td>{{ formatCoin(item.volume) }}</td>
-                    <td>{{ formatCoin(item.currentRateBtc) }}</td>
+                    <td class="border-right">{{ formatFiat(item.currentRateFiat) }}</td>
+                    <td class="border-right">{{ formatFiat(item.averagePurchaseRateCoinFiat) }}</td>
+                    <td class="border-right">{{ formatFiat(item.purchaseValueFiat) }}</td>
+                    <td class="border-right">{{ formatFiat(item.currentValueFiat) }}</td>
+                    <td class="border-right">{{ formatFiat(item.revenueFiat) }}</td>
+                    <td class="border-right">{{ formatPercent(item.revenueRateFiat) }}</td>
 
-                    <td>{{ formatFiat(item.currentRateFiat) }}</td>
 
-                    <td class="border-right"><graph :elementId="'btcgraph7' + item.id" :rates="dailyRates" :currency="item.currency" :title="formatPercent(item.rateDiffSevenDaysAgoFiat)" :target="1"></graph></td>
-
-                    <td>{{ formatFiat(item.averagePurchaseRateCoinFiat) }}</td>
-                    <td class="border-right">{{ formatCoin(item.averagePurchaseRateBtcCoin) }}</td>
-
-                    <td>{{ formatCoin(item.purchaseValueBtc) }}</td>
-                    <td>{{ formatCoin(item.currentValueBtc) }}</td>
-                    <td>{{ formatCoin(item.currentRevenueBtc) }}</td>
-                    <td class="border-right">{{ formatPercent(item.revenueRateBtc) }}</td>
-
-                    <td>{{ formatFiat(item.purchaseValueFiat) }}</td>
-                    <td>{{ formatFiat(item.currentValueFiat) }}</td>
-                    <td>{{ formatFiat(item.revenueFiat) }}</td>
-                    <td>{{ formatPercent(item.revenueRateFiat) }}</td>
-                    <td><a :href="item.chartUrl" target="_blank">TradingView</a></td>
+                    <td class="border-right">{{ formatCoin(item.volume) }}</td>
+                    <td class="border-right"><a :href="item.chartUrl" target="_blank">TradingView</a></td>
                   </tr>
 
                   <tr class="info">
@@ -68,14 +62,6 @@
                     <th></th>
                     <th></th>
                     <th></th>
-                    <th></th>
-                    <th></th>
-
-                    <th>{{ formatCoin(sum.purchaseValueBtc)}} B</th>
-                    <th>{{ formatCoin(sum.currentValueBtc) }} B</th>
-                    <th>{{ formatCoin(sum.currentRevenueBtc) }} B</th>
-                    <th>{{ formatPercent(sum.tradingRevenueRateBtc) }}</th>
-
                     <th>{{ formatFiat(sum.purchaseValueFiat)}}</th>
                     <th>{{ formatFiat(sum.currentValueFiat) }}</th>
                     <th>{{ formatFiat(sum.currentRevenueFiat) }}</th>
@@ -83,6 +69,42 @@
                     <th></th>
                   </tr>
                 </tbody>
+
+                <tbody v-if="baseCurrency == 'BTC'">
+                  <tr v-for="item in balances">
+                    <td class="border-right"> {{ item.currency }}</td>
+                    <td class="border-right" style="width: 150px; padding: 0 2px">
+                      <graph :elementId="'btcgraph7' + item.id" :rates="dailyRates" :currency="item.currency" :title="formatPercent(item.rateDiffSevenDaysAgoBtc)" :target="1" :width="220" :height="110">
+                      </graph>
+                    </td>
+
+                    <td class="border-right">{{ formatCoin(item.currentRateBtc) }} B</td>
+                    <td class="border-right">{{ formatCoin(item.averagePurchaseRateCoinBtc) }} B</td>
+                    <td class="border-right">{{ formatCoin(item.purchaseValueBtc) }} B</td>
+                    <td class="border-right">{{ formatCoin(item.currentValueBtc) }} B</td>
+                    <td class="border-right">{{ formatCoin(item.revenueBtc) }} B</td>
+                    <td class="border-right">{{ formatPercent(item.revenueRateBtc) }}</td>
+
+
+                    <td class="border-right">{{ formatCoin(item.volume) }} B</td>
+                    <td class="border-right"><a :href="item.chartUrl" target="_blank">TradingView</a></td>
+                  </tr>
+
+                  <tr class="info">
+                    <th>Total</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th>{{ formatCoin(sum.purchaseValueBtc)}} B</th>
+                    <th>{{ formatCoin(sum.currentValueBtc) }} B</th>
+                    <th>{{ formatCoin(sum.currentRevenueBtc) }} B</th>
+                    <th>{{ formatPercent(sum.tradingRevenueRateBtc) }}</th>
+                    <th></th>
+                  </tr>
+
+                </tbody>
+
               </table>
             </div>
             <!--end of .table-responsive-->
@@ -99,9 +121,9 @@
         </div>
         <div v-if="error != 0" class="alert alert-danger">
           <p>
-            <strong>Error: {{error}}</strong><br>
+            <strong>Error: {{error}}</strong><br> {{trace}}
 
-            {{trace}}<br>
+            <br>
           </p>
         </div>
 
@@ -121,7 +143,9 @@ export default {
     'fiatsymbol',
     'fiat'
   ],
-  components: {Graph},
+  components: {
+    Graph
+  },
   mixins: [format],
   data: function() {
     return {
@@ -130,7 +154,9 @@ export default {
       error: 0,
       trace: '',
       balances: 0,
-      dailyRates: []
+      dailyRates: [],
+      baseCurrency: this.fiat,
+      activeCurrencyClass: 'active'
     }
   },
   methods: {
@@ -149,6 +175,10 @@ export default {
         this.trace = parsed.trace;
       });
 
+    },
+    changeBaseCurrency: function(currency) {
+      this.activeCurrencyClass = 'no';
+      this.baseCurrency = currency;
     }
   },
   mounted() {

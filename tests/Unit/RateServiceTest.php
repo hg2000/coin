@@ -3,7 +3,8 @@ namespace Tests\Unit;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\Artisan;
-use App;
+use Illuminate\Support\Collection;
+use \App;
 
 use App\Service\RateService;
 use App\Rate;
@@ -173,5 +174,10 @@ class RateServiceTest extends \Tests\TestCase
 
         $this->assertEquals(1, $result['MAID'][0]);
         $this->assertEquals(0, $result['MAID'][1]);
+
+        $result = $rateService->reduceToAverage(collect());
+        $this->assertTrue($result instanceof Collection);
+
+
     }
 }
