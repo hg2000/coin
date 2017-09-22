@@ -17,7 +17,7 @@ class Controller extends BaseController
     {
         $cacheService = \App::make(CacheService::class);
         $lastUpdate = $cacheService->get('lastUpdate');
-        return view('home', [
+        return view('main', [
             'fiat' => config('api.fiat'),
             'fiatsymbol' => config('api.fiatSymbol'),
             'lastUpdate' => $lastUpdate

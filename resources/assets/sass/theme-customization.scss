@@ -1,0 +1,14 @@
+.content-full {
+    overflow: hidden;
+    position: relative;
+}
+
+.content-full > .content {
+    margin-top: 50px;
+    padding: 20px;
+    position: relative;
+}
+
+.topbar .topbar-left {
+    background-color: inherit;
+}

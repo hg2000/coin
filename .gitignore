@@ -5,6 +5,7 @@
 /vendor
 /.idea
 /.vagrant
+/storage/Theme
 Homestead.json
 Homestead.yaml
 /.rocketeer

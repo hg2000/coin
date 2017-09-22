@@ -13,6 +13,8 @@
     </script>
     <title>Coin</title>
     <link href="{!! asset('css/app.css') !!}" media="all" rel="stylesheet" type="text/css" />
+    <link href="{!! asset('css/style-coco.css') !!}" media="all" rel="stylesheet" type="text/css" />
+    <link href="{!! asset('css/style-responsive-coco.css') !!}" media="all" rel="stylesheet" type="text/css" />
   </head>
   <body>
 
@@ -55,5 +57,6 @@
     </div>
 
     <script src="/js/app.js"></script>
+    <script src="/js/init.js"></script>
   </body>
 </html>

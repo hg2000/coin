@@ -1,4 +1,15 @@
 {
   "/js/app.js": "/js/app.js",
-  "/css/app.css": "/css/app.css"
+  "/css/app.css": "/css/app.css",
+  "/mix.js": "/mix.js",
+  "/js/init.js": "/js/init.js",
+  "/css/style-coco.css": "/css/style-coco.css",
+  "/css/style-responsive-coco.css": "/css/style-responsive-coco.css",
+  "theme.js": "theme.js",
+  "/theme.js": "/theme.js",
+  "/js/fastclick.js": "/js/fastclick.js",
+  "/js/all.js": "/js/all.js",
+  "/js/theme.js": "/js/theme.js",
+  "/css/font-awesome.css": "/css/font-awesome.css",
+  "/css/theme-customization.css": "/css/theme-customization.css"
 }
