@@ -1,7 +1,6 @@
 require('./bootstrap');
 
 import VueRouter from 'vue-router';
-import Chart from 'chart.js';
 
 window.Vue = Vue
 

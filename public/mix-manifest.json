@@ -11,5 +11,6 @@
   "/js/all.js": "/js/all.js",
   "/js/theme.js": "/js/theme.js",
   "/css/font-awesome.css": "/css/font-awesome.css",
-  "/css/theme-customization.css": "/css/theme-customization.css"
+  "/css/theme-customization.css": "/css/theme-customization.css",
+  "/css/morris.css": "/css/morris.css"
 }

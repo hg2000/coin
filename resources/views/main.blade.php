@@ -12,7 +12,7 @@
     ]); ?>
     </script>
     <title>Coin</title>
-
+    <link href="{!! asset('css/morris.css') !!}" media="all" rel="stylesheet" type="text/css" />
     <link href="{!! asset('css/app.css') !!}" media="all" rel="stylesheet" type="text/css" />
     <link href="{!! asset('css/style-coco.css') !!}" media="all" rel="stylesheet" type="text/css" />
     <link href="{!! asset('css/style-responsive-coco.css') !!}" media="all" rel="stylesheet" type="text/css" />
@@ -44,7 +44,7 @@
                              </li>
                          </ul>
                          <ul class="nav navbar-nav navbar-right top-navbar">
-                             
+
                              <li class="dropdown topbar-profile">
                                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">User <i class="fa fa-caret-down"></i></a>
                                  <ul class="dropdown-menu">

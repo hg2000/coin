@@ -73,16 +73,14 @@
 </template>
 
 <script>
-import VueCharts from 'vue-chartjs'
 import format from '../mixins/format.js';
-import Graph from '../components/Graph.js';
 
 export default {
   props: [
     'fiatsymbol',
     'fiat'
   ],
-  components: {Graph},
+
   mixins: [format],
   data: function() {
     return {

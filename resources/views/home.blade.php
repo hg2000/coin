@@ -12,6 +12,7 @@
     ]); ?>
     </script>
     <title>Coin</title>
+    
     <link href="{!! asset('css/app.css') !!}" media="all" rel="stylesheet" type="text/css" />
     <link href="{!! asset('css/style-coco.css') !!}" media="all" rel="stylesheet" type="text/css" />
     <link href="{!! asset('css/style-responsive-coco.css') !!}" media="all" rel="stylesheet" type="text/css" />

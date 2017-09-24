@@ -97,7 +97,7 @@ class RateService
             $averageDayRates = $this->reduceToAverage($dayRates);
             $dayRate = [];
             $dayRate['date'] = clone($ndate);
-            $dayRate['date'] = $dayRate['date']->format('d');
+            $dayRate['date'] = $dayRate['date']->format(trans('global.dateFormat'));
             $dayRate['rates'] = $averageDayRates->toArray();
             $dayRateCollection[] = $dayRate;
             $ndate = $ndate->add($oneDay);

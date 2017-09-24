@@ -26,10 +26,10 @@
               <div class="panel-collapse collapse in">
                 <div class="panel-body">
                   <div class="btn-group" role="group" aria-label="Select base currency">
+                    Last refresh: 12:30
                     <router-link to="/clear" class="btn btn-primary" type="button">
                       <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span> Refresh
                     </router-link><br>
-                    Last refresh: 12:30
                   </div>
                 </div>
               </div>
@@ -45,14 +45,10 @@
                   </div>
                 </div>
               </div>
-
             </div>
-
           </div>
         </div>
       </div>
-
-
     </div>
   </div>
   <!-- Right Sidebar End -->
@@ -72,7 +68,7 @@
                   <thead>
                     <tr>
                       <th>Currency</th>
-                      <th>Rate 14 Days)</th>
+                      <th>Avg. Rate (14 Days)</th>
                       <th>Current Rate</th>
                       <th>Avg purchase rate</th>
                       <th>Purchase Value</td>
@@ -88,8 +84,8 @@
                     <tr v-for="item in balances">
                       <td class="border-right"> {{ item.currency }}</td>
                       <td class="border-right" style="width: 150px; padding: 0 2px">
-                        <graph :elementId="'btcgraph7' + item.id" :rates="dailyRates" :currency="item.currency" :title="formatPercent(item.rateDiffSevenDaysAgoFiat)" :target="1" :width="220" :height="110">
-                        </graph>
+                        <morris :elementId="'btcgraph7' + item.id" :rates="dailyRates" :currency="item.currency" :title="formatPercent(item.rateDiffSevenDaysAgoFiat)" :target="1" :width="120" :height="110">
+                        </morris>
                       </td>
 
                       <td class="border-right">{{ formatFiat(item.currentRateFiat) }}</td>
@@ -122,10 +118,9 @@
                     <tr v-for="item in balances">
                       <td class="border-right"> {{ item.currency }}</td>
                       <td class="border-right" style="width: 150px; padding: 0 2px">
-                        <graph :elementId="'btcgraph7' + item.id" :rates="dailyRates" :currency="item.currency" :title="formatPercent(item.rateDiffSevenDaysAgoBtc)" :target="1" :width="220" :height="110">
-                        </graph>
+                        <morris :elementId="'btcgraph7' + item.id" :rates="dailyRates" :currency="item.currency" :title="formatPercent(item.rateDiffSevenDaysAgoFiat)" :target="1" :width="120" :height="110">
+                        </morris>
                       </td>
-
                       <td class="border-right">{{ formatCoin(item.currentRateBtc) }} B</td>
                       <td class="border-right">{{ formatCoin(item.averagePurchaseRateCoinBtc) }} B</td>
                       <td class="border-right">{{ formatCoin(item.purchaseValueBtc) }} B</td>
@@ -183,9 +178,8 @@
 </template>
 
 <script>
-import VueCharts from 'vue-chartjs'
 import format from '../mixins/format.js';
-import Graph from '../components/Graph.js';
+import Morris from '../components/Morris.js';
 
 export default {
   props: [
@@ -193,7 +187,7 @@ export default {
     'fiat'
   ],
   components: {
-    Graph
+    Morris
   },
   mixins: [format],
   data: function() {
