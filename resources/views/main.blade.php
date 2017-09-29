@@ -25,7 +25,7 @@
          <div class="topbar">
              <div class="topbar-left">
                  <div class="logo">
-                     <h1>coincheck</h1>
+                     <h1><strong>Coin</strong>Portfolio</h1>
                  </div>
 
              </div>

@@ -3688,6 +3688,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3706,7 +3724,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       sum: 0,
       error: 0,
       trace: ''
-    }, _defineProperty(_ref, 'balances', 0), _defineProperty(_ref, 'dailyRates', []), _defineProperty(_ref, 'baseCurrency', this.fiat), _defineProperty(_ref, 'activeCurrencyClass', 'active'), _ref;
+    }, _defineProperty(_ref, 'balances', 0), _defineProperty(_ref, 'dailyRates', []), _defineProperty(_ref, 'baseCurrency', this.fiat), _defineProperty(_ref, 'activeCurrencyClass', 'active'), _defineProperty(_ref, 'filter', {
+      avaible: false
+    }), _ref;
   },
   methods: {
     makeRequest: function makeRequest() {
@@ -3736,6 +3756,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       } else {
         return 'no';
       }
+    },
+    applyFilterAvaible: function applyFilterAvaible(item) {
+      if (this.filter.avaible && item.volume > 0) {
+        return true;
+      }
+      if (!this.filter.avaible) {
+        return true;
+      }
+      return false;
     }
   },
   mounted: function mounted() {
@@ -35198,7 +35227,51 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.changeBaseCurrency('BTC')
       }
     }
-  }, [_vm._v("฿")])])])])])])])])])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("฿")])])])]), _vm._v(" "), _c('div', {
+    staticClass: "panel-collapse collapse in"
+  }, [_c('div', {
+    staticClass: "panel-body"
+  }, [_c('div', {
+    staticClass: "btn-group",
+    attrs: {
+      "role": "group",
+      "aria-label": "Filter"
+    }
+  }, [_vm._v("\n                    Filter\n                    "), _c('div', {
+    staticClass: "clearfix"
+  }), _vm._v(" "), _c('label', [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.filter.avaible),
+      expression: "filter.avaible"
+    }],
+    attrs: {
+      "type": "checkbox",
+      "id": "checkbox"
+    },
+    domProps: {
+      "checked": Array.isArray(_vm.filter.avaible) ? _vm._i(_vm.filter.avaible, null) > -1 : (_vm.filter.avaible)
+    },
+    on: {
+      "__c": function($event) {
+        var $$a = _vm.filter.avaible,
+          $$el = $event.target,
+          $$c = $$el.checked ? (true) : (false);
+        if (Array.isArray($$a)) {
+          var $$v = null,
+            $$i = _vm._i($$a, $$v);
+          if ($$el.checked) {
+            $$i < 0 && (_vm.filter.avaible = $$a.concat([$$v]))
+          } else {
+            $$i > -1 && (_vm.filter.avaible = $$a.slice(0, $$i).concat($$a.slice($$i + 1)))
+          }
+        } else {
+          _vm.filter.avaible = $$c
+        }
+      }
+    }
+  }), _vm._v("\n                      Show coins with volume only\n                    ")])])])])])])])])])]), _vm._v(" "), _c('div', {
     staticClass: "content-full"
   }, [_c('div', {
     staticClass: "content"
@@ -35215,7 +35288,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('table', {
     staticClass: "table table-striped table-responsive table-hover"
   }, [_vm._m(2), _vm._v(" "), (_vm.baseCurrency == _vm.fiat) ? _c('tbody', [_vm._l((_vm.balances), function(item) {
-    return _c('tr', [_c('td', {
+    return [_c('tr', {
+      directives: [{
+        name: "show",
+        rawName: "v-show",
+        value: (_vm.applyFilterAvaible(item)),
+        expression: "applyFilterAvaible(item)"
+      }]
+    }, [_c('td', {
       staticClass: "border-right"
     }, [_vm._v(" " + _vm._s(item.currency))]), _vm._v(" "), _c('td', {
       staticClass: "border-right",
@@ -35254,7 +35334,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "href": item.chartUrl,
         "target": "_blank"
       }
-    }, [_vm._v("TradingView")])])])
+    }, [_vm._v("TradingView")])])])]
   }), _vm._v(" "), _c('tr', {
     staticClass: "info"
   }, [_c('th', [_vm._v("Total")]), _vm._v(" "), _c('th'), _vm._v(" "), _c('th'), _vm._v(" "), _c('th', {
@@ -35342,7 +35422,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "panel-heading"
-  }, [_c('h2', [_c('strong', [_vm._v("Coin")]), _vm._v("Portfolio")])])
+  }, [_c('h3', [_vm._v("Portfolio")])])
 },function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('thead', [_c('tr', [_c('th', [_vm._v("Currency")]), _vm._v(" "), _c('th', [_vm._v("Avg. Rate (14 Days)")]), _vm._v(" "), _c('th', [_vm._v("Current Rate")]), _vm._v(" "), _c('th', [_vm._v("Avg purchase rate")]), _vm._v(" "), _c('th', [_vm._v("Purchase Value")]), _c('th', [_vm._v("Current Value")]), _vm._v(" "), _c('th', [_vm._v("Revenue")]), _vm._v(" "), _c('th', [_vm._v("Revenue Rate")]), _vm._v(" "), _c('th', [_vm._v("Volume")]), _vm._v(" "), _c('th', [_vm._v("Chart")])])])
 }]}

@@ -45,6 +45,21 @@
                   </div>
                 </div>
               </div>
+
+              <div class="panel-collapse collapse in">
+                <div class="panel-body">
+                  <div class="btn-group" role="group" aria-label="Filter">
+                    Filter
+                    <div class="clearfix"></div>
+                    <label>
+                      <input type="checkbox" id="checkbox" v-model="filter.avaible">
+                      Show coins with volume only
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+
             </div>
           </div>
         </div>
@@ -61,8 +76,9 @@
 
           <div class="panel panel-default" v-if="balances != 0">
             <div class="panel-heading">
-              <h2><strong>Coin</strong>Portfolio</h2></div>
+              <h3>Portfolio</h3></div>
             <div class="panel-body">
+
               <div class="table-responsive portfolio-table">
                 <table class="table table-striped table-responsive table-hover">
                   <thead>
@@ -75,30 +91,32 @@
                         <th>Current Value</th>
                         <th>Revenue</th>
                         <th>Revenue Rate</th>
-
                         <th>Volume</th>
                         <th>Chart</th>
                     </tr>
                   </thead>
                   <tbody v-if="baseCurrency == fiat">
-                    <tr v-for="item in balances">
-                      <td class="border-right"> {{ item.currency }}</td>
-                      <td class="border-right" style="width: 150px; padding: 0 2px">
-                        <morris :elementId="'btcgraph7' + item.id" :rates="dailyRates" :currency="item.currency" :title="formatPercent(item.rateDiffSevenDaysAgoFiat)" :target="1" :width="120" :height="110">
-                        </morris>
-                      </td>
 
-                      <td class="border-right">{{ formatFiat(item.currentRateFiat) }}</td>
-                      <td class="border-right">{{ formatFiat(item.averagePurchaseRateCoinFiat) }}</td>
-                      <td class="border-right">{{ formatFiat(item.purchaseValueFiat) }}</td>
-                      <td class="border-right">{{ formatFiat(item.currentValueFiat) }}</td>
-                      <td class="border-right">{{ formatFiat(item.revenueFiat) }}</td>
-                      <td class="border-right">{{ formatPercent(item.revenueRateFiat) }}</td>
+                    <template v-for="item in balances">
+                      <tr v-show="applyFilterAvaible(item)">
+                        <td class="border-right"> {{ item.currency }}</td>
+                        <td class="border-right" style="width: 150px; padding: 0 2px">
+                          <morris :elementId="'btcgraph7' + item.id" :rates="dailyRates" :currency="item.currency" :title="formatPercent(item.rateDiffSevenDaysAgoFiat)" :target="1" :width="120" :height="110">
+                          </morris>
+                        </td>
+
+                        <td class="border-right">{{ formatFiat(item.currentRateFiat) }}</td>
+                        <td class="border-right">{{ formatFiat(item.averagePurchaseRateCoinFiat) }}</td>
+                        <td class="border-right">{{ formatFiat(item.purchaseValueFiat) }}</td>
+                        <td class="border-right">{{ formatFiat(item.currentValueFiat) }}</td>
+                        <td class="border-right">{{ formatFiat(item.revenueFiat) }}</td>
+                        <td class="border-right">{{ formatPercent(item.revenueRateFiat) }}</td>
 
 
-                      <td class="border-right">{{ formatCoin(item.volume) }}</td>
-                      <td class="border-right"><a :href="item.chartUrl" target="_blank">TradingView</a></td>
-                    </tr>
+                        <td class="border-right">{{ formatCoin(item.volume) }}</td>
+                        <td class="border-right"><a :href="item.chartUrl" target="_blank">TradingView</a></td>
+                      </tr>
+                    </template>
 
                     <tr class="info">
                       <th>Total</th>
@@ -199,7 +217,10 @@ export default {
       balances: 0,
       dailyRates: [],
       baseCurrency: this.fiat,
-      activeCurrencyClass: 'active'
+      activeCurrencyClass: 'active',
+      filter: {
+        avaible: false
+      }
     }
   },
   methods: {
@@ -229,6 +250,15 @@ export default {
       } else {
         return 'no';
       }
+    },
+    applyFilterAvaible(item) {
+      if (this.filter.avaible && item.volume > 0) {
+        return true;
+      }
+      if (!this.filter.avaible) {
+        return true;
+      }
+      return false;
     }
   },
   mounted() {
