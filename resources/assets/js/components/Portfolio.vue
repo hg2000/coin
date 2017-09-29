@@ -76,7 +76,8 @@
 
           <div class="panel panel-default" v-if="balances != 0">
             <div class="panel-heading">
-              <h3>Portfolio</h3></div>
+              <h3>Portfolio</h3>
+            </div>
             <div class="panel-body">
 
               <div class="table-responsive portfolio-table">

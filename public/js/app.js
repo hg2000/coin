@@ -3465,6 +3465,43 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3509,6 +3546,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_Morris_js__ = __webpack_require__(40);
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
 //
 //
 //
@@ -3781,6 +3819,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_format_js__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_ChartBuySell_js__ = __webpack_require__(78);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_ChartRevenue_js__ = __webpack_require__(77);
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 //
@@ -3857,12 +3897,72 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['fiatsymbol', 'fiat'],
+  components: {
+    chartBuySell: __WEBPACK_IMPORTED_MODULE_1__components_ChartBuySell_js__["a" /* default */],
+    chartRevenue: __WEBPACK_IMPORTED_MODULE_2__components_ChartRevenue_js__["a" /* default */]
 
+  },
   mixins: [__WEBPACK_IMPORTED_MODULE_0__mixins_format_js__["a" /* default */]],
   data: function data() {
     return _defineProperty({
@@ -35117,17 +35217,17 @@ module.exports = Component.exports
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('div', {
-    staticClass: "container-fluid"
+  return _c('div', [_vm._m(0), _vm._v(" "), _c('div', {
+    staticClass: "content-full"
+  }, [_c('div', {
+    staticClass: "content"
   }, [_c('div', {
     staticClass: "row"
   }, [_c('div', {
-    staticClass: "col-xs-12"
-  }, [(_vm.trades != 0) ? _c('div', {
+    staticClass: "col-md-12"
+  }, [(_vm.balances != 0) ? _c('div', {
     staticClass: "panel panel-default"
-  }, [_c('div', {
-    staticClass: "panel-heading"
-  }, [_vm._v("Trade history")]), _vm._v(" "), _c('div', {
+  }, [_vm._m(1), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
   }, [_c('div', {
     staticClass: "table-responsive"
@@ -35135,12 +35235,50 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "table table-striped table-responsive table-hover"
   }, [_c('thead', [_c('tr', [_c('th', [_vm._v("Date")]), _vm._v(" "), _c('th', [_vm._v("platformId")]), _vm._v(" "), _c('th', [_vm._v("Type")]), _vm._v(" "), _c('th', [_vm._v("Currency Pair")]), _vm._v(" "), _c('th', [_vm._v("Rate (COIN/BTC)")]), _vm._v(" "), _c('th', [_vm._v("Volume Coin")]), _vm._v(" "), _c('th', [_vm._v("Value (BTC)")]), _vm._v(" "), _c('th', [_vm._v("Value (" + _vm._s(_vm.fiat) + ")")]), _vm._v(" "), _c('th', [_vm._v("Purchase Rate (" + _vm._s(_vm.fiat) + "/BTC)")])])]), _vm._v(" "), _c('tbody', _vm._l((_vm.trades), function(trade) {
     return _c('tr', [_c('td', [_vm._v(_vm._s(trade.date))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(trade.platform_id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(trade.type))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(trade.source_currency) + "-" + _vm._s(trade.target_currency))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(trade.rate)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(trade.volume)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(trade.value_btc)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(trade.value_fiat)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(trade.purchase_rate_fiat_btc)))])])
-  }))]), _vm._v(" "), _c('p')])])]) : _vm._e(), _vm._v(" "), (_vm.error == 0) ? _c('div', [(_vm.balances == 0) ? _c('div', {
+  }))]), _vm._v(" "), _c('p')])])]) : _vm._e()])])])]), _vm._v(" "), (_vm.error == 0) ? _c('div', [(_vm.balances == 0) ? _c('div', {
     staticClass: "alert alert-warning"
-  }, [_c('p', [_vm._v("\n              Please Wait\n            ")])]) : _vm._e()]) : _vm._e(), _vm._v(" "), (_vm.error != 0) ? _c('div', {
+  }, [_c('p', [_vm._v("\n        Please Wait\n      ")])]) : _vm._e()]) : _vm._e(), _vm._v(" "), (_vm.error != 0) ? _c('div', {
     staticClass: "alert alert-danger"
-  }, [_c('p', [_c('strong', [_vm._v("Error: " + _vm._s(_vm.error))]), _c('br'), _vm._v("\n            " + _vm._s(_vm.trace)), _c('br')])]) : _vm._e()])])])])
-},staticRenderFns: []}
+  }, [_c('p', [_c('strong', [_vm._v("Error: " + _vm._s(_vm.error))]), _c('br'), _vm._v("\n      " + _vm._s(_vm.trace)), _c('br')])]) : _vm._e()])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "right side-menu"
+  }, [_c('div', {
+    staticClass: "tab-content"
+  }, [_c('div', {
+    staticClass: "tab-pane active",
+    attrs: {
+      "id": "feed"
+    }
+  }, [_c('div', {
+    staticClass: "tab-inner slimscroller"
+  }, [_c('div', {
+    staticClass: "clearfix"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "panel-group",
+    attrs: {
+      "id": "collapse"
+    }
+  }, [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-heading bg-green-3"
+  }, [_c('h4', {
+    staticClass: "panel-title"
+  }, [_c('a', {
+    attrs: {
+      "data-toggle": "collapse",
+      "data-parent": "#accordion",
+      "href": "#remails"
+    }
+  }, [_c('i', {
+    staticClass: "icon-mail"
+  }), _vm._v(" Settings\n\n                 ")])])])])])])])])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "panel-heading"
+  }, [_c('h3', [_vm._v("Trade History")])])
+}]}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -35477,17 +35615,17 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_c('div', {
-    staticClass: "container-fluid"
+  return _c('div', [_vm._m(0), _vm._v(" "), _c('div', {
+    staticClass: "content-full"
+  }, [_c('div', {
+    staticClass: "content"
   }, [_c('div', {
     staticClass: "row"
   }, [_c('div', {
-    staticClass: "col-xs-12"
+    staticClass: "col-md-4"
   }, [(_vm.balances != 0) ? _c('div', {
     staticClass: "panel panel-default"
-  }, [_c('div', {
-    staticClass: "panel-heading"
-  }, [_vm._v("Revenue")]), _vm._v(" "), _c('div', {
+  }, [_vm._m(1), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
   }, [_c('div', {
     staticClass: "table-responsive"
@@ -35495,12 +35633,87 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "table table-striped table-responsive table-hover"
   }, [_c('thead', [_c('tr', [_c('th'), _vm._v(" "), _c('th', [_vm._v("BTC")]), _vm._v(" "), _c('th', [_vm._v(_vm._s(_vm.fiat))])])]), _vm._v(" "), _c('tbody', [_c('tr', [_c('th', [_vm._v("BTC/" + _vm._s(_vm.fiat) + " Trade Revenue")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(_vm.sum.tradingRevenueBtc)) + " B")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(_vm.sum.tradingRevenueFiat)))])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Buy Volume")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(_vm.sum.buyVolumeBtc)) + " B")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(_vm.sum.buyVolumeFiat)))])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Sell Volume")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(_vm.sum.sellVolumeBtc)) + " B")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(_vm.sum.sellVolumeFiat)))])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Current Coin Value")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(_vm.sum.currentValueBtc)) + " B")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(_vm.sum.currentValueFiat)))])]), _vm._v(" "), _c('tr', {
     staticClass: "info"
-  }, [_c('th', [_vm._v("Total Revenue")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(_vm.sum.totalRevenueBtc)) + " B")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(_vm.sum.totalRevenueFiat)))])])])])])])]) : _vm._e(), _vm._v(" "), (_vm.error == 0) ? _c('div', [(_vm.balances == 0) ? _c('div', {
+  }, [_c('th', [_vm._v("Total Revenue")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(_vm.sum.totalRevenueBtc)) + " B")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(_vm.sum.totalRevenueFiat)))])])])])])])]) : _vm._e()]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-4"
+  }, [(_vm.balances != 0) ? _c('div', {
+    staticClass: "panel panel-default"
+  }, [_vm._m(2), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  }, [_c('div', {
+    staticClass: "panel-body"
+  }, [_c('chartBuySell', {
+    attrs: {
+      "elementId": "buys-sales",
+      "buyVolume": _vm.sum.buyVolumeFiat,
+      "sellVolume": _vm.sum.sellVolumeFiat,
+      "currencyLabel": _vm.fiat
+    }
+  })], 1)])]) : _vm._e()]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-4"
+  }, [(_vm.balances != 0) ? _c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-heading"
+  }, [_c('h3', [_vm._v("Revenue: " + _vm._s(_vm.formatFiat(_vm.sum.totalRevenueFiat)))])]), _vm._v(" "), _c('div', {
+    staticClass: "panel-body"
+  }, [_c('div', {
+    staticClass: "panel-body"
+  }, [_c('chartRevenue', {
+    attrs: {
+      "elementId": "chart-revenue",
+      "tradingRevenue": _vm.sum.tradingRevenueFiat,
+      "currentValue": _vm.sum.currentValueFiat
+    }
+  })], 1)])]) : _vm._e()])]), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  })])]), _vm._v(" "), (_vm.error == 0) ? _c('div', [(_vm.balances == 0) ? _c('div', {
     staticClass: "alert alert-warning"
-  }, [_c('p', [_vm._v("\n              Please Wait\n            ")])]) : _vm._e()]) : _vm._e(), _vm._v(" "), (_vm.error != 0) ? _c('div', {
+  }, [_c('p', [_vm._v("\n        Please Wait\n      ")])]) : _vm._e()]) : _vm._e(), _vm._v(" "), (_vm.error != 0) ? _c('div', {
     staticClass: "alert alert-danger"
-  }, [_c('p', [_c('strong', [_vm._v("Error: " + _vm._s(_vm.error))]), _c('br'), _vm._v("\n            " + _vm._s(_vm.trace)), _c('br')])]) : _vm._e()])])])])
-},staticRenderFns: []}
+  }, [_c('p', [_c('strong', [_vm._v("Error: " + _vm._s(_vm.error))]), _c('br'), _vm._v(" " + _vm._s(_vm.trace) + "\n\n      "), _c('br')])]) : _vm._e()])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "right side-menu"
+  }, [_c('div', {
+    staticClass: "tab-content"
+  }, [_c('div', {
+    staticClass: "tab-pane active",
+    attrs: {
+      "id": "feed"
+    }
+  }, [_c('div', {
+    staticClass: "tab-inner slimscroller"
+  }, [_c('div', {
+    staticClass: "clearfix"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "panel-group",
+    attrs: {
+      "id": "collapse"
+    }
+  }, [_c('div', {
+    staticClass: "panel panel-default"
+  }, [_c('div', {
+    staticClass: "panel-heading bg-green-3"
+  }, [_c('h4', {
+    staticClass: "panel-title"
+  }, [_c('a', {
+    attrs: {
+      "data-toggle": "collapse",
+      "data-parent": "#accordion",
+      "href": "#remails"
+    }
+  }, [_c('i', {
+    staticClass: "icon-mail"
+  }), _vm._v(" Settings\n\n                 ")])])])])])])])])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "panel-heading"
+  }, [_c('h3', [_vm._v("Revenue")])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "panel-heading"
+  }, [_c('h3', [_vm._v("Buy / Sell Volume")])])
+}]}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -48266,6 +48479,80 @@ __webpack_require__(12);
 __webpack_require__(13);
 module.exports = __webpack_require__(14);
 
+
+/***/ }),
+/* 59 */,
+/* 60 */,
+/* 61 */,
+/* 62 */,
+/* 63 */,
+/* 64 */,
+/* 65 */,
+/* 66 */,
+/* 67 */,
+/* 68 */,
+/* 69 */,
+/* 70 */,
+/* 71 */,
+/* 72 */,
+/* 73 */,
+/* 74 */,
+/* 75 */,
+/* 76 */,
+/* 77 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = ({
+  template: '<div :id="elementId" class="morris-bar-chart"></div>',
+  props: ['elementId', 'currentValue', 'tradingRevenue'],
+
+  mounted: function mounted() {
+
+    window.morrisPortfolioCurrency = Morris.Donut({
+      element: this.elementId,
+      data: [{ label: "Trading Revenue", value: formatFiat(this.tradingRevenue) }, { label: "Current Coin Value", value: formatFiat(this.currentValue) }]
+
+    });
+
+    function formatFiat(n) {
+      return numeral(n).format('0.00') + " ";
+    }
+  }
+});
+
+/***/ }),
+/* 78 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = ({
+  template: '<div :id="elementId" class="morris-bar-chart"></div>',
+  props: ['elementId', 'buyVolume', 'sellVolume', 'currencyLabel'],
+
+  mounted: function mounted() {
+
+    var values = [{
+      y: 'Buy Volume',
+      a: formatFiat(this.buyVolume)
+    }, {
+      y: 'Sell volume',
+      a: formatFiat(this.sellVolume)
+    }];
+
+    window.morrisPortfolioCurrency = Morris.Bar({
+      element: this.elementId,
+      data: values,
+      xkey: 'y',
+      ykeys: ['a'],
+      labels: [this.currencyLabel]
+    });
+
+    function formatFiat(n) {
+      return numeral(n).format('0.00') + " ";
+    }
+  }
+});
 
 /***/ })
 /******/ ]);
