@@ -96,7 +96,6 @@
                     </tr>
                   </thead>
                   <tbody v-if="baseCurrency == fiat">
-
                     <template v-for="item in balances">
                       <tr v-show="applyFilterAvaible(item)">
                         <td class="border-right"> {{ item.currency }}</td>
@@ -133,23 +132,26 @@
                   </tbody>
 
                   <tbody v-if="baseCurrency == 'BTC'">
-                    <tr v-for="item in balances">
-                      <td class="border-right"> {{ item.currency }}</td>
-                      <td class="border-right" style="width: 150px; padding: 0 2px">
-                        <morris :elementId="'btcgraph7' + item.id" :rates="dailyRates" :currency="item.currency" :title="formatPercent(item.rateDiffSevenDaysAgoFiat)" :target="1" :width="120" :height="110">
-                        </morris>
-                      </td>
-                      <td class="border-right">{{ formatCoin(item.currentRateBtc) }} B</td>
-                      <td class="border-right">{{ formatCoin(item.averagePurchaseRateCoinBtc) }} B</td>
-                      <td class="border-right">{{ formatCoin(item.purchaseValueBtc) }} B</td>
-                      <td class="border-right">{{ formatCoin(item.currentValueBtc) }} B</td>
-                      <td class="border-right">{{ formatCoin(item.revenueBtc) }} B</td>
-                      <td class="border-right">{{ formatPercent(item.revenueRateBtc) }}</td>
 
-                      <td class="border-right">{{ formatCoin(item.volume) }}</td>
-                      <td class="border-right"><a :href="item.chartUrl" target="_blank">TradingView</a></td>
-                      <td></td>
-                    </tr>
+                    <template v-for="item in balances">
+                        <tr v-show="applyFilterAvaible(item)">
+                          <td class="border-right"> {{ item.currency }}</td>
+                          <td class="border-right" style="width: 150px; padding: 0 2px">
+                            <morris :elementId="'btcgraph7' + item.id" :rates="dailyRates" :currency="item.currency" :title="formatPercent(item.rateDiffSevenDaysAgoFiat)" :target="1" :width="120" :height="110">
+                            </morris>
+                          </td>
+                          <td class="border-right">{{ formatCoin(item.currentRateBtc) }} B</td>
+                          <td class="border-right">{{ formatCoin(item.averagePurchaseRateCoinBtc) }} B</td>
+                          <td class="border-right">{{ formatCoin(item.purchaseValueBtc) }} B</td>
+                          <td class="border-right">{{ formatCoin(item.currentValueBtc) }} B</td>
+                          <td class="border-right">{{ formatCoin(item.revenueBtc) }} B</td>
+                          <td class="border-right">{{ formatPercent(item.revenueRateBtc) }}</td>
+
+                          <td class="border-right">{{ formatCoin(item.volume) }}</td>
+                          <td class="border-right"><a :href="item.chartUrl" target="_blank">TradingView</a></td>
+                          <td></td>
+                        </tr>
+                  </template>
 
                     <tr class="info">
                       <th>Total</th>

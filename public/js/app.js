@@ -3706,6 +3706,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
 
 
 
@@ -35348,7 +35350,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v(_vm._s(_vm.formatFiat(_vm.sum.currentRevenueFiat)))]), _vm._v(" "), _c('th', {
     staticClass: "border-right"
   }, [_vm._v(_vm._s(_vm.formatPercent(_vm.sum.tradingRevenueRateFiat)))]), _vm._v(" "), _c('th'), _vm._v(" "), _c('th')])], 2) : _vm._e(), _vm._v(" "), (_vm.baseCurrency == 'BTC') ? _c('tbody', [_vm._l((_vm.balances), function(item) {
-    return _c('tr', [_c('td', {
+    return [_c('tr', {
+      directives: [{
+        name: "show",
+        rawName: "v-show",
+        value: (_vm.applyFilterAvaible(item)),
+        expression: "applyFilterAvaible(item)"
+      }]
+    }, [_c('td', {
       staticClass: "border-right"
     }, [_vm._v(" " + _vm._s(item.currency))]), _vm._v(" "), _c('td', {
       staticClass: "border-right",
@@ -35387,7 +35396,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "href": item.chartUrl,
         "target": "_blank"
       }
-    }, [_vm._v("TradingView")])]), _vm._v(" "), _c('td')])
+    }, [_vm._v("TradingView")])]), _vm._v(" "), _c('td')])]
   }), _vm._v(" "), _c('tr', {
     staticClass: "info"
   }, [_c('th', [_vm._v("Total")]), _vm._v(" "), _c('th'), _vm._v(" "), _c('th'), _vm._v(" "), _c('th', {
