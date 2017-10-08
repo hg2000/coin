@@ -10,5 +10,41 @@
 }
 
 .topbar .topbar-left {
+    width: 205px;
     background-color: inherit;
+    display: none;
+}
+
+
+.logo h1 {
+    font-size: 25px;
+}
+
+@media (min-width: 768px) {
+
+    .topbar .topbar-left {
+        display: block;
+    }
+    .topbar-mobile-nav {
+        display: none !important;
+    }
+}
+
+@media (max-width: 480px)  {
+    #wrapper:not(.enlarged) .topbar-profile, #wrapper:not(.enlarged) .hide-phone {
+        display: block;
+    }
+
+    .open-right-sidebar .topbar-profile, .topbar-mobile-nav , .open-right-sidebar .hide-phone {
+        display: inline !important;
+    }
+
+
+}
+
+@media (max-width: 767px) {
+
+    .navbar-nav > li {
+        float: left;
+    }
 }
