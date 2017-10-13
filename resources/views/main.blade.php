@@ -19,7 +19,7 @@
     <link href="{!! asset('css/theme-customization.css') !!}" media="all" rel="stylesheet" type="text/css" />
   </head>
   <body class="fixed-left">
-	   <div id="wrapper" class="open-right-sidebar">
+	   <div id="wrapper" >
        <div id="app">
          <!-- Top Bar Start -->
          <div class="topbar">
@@ -44,6 +44,7 @@
                              </li>
                          </ul>
                          <ul class="nav navbar-nav navbar-right top-navbar mobile-nav">
+
                            <li class="dropdown topbar-profile">
                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i></a>
                                <ul class="dropdown-menu">
@@ -57,17 +58,18 @@
                                </ul>
                            </li>
 
-                             <li class="dropdown topbar-profile topbar-mobile-nav">
-                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bars"></i></a>
-                                 <ul class="dropdown-menu">
-                                   <li><router-link to="/revenue" class="active subdrop">Revenue</router-link></li>
-                                   <li><router-link to="/portfolio">Portfolio</router-link></li>
-                                   <li><router-link to="/history">History</router-link></li>
-                                 </ul>
-                             </li>
-                             <li class="right-opener">
-                                 <a href="javascript:;" class="open-right"><i class="fa fa-angle-double-left"></i><i class="fa fa-angle-double-right"></i></a>
-                             </li>
+                            <li class="dropdown topbar-profile topbar-mobile-nav">
+                               <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bars"></i></a>
+                               <ul class="dropdown-menu">
+                                 <li><router-link to="/revenue" class="active subdrop">Revenue</router-link></li>
+                                 <li><router-link to="/portfolio">Portfolio</router-link></li>
+                                 <li><router-link to="/history">History</router-link></li>
+                               </ul>
+                            </li>
+
+                            <li class="right-opener">
+                               <a href="javascript:;" class="open-right"><i class="fa fa-angle-double-left"></i><i class="fa fa-angle-double-right"></i></a>
+                            </li>
                          </ul>
 
                      </div>

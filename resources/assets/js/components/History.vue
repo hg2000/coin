@@ -80,16 +80,15 @@
     </div>
   </div>
   <div v-if="error == 0">
-    <div v-if="balances == 0" class="alert alert-warning">
-      <p>
-        Please Wait
-      </p>
+    <div v-if="balances == 0">
+      <div class="spinner"></div>
     </div>
   </div>
   <div v-if="error != 0" class="alert alert-danger">
     <p>
-      <strong>Error: {{error}}</strong><br>
-      {{trace}}<br>
+      <strong>Error: {{error}}</strong><br> {{trace}}
+
+      <br>
     </p>
   </div>
 </div>
@@ -109,7 +108,8 @@ export default {
     return {
       trades: 0,
       trace: '',
-      error: 0
+      error: 0,
+      balances: 0
     }
   },
   methods: {
@@ -121,10 +121,12 @@ export default {
         }
       }).then(response => {
         this.trades = response.body;
+        this.balances = 1;
       }, response => {
         var parsed = JSON.parse(response.body);
         this.error = parsed.message;
         this.trace = parsed.trace;
+        this.balances = 1;
       });
     },
   },

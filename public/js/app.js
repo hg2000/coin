@@ -2439,7 +2439,7 @@ var Portfolio = Vue.component('portfolio', __webpack_require__(50));
 var History = Vue.component('history', __webpack_require__(49));
 var Clear = Vue.component('clear', __webpack_require__(48));
 
-var routes = [{ path: '/', component: Portfolio }, { path: '/revenue', component: Revenue }, { path: '/portfolio', component: Portfolio }, { path: '/history', component: History }, { path: '/clear', component: Clear }];
+var routes = [{ path: '/', component: Revenue }, { path: '/revenue', component: Revenue }, { path: '/portfolio', component: Portfolio }, { path: '/history', component: History }, { path: '/clear', component: Clear }];
 
 var router = new __WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */]({
   routes: routes
@@ -3501,7 +3501,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3511,7 +3510,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     return {
       trades: 0,
       trace: '',
-      error: 0
+      error: 0,
+      balances: 0
     };
   },
   methods: {
@@ -3524,10 +3524,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
       }).then(function (response) {
         _this.trades = response.body;
+        _this.balances = 1;
       }, function (response) {
         var parsed = JSON.parse(response.body);
         _this.error = parsed.message;
         _this.trace = parsed.trace;
+        _this.balances = 1;
       });
     }
   },
@@ -3546,8 +3548,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_Morris_js__ = __webpack_require__(42);
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//
-//
 //
 //
 //
@@ -3809,6 +3809,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   mounted: function mounted() {
     this.makeRequest();
+    this.filter.avaible = true;
   }
 });
 
@@ -3823,8 +3824,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_ChartRevenue_js__ = __webpack_require__(41);
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//
-//
 //
 //
 //
@@ -35291,11 +35290,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "table table-striped table-responsive table-hover"
   }, [_c('thead', [_c('tr', [_c('th', [_vm._v("Date")]), _vm._v(" "), _c('th', [_vm._v("platformId")]), _vm._v(" "), _c('th', [_vm._v("Type")]), _vm._v(" "), _c('th', [_vm._v("Currency Pair")]), _vm._v(" "), _c('th', [_vm._v("Rate (COIN/BTC)")]), _vm._v(" "), _c('th', [_vm._v("Volume Coin")]), _vm._v(" "), _c('th', [_vm._v("Value (BTC)")]), _vm._v(" "), _c('th', [_vm._v("Value (" + _vm._s(_vm.fiat) + ")")]), _vm._v(" "), _c('th', [_vm._v("Purchase Rate (" + _vm._s(_vm.fiat) + "/BTC)")])])]), _vm._v(" "), _c('tbody', _vm._l((_vm.trades), function(trade) {
     return _c('tr', [_c('td', [_vm._v(_vm._s(trade.date))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(trade.platform_id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(trade.type))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(trade.source_currency) + "-" + _vm._s(trade.target_currency))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(trade.rate)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(trade.volume)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(trade.value_btc)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(trade.value_fiat)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(trade.purchase_rate_fiat_btc)))])])
-  }))]), _vm._v(" "), _c('p')])])]) : _vm._e()])])])]), _vm._v(" "), (_vm.error == 0) ? _c('div', [(_vm.balances == 0) ? _c('div', {
-    staticClass: "alert alert-warning"
-  }, [_c('p', [_vm._v("\n        Please Wait\n      ")])]) : _vm._e()]) : _vm._e(), _vm._v(" "), (_vm.error != 0) ? _c('div', {
+  }))]), _vm._v(" "), _c('p')])])]) : _vm._e()])])])]), _vm._v(" "), (_vm.error == 0) ? _c('div', [(_vm.balances == 0) ? _c('div', [_c('div', {
+    staticClass: "spinner"
+  })]) : _vm._e()]) : _vm._e(), _vm._v(" "), (_vm.error != 0) ? _c('div', {
     staticClass: "alert alert-danger"
-  }, [_c('p', [_c('strong', [_vm._v("Error: " + _vm._s(_vm.error))]), _c('br'), _vm._v("\n      " + _vm._s(_vm.trace)), _c('br')])]) : _vm._e()])
+  }, [_c('p', [_c('strong', [_vm._v("Error: " + _vm._s(_vm.error))]), _c('br'), _vm._v(" " + _vm._s(_vm.trace) + "\n\n      "), _c('br')])]) : _vm._e()])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "right side-menu"
@@ -35444,7 +35443,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     attrs: {
       "type": "checkbox",
-      "id": "checkbox"
+      "id": "checkbox-volume-filter"
     },
     domProps: {
       "checked": Array.isArray(_vm.filter.avaible) ? _vm._i(_vm.filter.avaible, null) > -1 : (_vm.filter.avaible)
@@ -35603,9 +35602,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "border-right"
   }, [_vm._v(_vm._s(_vm.formatCoin(_vm.sum.currentRevenueBtc)) + " B")]), _vm._v(" "), _c('th', {
     staticClass: "border-right"
-  }, [_vm._v(_vm._s(_vm.formatPercent(_vm.sum.tradingRevenueRateBtc)))]), _vm._v(" "), _c('th'), _vm._v(" "), _c('th')])], 2) : _vm._e()])])])]) : _vm._e(), _vm._v(" "), (_vm.error == 0) ? _c('div', [(_vm.balances == 0) ? _c('div', {
-    staticClass: "alert alert-warning"
-  }, [_c('p', [_vm._v("\n                Please Wait\n              ")])]) : _vm._e()]) : _vm._e(), _vm._v(" "), (_vm.error != 0) ? _c('div', {
+  }, [_vm._v(_vm._s(_vm.formatPercent(_vm.sum.tradingRevenueRateBtc)))]), _vm._v(" "), _c('th'), _vm._v(" "), _c('th')])], 2) : _vm._e()])])])]) : _vm._e(), _vm._v(" "), (_vm.error == 0) ? _c('div', [(_vm.balances == 0) ? _c('div', [_c('div', {
+    staticClass: "spinner"
+  })]) : _vm._e()]) : _vm._e(), _vm._v(" "), (_vm.error != 0) ? _c('div', {
     staticClass: "alert alert-danger"
   }, [_c('p', [_c('strong', [_vm._v("Error: " + _vm._s(_vm.error))]), _c('br'), _vm._v(" " + _vm._s(_vm.trace) + "\n\n              "), _c('br')])]) : _vm._e()])])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -35722,9 +35721,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })], 1)])]) : _vm._e()])]), _vm._v(" "), _c('div', {
     staticClass: "row"
-  })])]), _vm._v(" "), (_vm.error == 0) ? _c('div', [(_vm.balances == 0) ? _c('div', {
-    staticClass: "alert alert-warning"
-  }, [_c('p', [_vm._v("\n        Please Wait\n      ")])]) : _vm._e()]) : _vm._e(), _vm._v(" "), (_vm.error != 0) ? _c('div', {
+  })])]), _vm._v(" "), (_vm.error == 0) ? _c('div', [(_vm.balances == 0) ? _c('div', [_c('div', {
+    staticClass: "spinner"
+  })]) : _vm._e()]) : _vm._e(), _vm._v(" "), (_vm.error != 0) ? _c('div', {
     staticClass: "alert alert-danger"
   }, [_c('p', [_c('strong', [_vm._v("Error: " + _vm._s(_vm.error))]), _c('br'), _vm._v(" " + _vm._s(_vm.trace) + "\n\n      "), _c('br')])]) : _vm._e()])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;

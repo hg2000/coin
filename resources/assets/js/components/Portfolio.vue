@@ -52,7 +52,7 @@
                     Filter
                     <div class="clearfix"></div>
                     <label>
-                      <input type="checkbox" id="checkbox" v-model="filter.avaible">
+                      <input type="checkbox" id="checkbox-volume-filter" v-model="filter.avaible">
                       Show coins with volume only
                     </label>
                   </div>
@@ -177,10 +177,8 @@
           <!-- end of panel -->
 
           <div v-if="error == 0">
-            <div v-if="balances == 0" class="alert alert-warning">
-              <p>
-                Please Wait
-              </p>
+            <div v-if="balances == 0">
+              <div class="spinner"></div>
             </div>
           </div>
           <div v-if="error != 0" class="alert alert-danger">
@@ -266,6 +264,7 @@ export default {
   },
   mounted() {
     this.makeRequest();
+    this.filter.avaible = true;
   }
 }
 </script>
