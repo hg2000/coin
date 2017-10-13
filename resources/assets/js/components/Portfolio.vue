@@ -98,7 +98,7 @@
                   </thead>
                   <tbody v-if="baseCurrency == fiat">
                     <template v-for="item in balances">
-                      <tr v-show="applyFilterAvaible(item)">
+                      <tr :class="applyFilterAvaible(item)">
                         <td class="border-right"> {{ item.currency }}</td>
                         <td class="border-right" style="width: 150px; padding: 0 2px">
                           <morris :elementId="'btcgraph7' + item.id" :rates="dailyRates" :currency="item.currency" :title="formatPercent(item.rateDiffSevenDaysAgoFiat)" :target="1" :width="120" :height="110">
@@ -135,7 +135,7 @@
                   <tbody v-if="baseCurrency == 'BTC'">
 
                     <template v-for="item in balances">
-                        <tr v-show="applyFilterAvaible(item)">
+                        <tr :class="applyFilterAvaible(item)">
                           <td class="border-right"> {{ item.currency }}</td>
                           <td class="border-right" style="width: 150px; padding: 0 2px">
                             <morris :elementId="'btcgraph7' + item.id" :rates="dailyRates" :currency="item.currency" :title="formatPercent(item.rateDiffSevenDaysAgoFiat)" :target="1" :width="120" :height="110">
@@ -220,7 +220,7 @@ export default {
       baseCurrency: this.fiat,
       activeCurrencyClass: 'active',
       filter: {
-        avaible: false
+        avaible: true
       }
     }
   },
@@ -254,17 +254,17 @@ export default {
     },
     applyFilterAvaible(item) {
       if (this.filter.avaible && item.volume > 0) {
-        return true;
+        return 'show-row';
       }
       if (!this.filter.avaible) {
-        return true;
+        return 'show-row';
       }
-      return false;
+      return 'hide-row';
     }
   },
   mounted() {
     this.makeRequest();
-    this.filter.avaible = true;
+
   }
 }
 </script>

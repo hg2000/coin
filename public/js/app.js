@@ -3765,7 +3765,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       error: 0,
       trace: ''
     }, _defineProperty(_ref, 'balances', 0), _defineProperty(_ref, 'dailyRates', []), _defineProperty(_ref, 'baseCurrency', this.fiat), _defineProperty(_ref, 'activeCurrencyClass', 'active'), _defineProperty(_ref, 'filter', {
-      avaible: false
+      avaible: true
     }), _ref;
   },
   methods: {
@@ -3799,17 +3799,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     applyFilterAvaible: function applyFilterAvaible(item) {
       if (this.filter.avaible && item.volume > 0) {
-        return true;
+        return 'show-row';
       }
       if (!this.filter.avaible) {
-        return true;
+        return 'show-row';
       }
-      return false;
+      return 'hide-row';
     }
   },
   mounted: function mounted() {
     this.makeRequest();
-    this.filter.avaible = true;
   }
 });
 
@@ -35484,12 +35483,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "table table-striped table-responsive table-hover"
   }, [_vm._m(2), _vm._v(" "), (_vm.baseCurrency == _vm.fiat) ? _c('tbody', [_vm._l((_vm.balances), function(item) {
     return [_c('tr', {
-      directives: [{
-        name: "show",
-        rawName: "v-show",
-        value: (_vm.applyFilterAvaible(item)),
-        expression: "applyFilterAvaible(item)"
-      }]
+      class: _vm.applyFilterAvaible(item)
     }, [_c('td', {
       staticClass: "border-right"
     }, [_vm._v(" " + _vm._s(item.currency))]), _vm._v(" "), _c('td', {
@@ -35544,12 +35538,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "border-right"
   }, [_vm._v(_vm._s(_vm.formatPercent(_vm.sum.tradingRevenueRateFiat)))]), _vm._v(" "), _c('th'), _vm._v(" "), _c('th')])], 2) : _vm._e(), _vm._v(" "), (_vm.baseCurrency == 'BTC') ? _c('tbody', [_vm._l((_vm.balances), function(item) {
     return [_c('tr', {
-      directives: [{
-        name: "show",
-        rawName: "v-show",
-        value: (_vm.applyFilterAvaible(item)),
-        expression: "applyFilterAvaible(item)"
-      }]
+      class: _vm.applyFilterAvaible(item)
     }, [_c('td', {
       staticClass: "border-right"
     }, [_vm._v(" " + _vm._s(item.currency))]), _vm._v(" "), _c('td', {

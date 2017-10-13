@@ -1,4 +1,3 @@
-
 @import "variables";
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 
@@ -18,26 +17,31 @@
   margin: 5px 0;
 }
 
+//
+// Portfolio Table
+//
+.hide-row {
+  position: absolute;
+  top: -50000px;
+}
+
 .portfolio-table {
   .table > tbody > tr > td {
     vertical-align: middle;
   }
 
-    .table > tbody > tr > td:first-child {
-      border-left: 1px solid #ddd;
-    }
+  .table > tbody > tr > td:first-child {
+    border-left: 1px solid #ddd;
+  }
 
-    .table > thead:first-child > tr:first-child > th {
-      border: 1px solid #ddd;
-    }
-
+  .table > thead:first-child > tr:first-child > th {
+    border: 1px solid #ddd;
+  }
 
   .table > tbody > tr > td {
-
     padding: 0 8px;
   }
 }
-
 
 //
 // spinner
@@ -46,32 +50,32 @@
   position: fixed;
   z-index: 200;
   left: 50%;
-  top: 30%;
+  top: 50%;
   width: 70px;
   height: 70px;
-  margin: 100px auto;
-  margin-left: -35px;
-  margin-top: -35px;
+  margin: -35px auto 100px -35px;
   background-color: #209c83;
-
   border-radius: 100%;
   -webkit-animation: sk-scaleout 1.0s infinite ease-in-out;
   animation: sk-scaleout 1.0s infinite ease-in-out;
 }
-
 @-webkit-keyframes sk-scaleout {
-  0% { -webkit-transform: scale(0) }
+  0% {
+    -webkit-transform: scale(0);
+  }
+
   100% {
     -webkit-transform: scale(1.0);
     opacity: 0;
   }
 }
-
 @keyframes sk-scaleout {
   0% {
     -webkit-transform: scale(0);
     transform: scale(0);
-  } 100% {
+  }
+
+  100% {
     -webkit-transform: scale(1.0);
     transform: scale(1.0);
     opacity: 0;
