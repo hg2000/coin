@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 58);
+/******/ 	return __webpack_require__(__webpack_require__.s = 60);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -528,7 +528,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(45)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(47)))
 
 /***/ }),
 /* 3 */
@@ -1652,7 +1652,7 @@ var xhrClient = function (request) {
 
 var nodeClient = function (request) {
 
-    var client = __webpack_require__(57);
+    var client = __webpack_require__(59);
 
     return new PromiseObj(function (resolve) {
 
@@ -2424,7 +2424,7 @@ module.exports = g;
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_router__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_router__ = __webpack_require__(56);
 __webpack_require__(39);
 
 
@@ -2434,12 +2434,12 @@ window.Vue = Vue;
 Vue.use(__WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */]);
 Vue.use(__webpack_require__(4));
 
-var Revenue = Vue.component('revenue', __webpack_require__(49));
-var Portfolio = Vue.component('portfolio', __webpack_require__(48));
-var History = Vue.component('history', __webpack_require__(47));
-var Clear = Vue.component('clear', __webpack_require__(46));
+var Revenue = Vue.component('revenue', __webpack_require__(51));
+var Portfolio = Vue.component('portfolio', __webpack_require__(50));
+var History = Vue.component('history', __webpack_require__(49));
+var Clear = Vue.component('clear', __webpack_require__(48));
 
-var routes = [{ path: '/', component: Portfolio }, { path: '/revenue', component: Revenue }, { path: '/portfolio', component: Portfolio }, { path: '/history', component: History }, { path: '/clear', component: Clear }];
+var routes = [{ path: '/', component: Revenue }, { path: '/revenue', component: Revenue }, { path: '/portfolio', component: Portfolio }, { path: '/history', component: History }, { path: '/clear', component: Clear }];
 
 var router = new __WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */]({
   routes: routes
@@ -3501,7 +3501,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3511,7 +3510,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     return {
       trades: 0,
       trace: '',
-      error: 0
+      error: 0,
+      balances: 0
     };
   },
   methods: {
@@ -3524,10 +3524,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
       }).then(function (response) {
         _this.trades = response.body;
+        _this.balances = 1;
       }, function (response) {
         var parsed = JSON.parse(response.body);
         _this.error = parsed.message;
         _this.trace = parsed.trace;
+        _this.balances = 1;
       });
     }
   },
@@ -3543,11 +3545,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_format_js__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_Morris_js__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_Morris_js__ = __webpack_require__(42);
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//
-//
 //
 //
 //
@@ -3809,6 +3809,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   mounted: function mounted() {
     this.makeRequest();
+    this.filter.avaible = true;
   }
 });
 
@@ -3819,12 +3820,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_format_js__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_ChartBuySell_js__ = __webpack_require__(78);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_ChartRevenue_js__ = __webpack_require__(77);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_ChartBuySell_js__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_ChartRevenue_js__ = __webpack_require__(41);
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//
-//
 //
 //
 //
@@ -4000,7 +3999,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 /***/ (function(module, exports, __webpack_require__) {
 
 
-window._ = __webpack_require__(43);
+window._ = __webpack_require__(45);
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -4008,9 +4007,9 @@ window._ = __webpack_require__(43);
  * code may be modified to fit the specific needs of your application.
  */
 
-window.$ = window.jQuery = __webpack_require__(42);
+window.$ = window.jQuery = __webpack_require__(44);
 
-__webpack_require__(41);
+__webpack_require__(43);
 
 /**
  * Vue is a modern JavaScript library for building interactive web interfaces
@@ -4018,7 +4017,7 @@ __webpack_require__(41);
  * and simple, leaving you to focus on building your next great project.
  */
 
-window.Vue = __webpack_require__(55);
+window.Vue = __webpack_require__(57);
 __webpack_require__(4);
 
 Vue.use(__webpack_require__(4));
@@ -4054,10 +4053,66 @@ window.axios.defaults.headers.common = {
 //
 //
 
-numeral = __webpack_require__(44);
+numeral = __webpack_require__(46);
 
 /***/ }),
 /* 40 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = ({
+  template: '<div :id="elementId" class="morris-bar-chart"></div>',
+  props: ['elementId', 'buyVolume', 'sellVolume', 'currencyLabel'],
+
+  mounted: function mounted() {
+
+    var values = [{
+      y: 'Buy Volume',
+      a: formatFiat(this.buyVolume)
+    }, {
+      y: 'Sell volume',
+      a: formatFiat(this.sellVolume)
+    }];
+
+    window.morrisPortfolioCurrency = Morris.Bar({
+      element: this.elementId,
+      data: values,
+      xkey: 'y',
+      ykeys: ['a'],
+      labels: [this.currencyLabel]
+    });
+
+    function formatFiat(n) {
+      return numeral(n).format('0.00') + " ";
+    }
+  }
+});
+
+/***/ }),
+/* 41 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = ({
+  template: '<div :id="elementId" class="morris-bar-chart"></div>',
+  props: ['elementId', 'currentValue', 'tradingRevenue'],
+
+  mounted: function mounted() {
+
+    window.morrisPortfolioCurrency = Morris.Donut({
+      element: this.elementId,
+      data: [{ label: "Trading Revenue", value: formatFiat(this.tradingRevenue) }, { label: "Current Coin Value", value: formatFiat(this.currentValue) }]
+
+    });
+
+    function formatFiat(n) {
+      return numeral(n).format('0.00') + " ";
+    }
+  }
+});
+
+/***/ }),
+/* 42 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -4129,7 +4184,7 @@ numeral = __webpack_require__(44);
 });
 
 /***/ }),
-/* 41 */
+/* 43 */
 /***/ (function(module, exports) {
 
 /*!
@@ -6512,7 +6567,7 @@ if (typeof jQuery === 'undefined') {
 
 
 /***/ }),
-/* 42 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -16772,7 +16827,7 @@ return jQuery;
 
 
 /***/ }),
-/* 43 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -33861,10 +33916,10 @@ return jQuery;
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10), __webpack_require__(56)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10), __webpack_require__(58)(module)))
 
 /***/ }),
-/* 44 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*! @preserve
@@ -34887,7 +34942,7 @@ return numeral;
 
 
 /***/ }),
-/* 45 */
+/* 47 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -35077,14 +35132,14 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 46 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(35),
   /* template */
-  __webpack_require__(52),
+  __webpack_require__(54),
   /* scopeId */
   null,
   /* cssModules */
@@ -35111,14 +35166,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 47 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(36),
   /* template */
-  __webpack_require__(50),
+  __webpack_require__(52),
   /* scopeId */
   null,
   /* cssModules */
@@ -35145,14 +35200,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 48 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(37),
   /* template */
-  __webpack_require__(51),
+  __webpack_require__(53),
   /* scopeId */
   null,
   /* cssModules */
@@ -35179,14 +35234,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 49 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(38),
   /* template */
-  __webpack_require__(53),
+  __webpack_require__(55),
   /* scopeId */
   null,
   /* cssModules */
@@ -35213,7 +35268,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 50 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -35235,11 +35290,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "table table-striped table-responsive table-hover"
   }, [_c('thead', [_c('tr', [_c('th', [_vm._v("Date")]), _vm._v(" "), _c('th', [_vm._v("platformId")]), _vm._v(" "), _c('th', [_vm._v("Type")]), _vm._v(" "), _c('th', [_vm._v("Currency Pair")]), _vm._v(" "), _c('th', [_vm._v("Rate (COIN/BTC)")]), _vm._v(" "), _c('th', [_vm._v("Volume Coin")]), _vm._v(" "), _c('th', [_vm._v("Value (BTC)")]), _vm._v(" "), _c('th', [_vm._v("Value (" + _vm._s(_vm.fiat) + ")")]), _vm._v(" "), _c('th', [_vm._v("Purchase Rate (" + _vm._s(_vm.fiat) + "/BTC)")])])]), _vm._v(" "), _c('tbody', _vm._l((_vm.trades), function(trade) {
     return _c('tr', [_c('td', [_vm._v(_vm._s(trade.date))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(trade.platform_id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(trade.type))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(trade.source_currency) + "-" + _vm._s(trade.target_currency))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(trade.rate)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(trade.volume)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatCoin(trade.value_btc)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(trade.value_fiat)))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.formatFiat(trade.purchase_rate_fiat_btc)))])])
-  }))]), _vm._v(" "), _c('p')])])]) : _vm._e()])])])]), _vm._v(" "), (_vm.error == 0) ? _c('div', [(_vm.balances == 0) ? _c('div', {
-    staticClass: "alert alert-warning"
-  }, [_c('p', [_vm._v("\n        Please Wait\n      ")])]) : _vm._e()]) : _vm._e(), _vm._v(" "), (_vm.error != 0) ? _c('div', {
+  }))]), _vm._v(" "), _c('p')])])]) : _vm._e()])])])]), _vm._v(" "), (_vm.error == 0) ? _c('div', [(_vm.balances == 0) ? _c('div', [_c('div', {
+    staticClass: "spinner"
+  })]) : _vm._e()]) : _vm._e(), _vm._v(" "), (_vm.error != 0) ? _c('div', {
     staticClass: "alert alert-danger"
-  }, [_c('p', [_c('strong', [_vm._v("Error: " + _vm._s(_vm.error))]), _c('br'), _vm._v("\n      " + _vm._s(_vm.trace)), _c('br')])]) : _vm._e()])
+  }, [_c('p', [_c('strong', [_vm._v("Error: " + _vm._s(_vm.error))]), _c('br'), _vm._v(" " + _vm._s(_vm.trace) + "\n\n      "), _c('br')])]) : _vm._e()])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "right side-menu"
@@ -35288,7 +35343,7 @@ if (false) {
 }
 
 /***/ }),
-/* 51 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -35388,7 +35443,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     attrs: {
       "type": "checkbox",
-      "id": "checkbox"
+      "id": "checkbox-volume-filter"
     },
     domProps: {
       "checked": Array.isArray(_vm.filter.avaible) ? _vm._i(_vm.filter.avaible, null) > -1 : (_vm.filter.avaible)
@@ -35547,9 +35602,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "border-right"
   }, [_vm._v(_vm._s(_vm.formatCoin(_vm.sum.currentRevenueBtc)) + " B")]), _vm._v(" "), _c('th', {
     staticClass: "border-right"
-  }, [_vm._v(_vm._s(_vm.formatPercent(_vm.sum.tradingRevenueRateBtc)))]), _vm._v(" "), _c('th'), _vm._v(" "), _c('th')])], 2) : _vm._e()])])])]) : _vm._e(), _vm._v(" "), (_vm.error == 0) ? _c('div', [(_vm.balances == 0) ? _c('div', {
-    staticClass: "alert alert-warning"
-  }, [_c('p', [_vm._v("\n                Please Wait\n              ")])]) : _vm._e()]) : _vm._e(), _vm._v(" "), (_vm.error != 0) ? _c('div', {
+  }, [_vm._v(_vm._s(_vm.formatPercent(_vm.sum.tradingRevenueRateBtc)))]), _vm._v(" "), _c('th'), _vm._v(" "), _c('th')])], 2) : _vm._e()])])])]) : _vm._e(), _vm._v(" "), (_vm.error == 0) ? _c('div', [(_vm.balances == 0) ? _c('div', [_c('div', {
+    staticClass: "spinner"
+  })]) : _vm._e()]) : _vm._e(), _vm._v(" "), (_vm.error != 0) ? _c('div', {
     staticClass: "alert alert-danger"
   }, [_c('p', [_c('strong', [_vm._v("Error: " + _vm._s(_vm.error))]), _c('br'), _vm._v(" " + _vm._s(_vm.trace) + "\n\n              "), _c('br')])]) : _vm._e()])])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -35582,7 +35637,7 @@ if (false) {
 }
 
 /***/ }),
-/* 52 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -35611,7 +35666,7 @@ if (false) {
 }
 
 /***/ }),
-/* 53 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -35666,9 +35721,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })], 1)])]) : _vm._e()])]), _vm._v(" "), _c('div', {
     staticClass: "row"
-  })])]), _vm._v(" "), (_vm.error == 0) ? _c('div', [(_vm.balances == 0) ? _c('div', {
-    staticClass: "alert alert-warning"
-  }, [_c('p', [_vm._v("\n        Please Wait\n      ")])]) : _vm._e()]) : _vm._e(), _vm._v(" "), (_vm.error != 0) ? _c('div', {
+  })])]), _vm._v(" "), (_vm.error == 0) ? _c('div', [(_vm.balances == 0) ? _c('div', [_c('div', {
+    staticClass: "spinner"
+  })]) : _vm._e()]) : _vm._e(), _vm._v(" "), (_vm.error != 0) ? _c('div', {
     staticClass: "alert alert-danger"
   }, [_c('p', [_c('strong', [_vm._v("Error: " + _vm._s(_vm.error))]), _c('br'), _vm._v(" " + _vm._s(_vm.trace) + "\n\n      "), _c('br')])]) : _vm._e()])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -35723,7 +35778,7 @@ if (false) {
 }
 
 /***/ }),
-/* 54 */
+/* 56 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -38235,7 +38290,7 @@ if (inBrowser && window.Vue) {
 
 
 /***/ }),
-/* 55 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48435,7 +48490,7 @@ module.exports = Vue$3;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10)))
 
 /***/ }),
-/* 56 */
+/* 58 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -48463,13 +48518,13 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 57 */
+/* 59 */
 /***/ (function(module, exports) {
 
 /* (ignored) */
 
 /***/ }),
-/* 58 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(11);
@@ -48479,80 +48534,6 @@ __webpack_require__(12);
 __webpack_require__(13);
 module.exports = __webpack_require__(14);
 
-
-/***/ }),
-/* 59 */,
-/* 60 */,
-/* 61 */,
-/* 62 */,
-/* 63 */,
-/* 64 */,
-/* 65 */,
-/* 66 */,
-/* 67 */,
-/* 68 */,
-/* 69 */,
-/* 70 */,
-/* 71 */,
-/* 72 */,
-/* 73 */,
-/* 74 */,
-/* 75 */,
-/* 76 */,
-/* 77 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = ({
-  template: '<div :id="elementId" class="morris-bar-chart"></div>',
-  props: ['elementId', 'currentValue', 'tradingRevenue'],
-
-  mounted: function mounted() {
-
-    window.morrisPortfolioCurrency = Morris.Donut({
-      element: this.elementId,
-      data: [{ label: "Trading Revenue", value: formatFiat(this.tradingRevenue) }, { label: "Current Coin Value", value: formatFiat(this.currentValue) }]
-
-    });
-
-    function formatFiat(n) {
-      return numeral(n).format('0.00') + " ";
-    }
-  }
-});
-
-/***/ }),
-/* 78 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = ({
-  template: '<div :id="elementId" class="morris-bar-chart"></div>',
-  props: ['elementId', 'buyVolume', 'sellVolume', 'currencyLabel'],
-
-  mounted: function mounted() {
-
-    var values = [{
-      y: 'Buy Volume',
-      a: formatFiat(this.buyVolume)
-    }, {
-      y: 'Sell volume',
-      a: formatFiat(this.sellVolume)
-    }];
-
-    window.morrisPortfolioCurrency = Morris.Bar({
-      element: this.elementId,
-      data: values,
-      xkey: 'y',
-      ykeys: ['a'],
-      labels: [this.currencyLabel]
-    });
-
-    function formatFiat(n) {
-      return numeral(n).format('0.00') + " ";
-    }
-  }
-});
 
 /***/ })
 /******/ ]);

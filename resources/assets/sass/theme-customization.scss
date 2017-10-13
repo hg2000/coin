@@ -1,14 +1,66 @@
+$breakoints-s: 480px;
+$breakoints-m: 768px;
+
+//
+// Tobbar
+//
+.logo h1 {
+  font-size: 25px;
+}
+@media (min-width: $breakoints-m) {
+  .topbar .topbar-left {
+    display: block;
+  }
+
+  .topbar-mobile-nav {
+    display: none !important;
+  }
+}
+@media (max-width: $breakoints-m) {
+  #wrapper:not(.enlarged) .hide-phone,
+  #wrapper:not(.enlarged) .topbar-profile {
+    display: block;
+  }
+}
+@media (max-width: $breakoints-m - 1) {
+  .navbar-nav > li {
+    float: left;
+  }
+}
+
+.mobile-nav {
+  .router-link-active {
+    background: rgba(0,0,0,0.06);
+  }
+}
+
+//
+// Sidebar right
+//
+@media (max-width: $breakoints-s) {
+  .open-right-sidebar .hide-phone,
+  .open-right-sidebar .topbar-profile,
+  .topbar-mobile-nav {
+    display: inline !important;
+  }
+}
+
+//
+// Content
+//
 .content-full {
-    overflow: hidden;
-    position: relative;
+  overflow: hidden;
+  position: relative;
 }
 
 .content-full > .content {
-    margin-top: 50px;
-    padding: 20px;
-    position: relative;
+  margin-top: 50px;
+  padding: 20px;
+  position: relative;
 }
 
 .topbar .topbar-left {
-    background-color: inherit;
+  width: 205px;
+  background-color: inherit;
+  display: none;
 }

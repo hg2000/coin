@@ -794,6 +794,11 @@ var h;
 var dw;
 var dh;
 
+var breakPoint = {
+  s: '(min-width: 480px)',
+  m: '(min-width: 768px)'
+}
+
 function executeFunctionByName(functionName, context /*, args */) {
   var args = [].slice.call(arguments).splice(2);
   var namespaces = functionName.split(".");
@@ -833,6 +838,9 @@ var changeptype = function(){
 	toggle_slimscroll(".slimscrollleft");
 }
 
+
+
+
 $(document).ready(function(){
 	FastClick.attach(document.body);
 	//resizefunc.push("initscrolls");
@@ -858,6 +866,13 @@ $(".open-right").click(function(e){
 	e.stopPropagation();
 	$("body").trigger("resize");
 });
+
+var triggerRightSideBar = function() {
+  if (window.matchMedia(breakPoint.s).matches) {
+    $("#wrapper").addClass("open-right-sidebar");
+  }
+}();
+
 
 
 $(".open-left").click(function(e){

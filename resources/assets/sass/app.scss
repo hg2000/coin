@@ -37,3 +37,43 @@
     padding: 0 8px;
   }
 }
+
+
+//
+// spinner
+//
+.spinner {
+  position: fixed;
+  z-index: 200;
+  left: 50%;
+  top: 30%;
+  width: 70px;
+  height: 70px;
+  margin: 100px auto;
+  margin-left: -35px;
+  margin-top: -35px;
+  background-color: #209c83;
+
+  border-radius: 100%;
+  -webkit-animation: sk-scaleout 1.0s infinite ease-in-out;
+  animation: sk-scaleout 1.0s infinite ease-in-out;
+}
+
+@-webkit-keyframes sk-scaleout {
+  0% { -webkit-transform: scale(0) }
+  100% {
+    -webkit-transform: scale(1.0);
+    opacity: 0;
+  }
+}
+
+@keyframes sk-scaleout {
+  0% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  } 100% {
+    -webkit-transform: scale(1.0);
+    transform: scale(1.0);
+    opacity: 0;
+  }
+}

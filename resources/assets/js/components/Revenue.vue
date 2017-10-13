@@ -109,10 +109,8 @@
     </div>
   </div>
   <div v-if="error == 0">
-    <div v-if="balances == 0" class="alert alert-warning">
-      <p>
-        Please Wait
-      </p>
+    <div v-if="balances == 0">
+      <div class="spinner"></div>
     </div>
   </div>
   <div v-if="error != 0" class="alert alert-danger">

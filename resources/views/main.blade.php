@@ -19,17 +19,17 @@
     <link href="{!! asset('css/theme-customization.css') !!}" media="all" rel="stylesheet" type="text/css" />
   </head>
   <body class="fixed-left">
-	   <div id="wrapper" class="open-right-sidebar">
+	   <div id="wrapper" >
        <div id="app">
          <!-- Top Bar Start -->
          <div class="topbar">
              <div class="topbar-left">
                  <div class="logo">
-                     <h1><strong>Coin</strong>Portfolio</h1>
+                     <h1><strong>Coin</strong>tracker</h1>
                  </div>
 
              </div>
-             <!-- Button mobile view to collapse sidebar menu -->
+
              <div class="navbar navbar-default" role="navigation">
                  <div class="container">
                      <div class="navbar-collapse2">
@@ -43,24 +43,35 @@
                                </ul>
                              </li>
                          </ul>
-                         <ul class="nav navbar-nav navbar-right top-navbar">
+                         <ul class="nav navbar-nav navbar-right top-navbar mobile-nav">
 
-                             <li class="dropdown topbar-profile">
-                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">User <i class="fa fa-caret-down"></i></a>
-                                 <ul class="dropdown-menu">
-                                     <li><a href="#">My Profile</a></li>
-                                     <li><a href="#">Change Password</a></li>
-                                     <li><a href="#">Account Setting</a></li>
-                                     <li class="divider"></li>
-                                     <li><a href="#"><i class="icon-help-2"></i> Help</a></li>
-                                     <li><a href="lockscreen.html"><i class="icon-lock-1"></i> Lock me</a></li>
-                                     <li><a class="md-trigger" data-modal="logout-modal"><i class="icon-logout-1"></i> Logout</a></li>
-                                 </ul>
-                             </li>
-                             <li class="right-opener">
-                                 <a href="javascript:;" class="open-right"><i class="fa fa-angle-double-left"></i><i class="fa fa-angle-double-right"></i></a>
-                             </li>
+                           <li class="dropdown topbar-profile">
+                               <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i></a>
+                               <ul class="dropdown-menu">
+                                   <li><a href="#">My Profile</a></li>
+                                   <li><a href="#">Change Password</a></li>
+                                   <li><a href="#">Account Setting</a></li>
+                                   <li class="divider"></li>
+                                   <li><a href="#"><i class="icon-help-2"></i> Help</a></li>
+                                   <li><a href="lockscreen.html"><i class="icon-lock-1"></i> Lock me</a></li>
+                                   <li><a class="md-trigger" data-modal="logout-modal"><i class="icon-logout-1"></i> Logout</a></li>
+                               </ul>
+                           </li>
+
+                            <li class="dropdown topbar-profile topbar-mobile-nav">
+                               <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bars"></i></a>
+                               <ul class="dropdown-menu">
+                                 <li><router-link to="/revenue" class="active subdrop">Revenue</router-link></li>
+                                 <li><router-link to="/portfolio">Portfolio</router-link></li>
+                                 <li><router-link to="/history">History</router-link></li>
+                               </ul>
+                            </li>
+
+                            <li class="right-opener">
+                               <a href="javascript:;" class="open-right"><i class="fa fa-angle-double-left"></i><i class="fa fa-angle-double-right"></i></a>
+                            </li>
                          </ul>
+
                      </div>
                      <!--/.nav-collapse -->
                  </div>

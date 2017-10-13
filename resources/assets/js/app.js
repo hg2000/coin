@@ -13,7 +13,7 @@ const History = Vue.component('history', require('./components/History.vue'));
 const Clear = Vue.component('clear', require('./components/Clear.vue'));
 
 const routes = [
-  { path: '/', component: Portfolio },
+  { path: '/', component: Revenue },
   { path: '/revenue', component: Revenue },
   { path: '/portfolio', component: Portfolio },
   { path: '/history', component: History },
