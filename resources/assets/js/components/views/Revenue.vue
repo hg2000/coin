@@ -28,77 +28,95 @@
 
   <div class="content-full">
     <div class="content">
-      <div class="row">
-        <div class="col-md-4">
-          <div class="panel panel-default" v-if="balances != 0">
-            <div class="panel-heading">
-              <h3>Revenue</h3>
-            </div>
-            <div class="panel-body">
-                <div class="table-responsive">
-                  <table class="table table-striped table-responsive table-hover">
-                    <thead>
-                      <tr>
-                        <th></th>
-                        <th>BTC</th>
-                        <th>{{ fiat }}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <th>BTC/{{ fiat }} Trade Revenue</th>
-                        <td>{{ formatCoin(sum.tradingRevenueBtc) }} B</td>
-                        <td>{{ formatFiat(sum.tradingRevenueFiat) }}</td>
-                      </tr>
-                      <tr>
-                        <th>Buy Volume</th>
-                        <td>{{ formatCoin(sum.buyVolumeBtc) }} B</td>
-                        <td>{{ formatFiat(sum.buyVolumeFiat) }}</td>
-                      </tr>
-                      <tr>
-                        <th>Sell Volume</th>
-                        <td>{{ formatCoin(sum.sellVolumeBtc) }} B</td>
-                        <td>{{ formatFiat(sum.sellVolumeFiat) }}</td>
-                      </tr>
-                      <tr>
-                        <th>Current Coin Value</th>
-                        <td>{{ formatCoin(sum.currentValueBtc) }} B</td>
-                        <td>{{ formatFiat(sum.currentValueFiat) }}</td>
-                      </tr>
-                      <tr class="info">
-                        <th>Total Revenue</th>
-                        <td>{{ formatCoin(sum.totalRevenueBtc) }} B</td>
-                        <td>{{ formatFiat(sum.totalRevenueFiat) }}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <!--end of .table-responsive-->
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="panel panel-default" v-if="balances != 0">
-            <div class="panel-heading">
-              <h3>Buy / Sell Volume</h3>
-            </div>
-            <div class="panel-body">
-              <div class="panel-body">
-                <chartBuySell elementId="buys-sales" :buyVolume="sum.buyVolumeFiat" :sellVolume="sum.sellVolumeFiat" :currencyLabel="fiat"  />
+      <div class="row top-summary" v-if="balances != 0">
+        <div class="col-lg-4 col-md-6" >
+          <div class="widget green-1 animated fadeInDown" >
+            <div class="widget-content padding">
+              <div class="widget-icon">
+                <i class="icon-globe-inv"></i>
+              </div>
+              <div class="text-box">
+                <p class="maindata">TOTAL <b>REVENUE</b></p>
+                <h2><span class="animate-number" data-value="25153" data-duration="3000">{{ formatFiat(sum.totalRevenueFiat) }}</span></h2>
+                <div class="clearfix"></div>
               </div>
             </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="panel panel-default" v-if="balances != 0">
-            <div class="panel-heading">
-              <h3>Revenue: {{ formatFiat(sum.totalRevenueFiat) }}</h3>
-            </div>
-            <div class="panel-body">
-              <div class="panel-body">
-                <chartRevenue elementId="chart-revenue" :tradingRevenue="sum.tradingRevenueFiat" :currentValue="sum.currentValueFiat" />
+            <div class="widget-footer">
+              <div class="row">
+                <div class="col-sm-12">
 
+                </div>
               </div>
+              <div class="clearfix"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+          <div class="widget darkblue-2 animated fadeInDown">
+            <div class="widget-content padding">
+              <div class="widget-icon">
+                <i class="icon-bag"></i>
+              </div>
+              <div class="text-box">
+                <p class="maindata">TOTAL <b>TRADE REVENUE</b></p>
+                <h2><span class="animate-number" data-value="6399" data-duration="3000">{{ formatFiat(sum.tradingRevenueFiat) }}</span></h2>
+
+                <div class="clearfix"></div>
+              </div>
+            </div>
+            <div class="widget-footer">
+              <div class="row">
+                <div class="col-sm-12">
+
+                </div>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+          <div class="widget blue-1 animated fadeInDown">
+            <div class="widget-content padding">
+
+              <div class="text-box">
+                <p class="maindata">OVERALL <b>CURRENT COIN VALUE</b></p>
+                <h2><span class="animate-number" data-value="70389" data-duration="3000">{{ formatFiat(sum.currentValueFiat) }}</span></h2>
+                <div class="clearfix"></div>
+              </div>
+            </div>
+            <div class="widget-footer">
+              <div class="row">
+                <div class="col-sm-12">
+
+                </div>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="row" v-if="balances != 0">
+        <div class="col-md-6">
+          <div class="widget">
+            <div class="widget-header">
+              <h2>Buy / Sell Volume</h2>
+            </div>
+            <div class="widget-content padding">
+              <chartBuySell elementId="buys-sales" :buyVolume="sum.buyVolumeFiat" :sellVolume="sum.sellVolumeFiat" :currencyLabel="fiat" />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="widget">
+            <div class="widget-header">
+              <h2>Current Coin Value + Trading Revenue</h2>
+            </div>
+            <div class="widget-content padding">
+              <chartRevenue elementId="chart-revenue" :tradingRevenue="sum.tradingRevenueFiat" :currentValue="sum.currentValueFiat" />
             </div>
           </div>
         </div>

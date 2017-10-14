@@ -1,8 +1,13 @@
 $breakoints-s: 480px;
 $breakoints-m: 768px;
 
+body {
+  font-size: 14px;
+}
+
+
 //
-// Tobbar
+// Topbar
 //
 .logo h1 {
   font-size: 25px;

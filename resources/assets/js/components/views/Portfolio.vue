@@ -74,18 +74,18 @@
       <div class="row">
         <div class="col-md-12">
 
-          <div class="panel panel-default" v-if="balances != 0">
-            <div class="panel-heading">
-              <h3>Portfolio</h3>
+          <div class="widget" v-if="balances != 0">
+            <div class="widget-header">
+              <h2>Portfolio</h2>
             </div>
-            <div class="panel-body">
+            <div class="widget-content">
 
               <div class="table-responsive portfolio-table">
-                <table class="table table-striped table-responsive table-hover">
+                <table class="table">
                   <thead>
                     <tr>
                       <th>Currency</th>
-                      <th>Avg. Rate (14 Days)</th>
+                      <th>Avg. Rate</th>
                       <th>Current Rate</th>
                       <th>Avg purchase rate</th>
                       <th>Purchase Value</td>
@@ -114,7 +114,7 @@
 
 
                         <td class="border-right">{{ formatCoin(item.volume) }}</td>
-                        <td class="border-right"><a :href="item.chartUrl" target="_blank">TradingView</a></td>
+                        <td><a :href="item.chartUrl" target="_blank">TradingView</a></td>
                       </tr>
                     </template>
 
@@ -138,19 +138,19 @@
                         <tr :class="applyFilterAvaible(item)">
                           <td class="border-right"> {{ item.currency }}</td>
                           <td class="border-right" style="width: 150px; padding: 0 2px">
-                            <morris :elementId="'btcgraph7' + item.id" :rates="dailyRates" :currency="item.currency" :title="formatPercent(item.rateDiffSevenDaysAgoFiat)" :target="1" :width="120" :height="110">
-                            </morris>
+                            <chartDayRates :elementId="'btcgraph7' + item.id" :rates="dailyRates" :currency="item.currency" :title="formatPercent(item.rateDiffSevenDaysAgoFiat)" :target="1" :width="120" :height="110">
+                            </chartDayRates>
                           </td>
-                          <td class="border-right">{{ formatCoin(item.currentRateBtc) }} B</td>
-                          <td class="border-right">{{ formatCoin(item.averagePurchaseRateCoinBtc) }} B</td>
-                          <td class="border-right">{{ formatCoin(item.purchaseValueBtc) }} B</td>
-                          <td class="border-right">{{ formatCoin(item.currentValueBtc) }} B</td>
-                          <td class="border-right">{{ formatCoin(item.revenueBtc) }} B</td>
+                          <td class="border-right">{{ formatCoin(item.currentRateBtc) }} ฿</td>
+                          <td class="border-right">{{ formatCoin(item.averagePurchaseRateCoinBtc) }} ฿</td>
+                          <td class="border-right">{{ formatCoin(item.purchaseValueBtc) }} ฿</td>
+                          <td class="border-right">{{ formatCoin(item.currentValueBtc) }} ฿</td>
+                          <td class="border-right">{{ formatCoin(item.revenueBtc) }} ฿</td>
                           <td class="border-right">{{ formatPercent(item.revenueRateBtc) }}</td>
 
                           <td class="border-right">{{ formatCoin(item.volume) }}</td>
-                          <td class="border-right"><a :href="item.chartUrl" target="_blank">TradingView</a></td>
-                          <td></td>
+                          <td><a :href="item.chartUrl" target="_blank">TradingView</a></td>
+
                         </tr>
                   </template>
 
@@ -159,9 +159,9 @@
                       <th></th>
                       <th></th>
                       <th class="border-right"></th>
-                      <th class="border-right">{{ formatCoin(sum.purchaseValueBtc)}} B</th>
-                      <th class="border-right">{{ formatCoin(sum.currentValueBtc) }} B</th>
-                      <th class="border-right">{{ formatCoin(sum.currentRevenueBtc) }} B</th>
+                      <th class="border-right">{{ formatCoin(sum.purchaseValueBtc)}} ฿</th>
+                      <th class="border-right">{{ formatCoin(sum.currentValueBtc) }} ฿</th>
+                      <th class="border-right">{{ formatCoin(sum.currentRevenueBtc) }} ฿</th>
                       <th class="border-right">{{ formatPercent(sum.tradingRevenueRateBtc) }}</th>
                       <th></th>
                       <th></th>
