@@ -97,7 +97,7 @@
 
 
 <script>
-import format from '../mixins/format.js';
+import format from '../../mixins/format.js';
 export default {
   props: [
     'fiatsymbol',

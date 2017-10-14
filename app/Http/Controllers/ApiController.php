@@ -95,14 +95,12 @@ class ApiController extends BaseController
         }
         $sum['tradingRevenueRateBtc'] = $tradingRevenueRateBtc;
 
-
         $today = new \DateTime();
         $today->setTime(23,59);
         $lastWeek = new \DateTime();
         $lastWeek->sub(new \DateInterval('P14D'));
         $lastWeek->setTime(0,0);
         $dailyRateAverage = $this->rateService->getDailyRateAverage($lastWeek, $today);
-
 
         return response()
         ->json([
@@ -111,7 +109,6 @@ class ApiController extends BaseController
             'dailyRateAverage' => $dailyRateAverage
 
         ]);
-
     }
 
     /**

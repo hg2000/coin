@@ -1,6 +1,6 @@
 
 export default {
-  template: '<div :id="elementId" class="morris-chart" style="height: 35px;"></div>',
+  template: '<div :id="elementId" class="morris-chart" style="height: 25px;"></div>',
   props: ['title', 'elementId', 'rates', 'currency', 'target', 'width', 'height'],
 
   mounted() {
@@ -13,7 +13,6 @@ export default {
     var currency = this.currency;
     var target = this.target;
     var minValue = 99999999999999999999;
-
     this.rates.forEach(function(item) {
       if (typeof item['rates'][currency] != 'undefined') {
         var sample = {};

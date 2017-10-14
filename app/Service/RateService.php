@@ -72,10 +72,10 @@ class RateService
      */
     public function getDailyRateAverage(\DateTime $from, \DateTime $to)
     {
+
         $dayRateCollection = [];
         $ratesRaw = Rate::where('date', '>=', $from)
                         ->where('date', '<=', $to)->get();
-
         $rates = $ratesRaw->map(function ($item) {
             $item->rates = unserialize($item->rates);
             return $item;
