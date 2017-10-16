@@ -21,8 +21,8 @@
 //  Table
 //
 .table > tbody > tr.info > th {
-  background-color: $grey2;
-  font-weight:normal;
+  background-color: inherit;
+  font-weight:bold;
 }
 
 .table > tbody > tr:hover {

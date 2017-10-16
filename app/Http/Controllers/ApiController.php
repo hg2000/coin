@@ -14,6 +14,7 @@ use \App\Utility\Format;
 use \App\Service\TradingService;
 use \App\Service\RateService;
 
+
 class ApiController extends BaseController
 {
     /**
@@ -114,7 +115,7 @@ class ApiController extends BaseController
     /**
      * Deletes the Cache and fetches data from the apis
      */
-    public function getClear()
+    public function getRefresh()
     {
         $cacheService = resolve(CacheService::class);
         $cacheService->clear();
@@ -123,7 +124,18 @@ class ApiController extends BaseController
         date_default_timezone_set(config('format.timezone'));
         $now = new \DateTime();
         $cacheService->set('lastUpdate', $now->format(config('format.datetime')));
-        return response()->json('Cache has been cleared and data refreshed.');
+        return response()
+        ->json([
+            'note' => trans('global.refresh')
+        ]);
+    }
 
+    public function getLastRefreshDateTime() {
+        $cacheService = resolve(CacheService::class);
+        $lastRefresh = $cacheService->get('lastUpdate');
+        return response()
+        ->json([
+             $lastRefresh
+        ]);
     }
 }

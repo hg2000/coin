@@ -1,10 +1,7 @@
 <template>
 <div>
-
-
   <!-- Right Sidebar Start -->
   <div class="right side-menu">
-
 
     <div class="tab-content">
       <div class="tab-pane active" id="feed">
@@ -12,7 +9,6 @@
 
           <div class="clearfix"></div>
           <div class="panel-group" id="collapse">
-
             <div class="panel panel-default">
               <div class="panel-heading bg-green-3">
                 <h4 class="panel-title">
@@ -26,10 +22,10 @@
               <div class="panel-collapse collapse in">
                 <div class="panel-body">
                   <div class="btn-group" role="group" aria-label="Select base currency">
-                    Last refresh: 12:30
-                    <router-link to="/clear" class="btn btn-primary" type="button">
+                    Last refresh: {{lastRefreshDateTime}}
+                  <button v-on:click="refresh" class="btn btn-primary" type="button">
                       <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span> Refresh
-                    </router-link><br>
+                    </button><br>
                   </div>
                 </div>
               </div>
@@ -74,7 +70,7 @@
       <div class="row">
         <div class="col-md-12">
 
-          <div class="widget" v-if="balances != 0">
+          <div class="widget" v-if="!isLoading()">
             <div class="widget-header">
               <h2>Portfolio</h2>
             </div>
@@ -176,11 +172,8 @@
           </div>
           <!-- end of panel -->
 
-          <div v-if="error == 0">
-            <div v-if="balances == 0">
-              <div class="spinner"></div>
-            </div>
-          </div>
+          <div class="spinner" v-if="isLoading()"></div>
+
           <div v-if="error != 0" class="alert alert-danger">
             <p>
               <strong>Error: {{error}}</strong><br> {{trace}}
@@ -198,6 +191,7 @@
 
 <script>
 import format from '../../mixins/format.js';
+import base from '../../mixins/base.js';
 import chartDayRates from '../../components/charts/ChartDayRates.js';
 
 export default {
@@ -208,7 +202,7 @@ export default {
   components: {
     chartDayRates
   },
-  mixins: [format],
+  mixins: [format,base],
   data: function() {
     return {
       balances: 0,
@@ -226,6 +220,7 @@ export default {
   },
   methods: {
     makeRequest: function() {
+      this.setIsLoading(true);
       this.$http.get('/api/portfolio/', {
         headers: {
           'Accept': 'application/json'
@@ -234,10 +229,13 @@ export default {
         this.balances = response.body.balances;
         this.sum = response.body.sum;
         this.dailyRates = response.body.dailyRateAverage;
+        this.setIsLoading(false);
       }, response => {
         var parsed = JSON.parse(response.body);
         this.error = parsed.message;
         this.trace = parsed.trace;
+        this.setIsLoading(false);
+
       });
 
     },
@@ -264,7 +262,7 @@ export default {
   },
   mounted() {
     this.makeRequest();
-
+    this.getLastRefreshDateTime();
   }
 }
 </script>

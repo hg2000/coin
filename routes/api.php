@@ -19,4 +19,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
     Route::get('trade_history/{key?}', 'ApiController@getTradeHistory')->name('api.trade_history.get');
     Route::get('portfolio', 'ApiController@getPortfolio')->name('api.portfolio.get');
-    Route::get('clear', 'ApiController@getClear')->name('api.coin.clear');
+    Route::get('refresh', 'ApiController@getRefresh')->name('api.coin.refresh');
+    Route::get('lastRefreshDateTime', 'ApiController@getLastRefreshDateTime')->name('api.coin.lastRefreshDateTime');
