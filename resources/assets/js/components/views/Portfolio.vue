@@ -70,7 +70,7 @@
       <div class="row">
         <div class="col-md-12">
 
-          <div class="widget" v-if="!isLoading()">
+          <div class="widget" v-if="!isLoading() && balances !==0">
             <div class="widget-header">
               <h2>Portfolio</h2>
             </div>
