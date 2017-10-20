@@ -11,13 +11,18 @@ use \App\Service\CacheService;
 
 class Controller extends BaseController
 {
-    //use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function getHome()
+    public function __construct() {
+        $this->middleware('auth');
+    }
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    public function getMain()
     {
         return view('main', [
             'fiat' => config('api.fiat'),
             'fiatsymbol' => config('api.fiatSymbol'),
         ]);
     }
+
 }

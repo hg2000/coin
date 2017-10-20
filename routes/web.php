@@ -12,4 +12,9 @@
 */
 
 
-Route::get('/', 'Controller@getHome')->name('home.get');
+Route::get('/', 'Controller@getMain')->name('home');
+Route::get('/main', 'Controller@getMain')->name('main');
+Route::get('/home', 'Controller@getMain')->name('main');
+
+
+Auth::routes();
