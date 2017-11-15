@@ -6,6 +6,20 @@ use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
+use Closure;
+use Illuminate\Support\Str;
+use Illuminate\Http\Response;
+use Illuminate\Support\Collection;
+use Illuminate\Container\Container;
+use Illuminate\Support\Traits\Macroable;
+use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Contracts\Routing\BindingRegistrar;
+use Psr\Http\Message\ResponseInterface as PsrResponseInterface;
+use Illuminate\Contracts\Routing\Registrar as RegistrarContract;
+use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
+use Illuminate\Auth\Events\Registered;
 
 class RegisterController extends Controller
 {
@@ -48,7 +62,6 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
         ]);
@@ -63,9 +76,39 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         return User::create([
-            'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+    }
+
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+
+        $userData = $request->all();
+        event(new Registered($user = $this->create($userData)));
+        $this->guard()->login($user);
+
+        return $this->registered($request, $user)
+                        ?: redirect($this->redirectPath());
+    }
+
+    public function requestRegister(Request $request)
+    {
+
+        $this->validator($request->all())->validate();
+        $userData = $request->all();
+        $userData['accepted'] = 0;
+        event(new Registered($user = $this->create($userData)));
+
+        return $this->registered($request, $user)
+                        ?: redirect('login')->with('message', trans('registration.activation.wait'));
+
     }
 }

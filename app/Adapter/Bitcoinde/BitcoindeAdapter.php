@@ -101,7 +101,6 @@ class BitcoindeAdapter implements \App\Adapter\AdapterInterface
             $tradeCollection->push($trade);
         }
 
-
         return $tradeCollection;
 
     }

@@ -86,7 +86,21 @@
          <!-- Top Bar End -->
 
 
-          @yield('content')
+
+         @if (\Session::has('message'))
+         <div class="content-full">
+           <div class="content">
+             <div class="row">
+               <div class="col-md-4 col-md-offset-4">
+                     <div class="alert alert-info">
+                      {!! \Session::get('message') !!}
+                     </div>
+               </div>
+             </div>
+           </div>
+         </div>
+       @endif
+       @yield('content')
 
      </div>
     <script src="/js/app.js"></script>
