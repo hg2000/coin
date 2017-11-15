@@ -14,6 +14,8 @@ class BitcoindeAdapter implements \App\Adapter\AdapterInterface
      */
     protected $connector;
 
+    const ALLOWED_CURRENCY_KEYS = ['BTC', 'ETH', 'BCH'];
+
     public function __construct($key, $secret)
     {
         $this->connector = new Connector($key, $secret);
@@ -119,7 +121,9 @@ class BitcoindeAdapter implements \App\Adapter\AdapterInterface
         if ($currencyPair != 'BTCEUR') {
             return -1;
         }
-        $rates = $this->request(Connector::METHOD_SHOW_RATES);
+        $rates = $this->request(Connector::METHOD_SHOW_RATES, [
+            'trading_pair' => $this->getTradingPair($currencyKeySource, $currencyKeyTarget)
+        ]);
         return $rates['rates']['rate_weighted'];
 
     }
@@ -143,16 +147,8 @@ class BitcoindeAdapter implements \App\Adapter\AdapterInterface
      */
     public function getCoinVolume($currencyKey) : float
     {
-        if ($currencyKey != 'BTC') {
-            throw new \Exception('Bitcoin.de adapter only supports the currency for volume request. "BTC".' . $currencyKey . ' is not allowed.');
-        }
-
-        $result = $this->request(Connector::METHOD_SHOW_ACCOUNT_INFO);
-        if (!isset($result['data']['btc_balance']['available_amount'])) {
-            throw new \Exception('Bitcoin.de API Error. The API did not return the current btc volume.');
-        }
-
-        return $result['data']['btc_balance']['available_amount'];
+        $volumes = $this->getCoinVolumes();
+        return $volumes->$currencyKey;
     }
 
     /**
@@ -161,7 +157,16 @@ class BitcoindeAdapter implements \App\Adapter\AdapterInterface
      */
     public function getCoinVolumes() : Collection
     {
-        return collect(['BTC' => $this->getCoinVolume('BTC') ]);
+        $result = $this->request(Connector::METHOD_SHOW_ACCOUNT_INFO);
+        if (!isset($result['data']['balances'])){
+            throw new \Exception('Invalid response from bitcoin.de API. Balances is not set.');
+        }
+        $balances = $result['data']['balances'];
+        return collect([
+            'BTC' => $balances['btc']['total_amount'],
+            'BCH' =>  $balances['bch']['total_amount'],
+            'ETH' =>  $balances['eth']['total_amount']
+        ]);
     }
 
     /**
@@ -191,5 +196,10 @@ class BitcoindeAdapter implements \App\Adapter\AdapterInterface
     public function addWatchList(array $watchList)
     {
         return null;
+    }
+
+    protected function getTradingPair($currencyKeySource, $currencyKeyTarget)
+    {
+        return strtolower($currencyKeySource . $currencyKeyTarget);
     }
 }
