@@ -83,8 +83,15 @@ class BitcoindeAdapter implements \App\Adapter\AdapterInterface
                 throw new \Exception('bitcoin.de API error: Invalid Trade type: ' . $rawTrade['type']);
             }
 
-            $sourceCurrency = $rawTrade['type'] == 'buy' ? 'EUR' : 'BTC';
-            $targetCurrency = $rawTrade['type'] == 'buy' ? 'BTC' : 'EUR';
+
+            if ($rawTrade['type'] == 'buy') {
+                $targetCurrency = strtoupper(substr($rawTrade['trading_pair'], 0, 3));
+                $sourceCurrency = strtoupper(substr($rawTrade['trading_pair'], 3));
+            }
+            if ($rawTrade['type'] == 'sell') {
+                $sourceCurrency = strtoupper(substr($rawTrade['trading_pair'], 0, 3));
+                $targetCurrency = strtoupper(substr($rawTrade['trading_pair'], 3));
+            }
 
             $trade = new Trade();
             $trade->init(
@@ -97,13 +104,11 @@ class BitcoindeAdapter implements \App\Adapter\AdapterInterface
                 $rate = $rawTrade['price'],
                 $volume = $rawTrade['amount'],
                 $feeFiat = $rawTrade['fee_eur'],
-                $feeCoin = $rawTrade['fee_btc']
+                $feeCoin = $rawTrade['fee_currency']
             );
 
             $tradeCollection->push($trade);
         }
-
-
         return $tradeCollection;
 
     }
@@ -148,7 +153,7 @@ class BitcoindeAdapter implements \App\Adapter\AdapterInterface
     public function getCoinVolume($currencyKey) : float
     {
         $volumes = $this->getCoinVolumes();
-        return $volumes->$currencyKey;
+        return $volumes[$currencyKey];
     }
 
     /**
@@ -164,8 +169,8 @@ class BitcoindeAdapter implements \App\Adapter\AdapterInterface
         $balances = $result['data']['balances'];
         return collect([
             'BTC' => $balances['btc']['total_amount'],
-            'BCH' =>  $balances['bch']['total_amount'],
-            'ETH' =>  $balances['eth']['total_amount']
+            'BCH' => $balances['bch']['total_amount'],
+            'ETH' => $balances['eth']['total_amount']
         ]);
     }
 
@@ -180,7 +185,11 @@ class BitcoindeAdapter implements \App\Adapter\AdapterInterface
         try {
             $result = $this->connector->doRequest($method, $arguments);
             if (!empty($result['errors'])) {
-                throw new \Exception($result['errors']);
+                    $errorMessage = '';
+                    foreach($result['errors'] as $error) {
+                        $errorMessage .= $error['message'] . "\n";
+                    }
+                throw new \Exception($errorMessage);
             } else {
                 return $result;
             }

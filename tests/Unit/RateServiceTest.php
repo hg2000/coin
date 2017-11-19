@@ -13,6 +13,8 @@ use \Carbon\Carbon;
 
 class RateServiceTest extends \Tests\TestCase
 {
+    use DatabaseMigrations;
+
     protected $date;
 
     public function setUp()
@@ -92,7 +94,7 @@ class RateServiceTest extends \Tests\TestCase
      */
     public function rateChangeAlert()
     {
-        $rateService = App::make(RateService::class);
+        $rateService = \App::make(RateService::class);
         $rateService->ratechangealert();
     }
 

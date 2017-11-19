@@ -11,8 +11,7 @@ class RoutesTest extends \Tests\TestCase
         $this->assertEquals(200, $response->getStatusCode());
         $response = $this->call('GET', 'api/trade_history');
         $this->assertEquals(200, $response->getStatusCode());
-        $response = $this->call('GET', 'api/clear');
-        $this->assertEquals(200, $response->getStatusCode());
+        
 
     }
 

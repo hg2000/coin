@@ -28,7 +28,7 @@
 
   <div class="content-full">
     <div class="content">
-      <div class="row top-summary" v-if="balances != 0">
+      <div class="row top-summary" v-if="showContent()">
         <div class="col-lg-4 col-md-6" >
           <div class="widget green-1 animated fadeInDown" >
             <div class="widget-content padding">
@@ -96,10 +96,10 @@
             </div>
           </div>
         </div>
-  
+
       </div>
 
-      <div class="row" v-if="balances != 0">
+      <div class="row" v-if="showContent()">
         <div class="col-md-6">
           <div class="widget">
             <div class="widget-header">
@@ -144,6 +144,7 @@
 
 <script>
 import format from '../../mixins/format.js';
+import base from '../../mixins/base.js';
 import chartBuySell from '../../components/charts/ChartBuySell.js';
 import chartRevenue from '../../components/charts/ChartRevenue.js';
 
@@ -157,7 +158,7 @@ export default {
     chartRevenue
 
   },
-  mixins: [format],
+  mixins: [format,base],
   data: function() {
     return {
       balances: 0,
@@ -182,6 +183,9 @@ export default {
         this.trace = parsed.trace;
       });
     },
+   showContent: function() {
+     return (this.balances != 0 && this.error == 0);
+   }
   },
   mounted() {
     this.makeRequest();

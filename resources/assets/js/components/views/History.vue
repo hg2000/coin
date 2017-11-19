@@ -37,7 +37,7 @@
     <div class="content">
       <div class="row">
         <div class="col-md-12">
-          <div class="panel panel-default" v-if="balances != 0">
+          <div class="panel panel-default" v-if="showContent()">
             <div class="panel-heading">
               <h3>Trade History</h3>
             </div>
@@ -98,18 +98,20 @@
 
 <script>
 import format from '../../mixins/format.js';
+import base from '../../mixins/base.js';
 export default {
   props: [
     'fiatsymbol',
     'fiat'
   ],
-  mixins: [format],
+  mixins: [format,base],
   data: function() {
     return {
       trades: 0,
       trace: '',
       error: 0,
-      balances: 0
+      balances: 0,
+      show: false
     }
   },
   methods: {
@@ -129,6 +131,10 @@ export default {
         this.balances = 1;
       });
     },
+    showContent: function() {
+      this.show = (this.balances != 0 && this.error == 0 );
+      return this.show;
+    }
   },
   mounted() {
     this.makeRequest();

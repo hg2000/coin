@@ -3403,6 +3403,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_format_js__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_base_js__ = __webpack_require__(43);
 //
 //
 //
@@ -3501,17 +3502,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['fiatsymbol', 'fiat'],
-  mixins: [__WEBPACK_IMPORTED_MODULE_0__mixins_format_js__["a" /* default */]],
+  mixins: [__WEBPACK_IMPORTED_MODULE_0__mixins_format_js__["a" /* default */], __WEBPACK_IMPORTED_MODULE_1__mixins_base_js__["a" /* default */]],
   data: function data() {
     return {
       trades: 0,
       trace: '',
       error: 0,
-      balances: 0
+      balances: 0,
+      show: false
     };
   },
   methods: {
@@ -3531,6 +3534,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         _this.trace = parsed.trace;
         _this.balances = 1;
       });
+    },
+    showContent: function showContent() {
+      this.show = this.balances != 0 && this.error == 0;
+      return this.show;
     }
   },
   mounted: function mounted() {
@@ -3818,8 +3825,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__mixins_format_js__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_charts_ChartBuySell_js__ = __webpack_require__(40);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_charts_ChartRevenue_js__ = __webpack_require__(42);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mixins_base_js__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_charts_ChartBuySell_js__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_charts_ChartRevenue_js__ = __webpack_require__(42);
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 //
@@ -3971,14 +3979,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['fiatsymbol', 'fiat'],
   components: {
-    chartBuySell: __WEBPACK_IMPORTED_MODULE_1__components_charts_ChartBuySell_js__["a" /* default */],
-    chartRevenue: __WEBPACK_IMPORTED_MODULE_2__components_charts_ChartRevenue_js__["a" /* default */]
+    chartBuySell: __WEBPACK_IMPORTED_MODULE_2__components_charts_ChartBuySell_js__["a" /* default */],
+    chartRevenue: __WEBPACK_IMPORTED_MODULE_3__components_charts_ChartRevenue_js__["a" /* default */]
 
   },
-  mixins: [__WEBPACK_IMPORTED_MODULE_0__mixins_format_js__["a" /* default */]],
+  mixins: [__WEBPACK_IMPORTED_MODULE_0__mixins_format_js__["a" /* default */], __WEBPACK_IMPORTED_MODULE_1__mixins_base_js__["a" /* default */]],
   data: function data() {
     return _defineProperty({
       balances: 0,
@@ -4003,6 +4012,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         _this.error = parsed.message;
         _this.trace = parsed.trace;
       });
+    },
+    showContent: function showContent() {
+      return this.balances != 0 && this.error == 0;
     }
   },
   mounted: function mounted() {
@@ -35672,7 +35684,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-md-12"
-  }, [(_vm.balances != 0) ? _c('div', {
+  }, [(_vm.showContent()) ? _c('div', {
     staticClass: "panel panel-default"
   }, [_vm._m(1), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
@@ -35743,7 +35755,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "content-full"
   }, [_c('div', {
     staticClass: "content"
-  }, [(_vm.balances != 0) ? _c('div', {
+  }, [(_vm.showContent()) ? _c('div', {
     staticClass: "row top-summary"
   }, [_c('div', {
     staticClass: "col-lg-4 col-md-6"
@@ -35793,7 +35805,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_vm._v(_vm._s(_vm.formatFiat(_vm.sum.currentValueFiat)))])]), _vm._v(" "), _c('div', {
     staticClass: "clearfix"
-  })])]), _vm._v(" "), _vm._m(8)])])]) : _vm._e(), _vm._v(" "), (_vm.balances != 0) ? _c('div', {
+  })])]), _vm._v(" "), _vm._m(8)])])]) : _vm._e(), _vm._v(" "), (_vm.showContent()) ? _c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-md-6"

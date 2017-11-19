@@ -28,7 +28,6 @@ class Connector
         $execResult = curl_exec($ch);
         $result =  json_decode($execResult);
 
-
         if (!$result->success) {
             $code = 0 ;
             if ($result->message == 'INVALID_MARKET') {

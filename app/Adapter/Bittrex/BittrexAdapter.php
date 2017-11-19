@@ -29,7 +29,6 @@ class BittrexAdapter implements \App\Adapter\AdapterInterface
              ->request('history')
              ->result
              ;
-
         $result = collect();
         foreach ($items as $item) {
 
