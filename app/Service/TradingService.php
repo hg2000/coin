@@ -178,13 +178,13 @@ class TradingService
         $avgRate = 0;
 
         foreach ($trades as $trade) {
-            if ($trade->source_currency == config('api.fiat') && $trade->target_currency == 'BTC' && $trade->type == 'buy') {
+            if ($trade->source_currency == config('api.fiat') && $trade->type == 'buy') {
 
                 $avgRate = ($btcVolume * $avgRate + $trade->volume * $trade->rate) / ($btcVolume + $trade->volume);
                 $btcVolume += $trade->volume;
 
 
-            } elseif ($trade->source_currency == 'BTC' && $trade->target_currency == config('api.fiat') && $trade->type == 'sell') {
+            } elseif ($trade->target_currency == config('api.fiat') && $trade->type == 'sell') {
                 $btcVolume -= $trade->volume;
                 if ($btcVolume < 0) {
                     $btcVolume = 0 ;
